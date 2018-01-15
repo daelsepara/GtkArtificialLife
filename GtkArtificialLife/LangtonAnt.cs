@@ -1,0 +1,292 @@
+using Gdk;
+using System;
+using System.Collections.Generic;
+
+public class LangtonAnt : ArtificialLife
+{
+	public class Ant
+	{
+        Random random;
+
+		public int X;
+		public int Y;
+        public int MoveDirection;
+
+		public List<Movement> Moves = new List<Movement>();
+		public List<Rule> Rules = new List<Rule>();
+
+		public class Movement
+		{
+			public int DX;
+			public int DY;
+
+			public Movement(int dx, int dy)
+			{
+				DX = dx;
+				DY = dy;
+			}
+		}
+
+		public class Rule
+		{
+			public int TurnDirection;
+			public Color TrailColor;
+
+			public Rule(int turnDirection, Color color)
+			{
+				TurnDirection = turnDirection;
+				TrailColor = color;
+			}
+		}
+
+		protected void InitializeSeed()
+		{
+			if (random == null)
+			{
+				TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+				random = new Random((int)t.TotalSeconds);
+			}
+		}
+
+		public Ant()
+		{
+			X = 0;
+			Y = 0;
+
+			MoveDirection = 0;
+
+			InitializeSeed();
+		}
+
+		public Ant(int x, int y, int moveDirection)
+		{
+			X = x;
+			Y = y;
+			
+			MoveDirection = moveDirection;
+
+            InitializeSeed();
+		}
+
+		public void ParseRules(Ant ant, string rules, List<Color> ColorPalette)
+		{
+            InitializeSeed();
+
+			if (rules.Length > 0)
+			{
+				for (int i = 0; i < rules.Length; i++)
+				{
+					if (rules[i] == 'R' || rules[i] == 'r')
+					{
+						if (i == 0)
+						{
+                            ant.Rules.Add(new Rule(0, new Color(0, 0, 0)));
+						}
+						else
+						{
+							ant.Rules.Add(new Rule(0, ColorPalette[random.Next(0, ColorPalette.Count)]));
+						}
+					}
+					else
+					{
+						if (i == 0)
+						{
+							ant.Rules.Add(new Rule(1, new Gdk.Color(0, 0, 0)));
+						}
+						else
+						{
+							ant.Rules.Add(new Rule(1, ColorPalette[random.Next(0, ColorPalette.Count)]));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	List<Pixel> PixelWriteBuffer = new List<Pixel>();
+	List<Change> ChangeList = new List<Change>();
+    readonly List<Ant> Ants = new List<Ant>();
+
+    int[, ] Grid;
+    Random random;
+    readonly List<Color> ColorPalette = new List<Color>();
+
+    public void GenerateRandomColorPalette()
+	{
+        InitializeSeed();
+
+		for (int i = 0; i < 256; i++)
+		{
+			int red = random.Next(256);
+			int green = random.Next(256);
+			int blue = random.Next(256);
+
+			// mix the color
+			red = (red + ColonyColor.Red) / 2;
+			green = (green + ColonyColor.Green) / 2;
+			blue = (blue + ColonyColor.Blue) / 2;
+
+			ColorPalette.Add(new Color((byte)red, (byte)green, (byte)blue));
+		}
+	}
+
+	public LangtonAnt()
+	{
+		ColonyColor = DefaultColor;
+
+		InitGrid(256, 256);
+	}
+
+	public LangtonAnt(int width, int height)
+	{
+		InitGrid(width, height);
+
+		ColonyColor = DefaultColor;
+	}
+
+	public LangtonAnt(int width, int height, Color color)
+	{
+		if (!color.Equal(EmptyColor))
+		{
+			ColonyColor.Red = (ushort)(color.Red & 0xff);
+			ColonyColor.Green = (ushort)(color.Green & 0xff);
+			ColonyColor.Blue = (ushort)(color.Blue & 0xff);
+		}
+		else
+		{
+			ColonyColor = DefaultColor;
+		}
+
+		InitGrid(width, height);
+	}
+
+	protected void InitGrid(int width, int height)
+	{
+		Width = width;
+		Height = height;
+
+		Grid = new int[width, height];
+	}
+
+	public override void ClearPixelWriteBuffer()
+	{
+		PixelWriteBuffer.Clear();
+	}
+
+	public override List<Pixel> GetPixelWriteBuffer()
+	{
+		return new List<Pixel>(PixelWriteBuffer);
+	}
+
+	public void WriteCell(Ant ant, int val)
+	{
+		if (ant.X >= 0 && ant.X < Width && ant.Y >= 0 && ant.Y < Height)
+		{
+            PushPixel(new Pixel(ant.X, ant.Y, val >= 0 ? ant.Rules[val].TrailColor : EmptyColor));
+			ChangeList.Add(new Change(ant.X, ant.Y, val));
+		}
+	}
+
+	protected void RemovePixel(int index)
+	{
+		if (PixelWriteBuffer.Count > 0 && index < PixelWriteBuffer.Count)
+			PixelWriteBuffer.RemoveAt(index);
+	}
+
+	public void PushPixel(Pixel pixel)
+	{
+		if (pixel != null)
+		{
+			PixelWriteBuffer.Add(pixel);
+		}
+	}
+
+	public Pixel PopPixel()
+	{
+		if (PixelWriteBuffer.Count < 1) return null;
+
+		var pixel = PixelWriteBuffer[PixelWriteBuffer.Count - 1];
+
+		RemovePixel(PixelWriteBuffer.Count - 1);
+
+		return pixel;
+	}
+
+	public override void Update()
+	{
+		foreach(var ant in Ants)
+		{
+            if (ant.X >= 0 && ant.X < Width && ant.Y >= 0 && ant.Y < Height)
+            {
+                var val = Grid[ant.X, ant.Y];
+
+                WriteCell(ant, (val + 1) % ant.Rules.Count);
+
+                if (ant.Rules[val].TurnDirection == 0)
+                {
+                    ant.MoveDirection = (ant.MoveDirection + (ant.Moves.Count - 1)) % ant.Moves.Count;
+                }
+                else
+                {
+                    ant.MoveDirection = (ant.MoveDirection + 1) % ant.Moves.Count;
+                }
+
+                // Move ant in specified direction
+                ant.X += ant.Moves[ant.MoveDirection].DX;
+                ant.Y += ant.Moves[ant.MoveDirection].DY;
+            }
+		}
+		
+		ApplyChanges();
+	}
+
+	public void ApplyChanges()
+	{
+		foreach (var change in ChangeList)
+		{
+			Grid[change.X, change.Y] = change.Value;
+		}
+
+		ChangeList.Clear();
+	}
+
+    protected void InitializeSeed()
+    {
+        if (random == null)
+        {
+	        TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+			
+            random = new Random((int)t.TotalSeconds);
+        }
+    }
+
+	public void Randomize(int ants, string rules)
+	{
+        if (ants > 0 && rules.Length > 0)
+		{
+            GenerateRandomColorPalette();
+
+			for (int i = 0; i < ants; i++)
+			{
+				var x = random.Next(0, Width);
+				var y = random.Next(0, Height);
+                var dir = random.Next(0, 4);
+
+                var ant = new Ant(x, y, dir);
+
+                ant.ParseRules(ant, rules, ColorPalette);
+
+                ant.Moves.Add(new Ant.Movement(0, -1));
+				ant.Moves.Add(new Ant.Movement(1, 0));
+				ant.Moves.Add(new Ant.Movement(0, 1));
+				ant.Moves.Add(new Ant.Movement(-1, 0));
+
+                Ants.Add(ant);
+
+				WriteCell(ant, 0);
+			}
+
+			ApplyChanges();
+		}
+	}
+}

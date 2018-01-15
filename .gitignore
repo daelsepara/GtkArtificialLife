@@ -1,0 +1,5 @@
+GtkArtificialLife/bin/*
+GtkArtificialLife/obj/*
+.vs/*
+GtkArtificialLife.userprefs
+packages/*
