@@ -220,6 +220,20 @@ public class YinYangFire : ArtificialLife
 		ChangeList.Clear();
 	}
 
+    public void Refresh()
+    {
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                if (Grid[x, y] > 0)
+                {
+                    WriteCell(x, y, Grid[x, y]);
+                }
+            }
+        }
+    }
+
 	public void Randomize(int maxDensity, int maxStates = 256)
 	{
 		if (maxDensity > 0)

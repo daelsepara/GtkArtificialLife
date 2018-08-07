@@ -1,5 +1,6 @@
 public class Colony
 {
+    // coordinates in the common world
 	public int X;
 	public int Y;
 

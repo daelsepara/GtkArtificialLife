@@ -289,4 +289,15 @@ public class LangtonAnt : ArtificialLife
 			ApplyChanges();
 		}
 	}
+
+    public void Refresh()
+    {
+        foreach (var ant in Ants)
+        {
+            if (ant.X >= 0 && ant.X < Width && ant.Y >= 0 && ant.Y < Height)
+            {
+                WriteCell(ant, Grid[ant.X, ant.Y]);
+            }
+        }
+    }
 }

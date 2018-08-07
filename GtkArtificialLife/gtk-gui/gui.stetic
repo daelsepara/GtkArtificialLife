@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../bin/Debug/GtkArtificialLife.exe" internal="true" />
+    <widget-library name="../bin/Release/GtkArtificialLife.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="1280 720">
     <property name="MemberName" />
@@ -32,11 +32,15 @@
                 <property name="MemberName" />
                 <property name="WidthRequest">800</property>
                 <property name="HeightRequest">600</property>
+                <signal name="ButtonPressEvent" handler="OnWorldImageEventBoxButtonPressEvent" />
+                <signal name="ButtonReleaseEvent" handler="OnWorldImageEventBoxButtonReleaseEvent" />
+                <signal name="MotionNotifyEvent" handler="OnWorldImageEventBoxMotionNotifyEvent" />
                 <child>
                   <widget class="Gtk.Image" id="worldImage">
                     <property name="MemberName" />
                     <property name="WidthRequest">800</property>
                     <property name="HeightRequest">600</property>
+                    <property name="CanFocus">True</property>
                   </widget>
                 </child>
               </widget>
@@ -87,6 +91,29 @@
                 <property name="Y">640</property>
               </packing>
             </child>
+            <child>
+              <widget class="Gtk.ComboBox" id="ColonyTypeList">
+                <property name="MemberName" />
+                <property name="WidthRequest">300</property>
+                <property name="IsTextCombo">True</property>
+                <property name="Items" translatable="yes" />
+              </widget>
+              <packing>
+                <property name="X">830</property>
+                <property name="Y">40</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="ColonyTypeLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Colony Type&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="X">830</property>
+                <property name="Y">20</property>
+              </packing>
+            </child>
           </widget>
         </child>
         <child>
@@ -99,12 +126,18 @@
           </packing>
         </child>
         <child>
-          <placeholder />
+          <widget class="Gtk.Fixed" id="ParametersLayout">
+            <property name="MemberName" />
+            <property name="HasWindow">False</property>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+          </packing>
         </child>
         <child>
-          <widget class="Gtk.Label" id="WorldParametersLabel">
+          <widget class="Gtk.Label" id="ParametersLabel">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">World Parameters</property>
+            <property name="LabelProp" translatable="yes">Parameters</property>
           </widget>
           <packing>
             <property name="type">tab</property>

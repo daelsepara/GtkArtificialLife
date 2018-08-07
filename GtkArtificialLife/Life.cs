@@ -202,4 +202,18 @@ public class Life : ArtificialLife
 			ApplyChanges();
 		}
 	}
+
+    public void Refresh()
+    {
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                if (Grid[x, y] > 0)
+                {
+                    WriteCell(x, y, 1);
+                }
+            }
+        }
+    }
 }
