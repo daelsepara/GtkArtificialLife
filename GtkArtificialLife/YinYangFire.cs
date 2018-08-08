@@ -14,7 +14,9 @@ public class YinYangFire : ArtificialLife
 
     public void GenerateRandomColorPalette()
     {
-        var random = new Random();
+        ColorPalette.Clear();
+
+        var random = new Random(Guid.NewGuid().GetHashCode());
 
         for (int i = 0; i < 256; i++)
         {
@@ -28,6 +30,16 @@ public class YinYangFire : ArtificialLife
             blue = (blue + ColonyColor.Blue) / 2;
 
             ColorPalette.Add(new Color((byte)red, (byte)green, (byte)blue));
+        }
+    }
+
+    public void GreyPalette()
+    {
+        ColorPalette.Clear();
+
+        for (int i = 0; i < 256; i++)
+        {
+            ColorPalette.Add(new Color((byte)i, (byte)i, (byte)i));
         }
     }
 
@@ -245,9 +257,7 @@ public class YinYangFire : ArtificialLife
             Density = maxDensity;
             MaxStates = maxStates;
 
-            TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
-
-            var random = new Random((int)t.TotalSeconds);
+            var random = new Random(Guid.NewGuid().GetHashCode());
 
             for (int i = 0; i < maxDensity; i++)
             {
@@ -272,6 +282,24 @@ public class YinYangFire : ArtificialLife
         set.Add(new Parameter("MaxStates", MaxStates, 2, 256));
 
         return set;
+    }
+
+    public void WriteGrid(int x, int y, int val)
+    {
+        if (x >= 0 && x < Width && y >= 0 && y < Height)
+        {
+            WriteCell(x, y, val);
+        }
+    }
+
+    public void SetParameters(int maxStates)
+    {
+        MaxStates = maxStates;
+    }
+
+    public void SetDensity(int density)
+    {
+        Density = density;
     }
 
     public Color Color()

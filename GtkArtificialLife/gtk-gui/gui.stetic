@@ -217,6 +217,56 @@
                 <property name="Y">280</property>
               </packing>
             </child>
+            <child>
+              <widget class="Gtk.Image" id="LoadedImage">
+                <property name="MemberName" />
+                <property name="WidthRequest">256</property>
+                <property name="HeightRequest">256</property>
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">364</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="LoadedImageLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Image&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">334</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="LoadImageButton">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Load Image</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnLoadImageButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">640</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="AddImageButton">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Add Image</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnAddImageButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">950</property>
+                <property name="Y">640</property>
+              </packing>
+            </child>
           </widget>
         </child>
         <child>

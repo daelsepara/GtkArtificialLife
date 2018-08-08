@@ -196,9 +196,7 @@ public class Life : ArtificialLife
         {
             Density = maxDensity;
 
-            TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
-
-            var random = new Random((int)t.TotalSeconds);
+            var random = new Random(Guid.NewGuid().GetHashCode());
 
             for (int i = 0; i < maxDensity; i++)
             {
@@ -235,6 +233,19 @@ public class Life : ArtificialLife
         set.Add(new Parameter("Density", density, 0.01, 1.0));
 
         return set;
+    }
+
+    public void WriteGrid(int x, int y, int val)
+    {
+        if (x >= 0 && x < Width && y >= 0 && y < Height)
+        {
+            WriteCell(x, y, val);
+        }
+    }
+
+    public void SetDensity(int density)
+    {
+        Density = density;
     }
 
     public Color Color()

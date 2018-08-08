@@ -289,6 +289,20 @@ public class ForestFire : ArtificialLife
         return set;
     }
 
+    public void WriteGrid(int x, int y, int val)
+    {
+        if (x >= 0 && x < Width && y >= 0 && y < Height)
+        {
+            Grid[x, y] = val;
+            WriteCell(x, y, Grid[x, y]);
+        }
+    }
+
+    public void SetDensity(int density)
+    {
+        Density = density;
+    }
+
     public Color Color()
     {
         return ColonyColor;

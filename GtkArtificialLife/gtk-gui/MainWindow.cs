@@ -37,6 +37,14 @@ public partial class MainWindow
 
 	private global::Gtk.SpinButton NumericValue;
 
+	private global::Gtk.Image LoadedImage;
+
+	private global::Gtk.Label LoadedImageLabel;
+
+	private global::Gtk.Button LoadImageButton;
+
+	private global::Gtk.Button AddImageButton;
+
 	private global::Gtk.Label worldLabel;
 
 	protected virtual void Build()
@@ -201,6 +209,44 @@ public partial class MainWindow
 		global::Gtk.Fixed.FixedChild w15 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.NumericValue]));
 		w15.X = 850;
 		w15.Y = 280;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.LoadedImage = new global::Gtk.Image();
+		this.LoadedImage.WidthRequest = 256;
+		this.LoadedImage.HeightRequest = 256;
+		this.LoadedImage.Name = "LoadedImage";
+		this.worldLayout.Add(this.LoadedImage);
+		global::Gtk.Fixed.FixedChild w16 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.LoadedImage]));
+		w16.X = 850;
+		w16.Y = 364;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.LoadedImageLabel = new global::Gtk.Label();
+		this.LoadedImageLabel.Name = "LoadedImageLabel";
+		this.LoadedImageLabel.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Image</b>");
+		this.LoadedImageLabel.UseMarkup = true;
+		this.worldLayout.Add(this.LoadedImageLabel);
+		global::Gtk.Fixed.FixedChild w17 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.LoadedImageLabel]));
+		w17.X = 850;
+		w17.Y = 334;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.LoadImageButton = new global::Gtk.Button();
+		this.LoadImageButton.CanFocus = true;
+		this.LoadImageButton.Name = "LoadImageButton";
+		this.LoadImageButton.UseUnderline = true;
+		this.LoadImageButton.Label = global::Mono.Unix.Catalog.GetString("Load Image");
+		this.worldLayout.Add(this.LoadImageButton);
+		global::Gtk.Fixed.FixedChild w18 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.LoadImageButton]));
+		w18.X = 850;
+		w18.Y = 640;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.AddImageButton = new global::Gtk.Button();
+		this.AddImageButton.CanFocus = true;
+		this.AddImageButton.Name = "AddImageButton";
+		this.AddImageButton.UseUnderline = true;
+		this.AddImageButton.Label = global::Mono.Unix.Catalog.GetString("Add Image");
+		this.worldLayout.Add(this.AddImageButton);
+		global::Gtk.Fixed.FixedChild w19 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.AddImageButton]));
+		w19.X = 950;
+		w19.Y = 640;
 		this.worldNotebook.Add(this.worldLayout);
 		// Notebook tab
 		this.worldLabel = new global::Gtk.Label();
@@ -227,5 +273,7 @@ public partial class MainWindow
 		this.ParameterList.Changed += new global::System.EventHandler(this.OnParameterListChanged);
 		this.StringValue.Changed += new global::System.EventHandler(this.OnStringValueChanged);
 		this.NumericValue.ValueChanged += new global::System.EventHandler(this.OnNumericValueValueChanged);
+		this.LoadImageButton.Clicked += new global::System.EventHandler(this.OnLoadImageButtonClicked);
+		this.AddImageButton.Clicked += new global::System.EventHandler(this.OnAddImageButtonClicked);
 	}
 }

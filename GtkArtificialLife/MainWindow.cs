@@ -16,6 +16,7 @@ public partial class MainWindow : Gtk.Window
     int prevX, prevY;
     Mutex Rendering = new Mutex();
     FileChooserDialog ImageChooser;
+    FileChooserDialog ImageLoader;
     Stopwatch timer = new Stopwatch();
     List<Colony> Colonies = new List<Colony>();
     List<ColonyTypes.Type> ColoniesType = new List<ColonyTypes.Type>();
@@ -51,6 +52,14 @@ public partial class MainWindow : Gtk.Window
             "Save", ResponseType.Accept
         );
 
+        ImageLoader = new FileChooserDialog(
+            "Load Image",
+            this,
+            FileChooserAction.Save,
+            "Cancel", ResponseType.Cancel,
+            "Load", ResponseType.Accept
+        );
+
         worldNotebook.CurrentPage = PAGE_WORLD;
 
         Paused = true;
@@ -61,6 +70,7 @@ public partial class MainWindow : Gtk.Window
 
         worldPixbuf = InitWorld(worldImage.WidthRequest, worldImage.HeightRequest);
         worldImage.Pixbuf = InitWorld(worldImage.WidthRequest, worldImage.HeightRequest);
+        LoadedImage.Pixbuf = InitWorld(LoadedImage.WidthRequest, LoadedImage.HeightRequest);
 
         foreach (ColonyTypes.Type type in Enum.GetValues(typeof(ColonyTypes.Type)))
         {
@@ -116,6 +126,16 @@ public partial class MainWindow : Gtk.Window
         if (worldImage != null)
         {
             worldImage.Dispose();
+        }
+
+        if (LoadedImage.Pixbuf != null)
+        {
+            LoadedImage.Pixbuf.Dispose();
+        }
+
+        if (LoadedImage != null)
+        {
+            LoadedImage.Dispose();
         }
 
         Colonies.Clear();
@@ -325,12 +345,16 @@ public partial class MainWindow : Gtk.Window
     {
         var item = parameters.Find(parameter => parameter.Name == name);
 
+        Console.WriteLine("{0} = {1}", name, item.NumericValue);
+
         return item.NumericValue;
     }
 
     protected string GetString(List<Parameter> parameters, String name)
     {
         var item = parameters.Find(parameter => parameter.Name == name);
+
+        Console.WriteLine("{0} = {1}", name, item.Value);
 
         return item.Value;
     }
@@ -453,6 +477,49 @@ public partial class MainWindow : Gtk.Window
         }
 
         ImageChooser.Hide();
+    }
+
+    protected void LoadImageFile()
+    {
+        // Add most recent directory
+        if (!string.IsNullOrEmpty(ImageLoader.Filename))
+        {
+            var directory = System.IO.Path.GetDirectoryName(ImageLoader.Filename);
+
+            if (Directory.Exists(directory))
+            {
+                ImageLoader.SetCurrentFolder(directory);
+            }
+        }
+
+        if (ImageLoader.Run() == (int)ResponseType.Accept)
+        {
+            if (!string.IsNullOrEmpty(ImageLoader.Filename))
+            {
+                var FileName = ImageLoader.Filename;
+
+                try
+                {
+                    var temp = new Pixbuf(FileName);
+
+                    if (LoadedImage.Pixbuf != null && temp != null)
+                    {
+                        LoadedImage.Pixbuf.Dispose();
+
+                        LoadedImage.Pixbuf = temp.ScaleSimple(LoadedImage.WidthRequest, LoadedImage.HeightRequest, InterpType.Hyper);
+                    }
+
+                    if (temp != null)
+                        temp.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                }
+            }
+        }
+
+        ImageLoader.Hide();
     }
 
     protected void CopyParameterValues(ComboBox combo, List<Parameter> parameters)
@@ -745,6 +812,46 @@ public partial class MainWindow : Gtk.Window
                     ColonyParameters[param].Value = StringValue.Text;
                 }
             }
+        }
+    }
+
+    protected void OnAddImageButtonClicked(object sender, EventArgs e)
+    {
+        if (Paused)
+        {
+            var type = ColonyTypeList.Active;
+
+            if (type >= 0)
+            {
+                GtkSelection.Selected = 0;
+
+                var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, ColonyParameters, ColonyColor.Color);
+
+                if (!(colony is EmptyArtificialLife))
+                {
+                    var count = GtkSelection.Selection.Count();
+
+                    GtkSelection.Selection.Add(0, 0, colony.Width, colony.Height);
+
+                    if (GtkSelection.Selection.Count() > count)
+                    {
+                        Colonies.Add(new Colony(0, 0, colony));
+                    }
+                }
+
+                RefreshColonies();
+                RenderColonies(worldPixbuf);
+                RenderWorld(worldPixbuf);
+            }
+
+        }
+    }
+
+    protected void OnLoadImageButtonClicked(object sender, EventArgs e)
+    {
+        if (Paused)
+        {
+            LoadImageFile();
         }
     }
 }

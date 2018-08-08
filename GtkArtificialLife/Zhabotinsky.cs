@@ -20,7 +20,7 @@ public class Zhabotinsky : ArtificialLife
 
     public void GenerateRandomColorPalette()
     {
-        Random random = new Random();
+        var random = new Random(Guid.NewGuid().GetHashCode());
 
         for (int i = 0; i < 256; i++)
         {
@@ -34,6 +34,16 @@ public class Zhabotinsky : ArtificialLife
             blue = (blue + ColonyColor.Blue) / 2;
 
             ColorPalette.Add(new Color((byte)red, (byte)green, (byte)blue));
+        }
+    }
+
+    public void GreyPalette()
+    {
+        ColorPalette.Clear();
+
+        for (int i = 0; i < 256; i++)
+        {
+            ColorPalette.Add(new Color((byte)i, (byte)i, (byte)i));
         }
     }
 
@@ -222,9 +232,7 @@ public class Zhabotinsky : ArtificialLife
 
         if (maxDensity > 0)
         {
-            TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
-
-            var random = new Random((int)t.TotalSeconds);
+            var random = new Random(Guid.NewGuid().GetHashCode());
 
             for (int i = 0; i < maxDensity; i++)
             {
@@ -265,6 +273,19 @@ public class Zhabotinsky : ArtificialLife
         set.Add(new Parameter("k2", K2, 1, 100));
 
         return set;
+    }
+
+    public void WriteGrid(int x, int y, int val)
+    {
+        if (x >= 0 && x < Width && y >= 0 && y < Height)
+        {
+            WriteCell(x, y, val);
+        }
+    }
+
+    public void SetDensity(int density)
+    {
+        Density = density;
     }
 
     public Color Color()

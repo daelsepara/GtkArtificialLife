@@ -43,8 +43,7 @@ public class LangtonAnt : ArtificialLife
         {
             if (random == null)
             {
-                TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
-                random = new Random((int)t.TotalSeconds);
+                random = new Random(Guid.NewGuid().GetHashCode());
             }
         }
 
@@ -127,6 +126,16 @@ public class LangtonAnt : ArtificialLife
             blue = (blue + ColonyColor.Blue) / 2;
 
             ColorPalette.Add(new Color((byte)red, (byte)green, (byte)blue));
+        }
+    }
+
+    public void GreyPalette()
+    {
+        ColorPalette.Clear();
+
+        for (int i = 0; i < 256; i++)
+        {
+            ColorPalette.Add(new Color((byte)i, (byte)i, (byte)i));
         }
     }
 
@@ -259,9 +268,7 @@ public class LangtonAnt : ArtificialLife
     {
         if (random == null)
         {
-            TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
-
-            random = new Random((int)t.TotalSeconds);
+            random = new Random(Guid.NewGuid().GetHashCode());
         }
     }
 
@@ -316,6 +323,30 @@ public class LangtonAnt : ArtificialLife
         };
 
         return set;
+    }
+
+    public void WriteGrid(int x, int y, int val)
+    {
+        if (x >= 0 && x < Width && y >= 0 && y < Height)
+        {
+            var ant = new Ant(x, y, val);
+
+            ant.ParseRules(ant, RuleString, ColorPalette);
+
+            Ants.Add(ant);
+
+            ant.Moves.Add(new Ant.Movement(0, -1));
+            ant.Moves.Add(new Ant.Movement(1, 0));
+            ant.Moves.Add(new Ant.Movement(0, 1));
+            ant.Moves.Add(new Ant.Movement(-1, 0));
+
+            WriteCell(ant, 1);
+        }
+    }
+
+    public void SetRules(string rules)
+    {
+        RuleString = rules;
     }
 
     public Color Color()
