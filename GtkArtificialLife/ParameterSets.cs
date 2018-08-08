@@ -1,0 +1,47 @@
+﻿using System.Collections.Generic;
+
+public static class ParameterSets
+{
+    // Default values for parameter sets
+
+    public static List<Parameter> Life()
+    {
+        var set = new List<Parameter>();
+
+        set.Add(new Parameter("Density", 0.4, 0.01, 1.0));
+
+        return set;
+    }
+
+    public static List<Parameter> Zhabotinsky()
+    {
+        var set = new List<Parameter>();
+
+        set.Add(new Parameter("Density", 0.4, 0.01, 1.0));
+        set.Add(new Parameter("g", 10, 1, 100));
+        set.Add(new Parameter("k1", 1, 1, 100));
+        set.Add(new Parameter("k2", 1, 1, 100));
+
+        return set;
+    }
+
+    public static List<Parameter> LangtonAnt()
+    {
+        var set = new List<Parameter>();
+
+        set.Add(new Parameter("Ants", 40, 1, 1000));
+        set.Add(new Parameter("Rule", "RRLLLLRRRLLL"));
+
+        return set;
+    }
+
+    public static List<Parameter> YinYangFire()
+    {
+        var set = new List<Parameter>();
+
+        set.Add(new Parameter("Density", 0.4, 0.01, 1.0));
+        set.Add(new Parameter("MaxStates", 64, 2, 256));
+
+        return set;
+    }
+}

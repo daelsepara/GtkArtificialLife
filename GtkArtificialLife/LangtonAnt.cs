@@ -106,6 +106,7 @@ public class LangtonAnt : ArtificialLife
 	List<Pixel> PixelWriteBuffer = new List<Pixel>();
 	List<Change> ChangeList = new List<Change>();
     readonly List<Ant> Ants = new List<Ant>();
+    string RuleString;
 
     int[, ] Grid;
     Random random;
@@ -264,6 +265,7 @@ public class LangtonAnt : ArtificialLife
 	{
         if (ants > 0 && rules.Length > 0)
 		{
+            RuleString = rules;
             GenerateRandomColorPalette();
 
 			for (int i = 0; i < ants; i++)
@@ -283,7 +285,7 @@ public class LangtonAnt : ArtificialLife
 
                 Ants.Add(ant);
 
-				WriteCell(ant, 0);
+				WriteCell(ant, 1);
 			}
 
 			ApplyChanges();
@@ -299,5 +301,20 @@ public class LangtonAnt : ArtificialLife
                 WriteCell(ant, Grid[ant.X, ant.Y]);
             }
         }
+    }
+
+    override public List<Parameter> Parameters()
+    {
+        var set = new List<Parameter>();
+
+        set.Add(new Parameter("Ants", Ants.Count, 1, 1000));
+        set.Add(new Parameter("Rule", RuleString));
+
+        return set;
+    }
+
+    public Color Color()
+    {
+        return ColonyColor;
     }
 }

@@ -97,9 +97,10 @@
                 <property name="WidthRequest">300</property>
                 <property name="IsTextCombo">True</property>
                 <property name="Items" translatable="yes" />
+                <signal name="Changed" handler="OnColonyTypeListChanged" />
               </widget>
               <packing>
-                <property name="X">830</property>
+                <property name="X">850</property>
                 <property name="Y">40</property>
               </packing>
             </child>
@@ -110,8 +111,110 @@
                 <property name="UseMarkup">True</property>
               </widget>
               <packing>
-                <property name="X">830</property>
+                <property name="X">850</property>
                 <property name="Y">20</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ColorButton" id="ColonyColor">
+                <property name="MemberName" />
+                <property name="WidthRequest">300</property>
+                <property name="CanFocus">True</property>
+                <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
+                <property name="Alpha">-1</property>
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">100</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="ColonyColorLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Color&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">80</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="ParameterLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Parameter&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">140</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ComboBox" id="ParameterList">
+                <property name="MemberName" />
+                <property name="WidthRequest">300</property>
+                <property name="IsTextCombo">True</property>
+                <property name="Items" translatable="yes" />
+                <signal name="Changed" handler="OnParameterListChanged" />
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">160</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="StringValueLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Parameter string value&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">200</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Entry" id="StringValue">
+                <property name="MemberName" />
+                <property name="WidthRequest">300</property>
+                <property name="CanFocus">True</property>
+                <property name="IsEditable">True</property>
+                <property name="InvisibleChar">●</property>
+                <signal name="Changed" handler="OnStringValueChanged" />
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">220</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="ParameterNumericLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Parameter numeric value&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">260</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.SpinButton" id="NumericValue">
+                <property name="MemberName" />
+                <property name="WidthRequest">300</property>
+                <property name="CanFocus">True</property>
+                <property name="Upper">100</property>
+                <property name="PageIncrement">10</property>
+                <property name="StepIncrement">1</property>
+                <property name="ClimbRate">1</property>
+                <property name="Digits">2</property>
+                <property name="Numeric">True</property>
+                <signal name="ValueChanged" handler="OnNumericValueValueChanged" />
+              </widget>
+              <packing>
+                <property name="X">850</property>
+                <property name="Y">280</property>
               </packing>
             </child>
           </widget>
@@ -120,24 +223,6 @@
           <widget class="Gtk.Label" id="worldLabel">
             <property name="MemberName" />
             <property name="LabelProp" translatable="yes">World</property>
-          </widget>
-          <packing>
-            <property name="type">tab</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Gtk.Fixed" id="ParametersLayout">
-            <property name="MemberName" />
-            <property name="HasWindow">False</property>
-          </widget>
-          <packing>
-            <property name="Position">1</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Gtk.Label" id="ParametersLabel">
-            <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">Parameters</property>
           </widget>
           <packing>
             <property name="type">tab</property>

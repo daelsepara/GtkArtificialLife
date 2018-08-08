@@ -21,11 +21,23 @@ public partial class MainWindow
 
 	private global::Gtk.Label ColonyTypeLabel;
 
+	private global::Gtk.ColorButton ColonyColor;
+
+	private global::Gtk.Label ColonyColorLabel;
+
+	private global::Gtk.Label ParameterLabel;
+
+	private global::Gtk.ComboBox ParameterList;
+
+	private global::Gtk.Label StringValueLabel;
+
+	private global::Gtk.Entry StringValue;
+
+	private global::Gtk.Label ParameterNumericLabel;
+
+	private global::Gtk.SpinButton NumericValue;
+
 	private global::Gtk.Label worldLabel;
-
-	private global::Gtk.Fixed ParametersLayout;
-
-	private global::Gtk.Label ParametersLabel;
 
 	protected virtual void Build()
 	{
@@ -100,7 +112,7 @@ public partial class MainWindow
 		this.ColonyTypeList.Name = "ColonyTypeList";
 		this.worldLayout.Add(this.ColonyTypeList);
 		global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ColonyTypeList]));
-		w6.X = 830;
+		w6.X = 850;
 		w6.Y = 40;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.ColonyTypeLabel = new global::Gtk.Label();
@@ -109,8 +121,86 @@ public partial class MainWindow
 		this.ColonyTypeLabel.UseMarkup = true;
 		this.worldLayout.Add(this.ColonyTypeLabel);
 		global::Gtk.Fixed.FixedChild w7 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ColonyTypeLabel]));
-		w7.X = 830;
+		w7.X = 850;
 		w7.Y = 20;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.ColonyColor = new global::Gtk.ColorButton();
+		this.ColonyColor.WidthRequest = 300;
+		this.ColonyColor.CanFocus = true;
+		this.ColonyColor.Events = ((global::Gdk.EventMask)(784));
+		this.ColonyColor.Name = "ColonyColor";
+		this.worldLayout.Add(this.ColonyColor);
+		global::Gtk.Fixed.FixedChild w8 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ColonyColor]));
+		w8.X = 850;
+		w8.Y = 100;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.ColonyColorLabel = new global::Gtk.Label();
+		this.ColonyColorLabel.Name = "ColonyColorLabel";
+		this.ColonyColorLabel.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Color</b>");
+		this.ColonyColorLabel.UseMarkup = true;
+		this.worldLayout.Add(this.ColonyColorLabel);
+		global::Gtk.Fixed.FixedChild w9 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ColonyColorLabel]));
+		w9.X = 850;
+		w9.Y = 80;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.ParameterLabel = new global::Gtk.Label();
+		this.ParameterLabel.Name = "ParameterLabel";
+		this.ParameterLabel.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Parameter</b>");
+		this.ParameterLabel.UseMarkup = true;
+		this.worldLayout.Add(this.ParameterLabel);
+		global::Gtk.Fixed.FixedChild w10 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ParameterLabel]));
+		w10.X = 850;
+		w10.Y = 140;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.ParameterList = global::Gtk.ComboBox.NewText();
+		this.ParameterList.WidthRequest = 300;
+		this.ParameterList.Name = "ParameterList";
+		this.worldLayout.Add(this.ParameterList);
+		global::Gtk.Fixed.FixedChild w11 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ParameterList]));
+		w11.X = 850;
+		w11.Y = 160;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.StringValueLabel = new global::Gtk.Label();
+		this.StringValueLabel.Name = "StringValueLabel";
+		this.StringValueLabel.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Parameter string value</b>");
+		this.StringValueLabel.UseMarkup = true;
+		this.worldLayout.Add(this.StringValueLabel);
+		global::Gtk.Fixed.FixedChild w12 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.StringValueLabel]));
+		w12.X = 850;
+		w12.Y = 200;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.StringValue = new global::Gtk.Entry();
+		this.StringValue.WidthRequest = 300;
+		this.StringValue.CanFocus = true;
+		this.StringValue.Name = "StringValue";
+		this.StringValue.IsEditable = true;
+		this.StringValue.InvisibleChar = '●';
+		this.worldLayout.Add(this.StringValue);
+		global::Gtk.Fixed.FixedChild w13 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.StringValue]));
+		w13.X = 850;
+		w13.Y = 220;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.ParameterNumericLabel = new global::Gtk.Label();
+		this.ParameterNumericLabel.Name = "ParameterNumericLabel";
+		this.ParameterNumericLabel.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Parameter numeric value</b>");
+		this.ParameterNumericLabel.UseMarkup = true;
+		this.worldLayout.Add(this.ParameterNumericLabel);
+		global::Gtk.Fixed.FixedChild w14 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ParameterNumericLabel]));
+		w14.X = 850;
+		w14.Y = 260;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.NumericValue = new global::Gtk.SpinButton(0D, 100D, 1D);
+		this.NumericValue.WidthRequest = 300;
+		this.NumericValue.CanFocus = true;
+		this.NumericValue.Name = "NumericValue";
+		this.NumericValue.Adjustment.PageIncrement = 10D;
+		this.NumericValue.ClimbRate = 1D;
+		this.NumericValue.Digits = ((uint)(2));
+		this.NumericValue.Numeric = true;
+		this.worldLayout.Add(this.NumericValue);
+		global::Gtk.Fixed.FixedChild w15 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.NumericValue]));
+		w15.X = 850;
+		w15.Y = 280;
 		this.worldNotebook.Add(this.worldLayout);
 		// Notebook tab
 		this.worldLabel = new global::Gtk.Label();
@@ -118,19 +208,6 @@ public partial class MainWindow
 		this.worldLabel.LabelProp = global::Mono.Unix.Catalog.GetString("World");
 		this.worldNotebook.SetTabLabel(this.worldLayout, this.worldLabel);
 		this.worldLabel.ShowAll();
-		// Container child worldNotebook.Gtk.Notebook+NotebookChild
-		this.ParametersLayout = new global::Gtk.Fixed();
-		this.ParametersLayout.Name = "ParametersLayout";
-		this.ParametersLayout.HasWindow = false;
-		this.worldNotebook.Add(this.ParametersLayout);
-		global::Gtk.Notebook.NotebookChild w9 = ((global::Gtk.Notebook.NotebookChild)(this.worldNotebook[this.ParametersLayout]));
-		w9.Position = 1;
-		// Notebook tab
-		this.ParametersLabel = new global::Gtk.Label();
-		this.ParametersLabel.Name = "ParametersLabel";
-		this.ParametersLabel.LabelProp = global::Mono.Unix.Catalog.GetString("Parameters");
-		this.worldNotebook.SetTabLabel(this.ParametersLayout, this.ParametersLabel);
-		this.ParametersLabel.ShowAll();
 		this.Add(this.worldNotebook);
 		if ((this.Child != null))
 		{
@@ -146,5 +223,9 @@ public partial class MainWindow
 		this.RunButton.Clicked += new global::System.EventHandler(this.OnRunButtonClicked);
 		this.StopButton.Clicked += new global::System.EventHandler(this.OnStopButtonClicked);
 		this.SaveButton.Clicked += new global::System.EventHandler(this.OnSaveButtonClicked);
+		this.ColonyTypeList.Changed += new global::System.EventHandler(this.OnColonyTypeListChanged);
+		this.ParameterList.Changed += new global::System.EventHandler(this.OnParameterListChanged);
+		this.StringValue.Changed += new global::System.EventHandler(this.OnStringValueChanged);
+		this.NumericValue.ValueChanged += new global::System.EventHandler(this.OnNumericValueValueChanged);
 	}
 }

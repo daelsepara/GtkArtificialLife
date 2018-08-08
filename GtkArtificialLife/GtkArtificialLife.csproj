@@ -84,6 +84,9 @@
     <Compile Include="Box.cs" />
     <Compile Include="Ellipse.cs" />
     <Compile Include="ColonyTypes.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="ParameterSets.cs" />
+    <Compile Include="World.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -14,6 +14,7 @@ public class Zhabotinsky : ArtificialLife
 
 	const int MaxStates = 256;
 
+    double Density = 1;
 	double K1 = 1;
 	double K2 = 1;
 	double G = 10;
@@ -218,6 +219,8 @@ public class Zhabotinsky : ArtificialLife
 
 	public void Randomize(int maxDensity)
 	{
+        this.Density = maxDensity;
+
 		if (maxDensity > 0)
 		{
 			TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
@@ -249,5 +252,24 @@ public class Zhabotinsky : ArtificialLife
                 }
             }
         }
+    }
+
+    override public List<Parameter> Parameters()
+    {
+        var density = (Width > 0 && Width > 0) ? (double)Density / (Width * Height) : 0.0;
+
+        var set = new List<Parameter>();
+
+        set.Add(new Parameter("Density", density, 0.01, 1.0));
+        set.Add(new Parameter("g", G, 1, 100));
+        set.Add(new Parameter("k1", K1, 1, 100));
+        set.Add(new Parameter("k2", K2, 1, 100));
+
+        return set;
+    }
+
+    public Color Color()
+    {
+        return ColonyColor;
     }
 }

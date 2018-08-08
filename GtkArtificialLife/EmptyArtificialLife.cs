@@ -16,4 +16,9 @@ public class EmptyArtificialLife : ArtificialLife
 	{
 		
 	}
+
+    public override List<Parameter> Parameters()
+    {
+        return new List<Parameter>();
+    }
 }

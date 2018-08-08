@@ -32,4 +32,6 @@ abstract public class ArtificialLife
 	abstract public void ClearPixelWriteBuffer();
 
 	abstract public void Update();
+
+    abstract public List<Parameter> Parameters();
 }

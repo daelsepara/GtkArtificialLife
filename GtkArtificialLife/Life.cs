@@ -11,6 +11,7 @@ public class Life : ArtificialLife
 	List<Cell> Neighborhood = new List<Cell>();
 	List<Change> ChangeList = new List<Change>();
 
+    int Density = 0;
 	int[, ] Grid;
 
 	public Life()
@@ -187,6 +188,8 @@ public class Life : ArtificialLife
 	{
 		if (maxDensity > 0)
 		{
+            Density = maxDensity;
+
 			TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
 
 			var random = new Random((int)t.TotalSeconds);
@@ -215,5 +218,21 @@ public class Life : ArtificialLife
                 }
             }
         }
+    }
+
+    override public List<Parameter> Parameters()
+    {
+        var set = new List<Parameter>();
+
+        var density = (Width > 0 && Width > 0) ? (double)Density / (Width * Height) : 0.0;
+
+        set.Add(new Parameter("Density", density, 0.01, 1.0));
+
+        return set;
+    }
+
+    public Color Color()
+    {
+        return ColonyColor;
     }
 }
