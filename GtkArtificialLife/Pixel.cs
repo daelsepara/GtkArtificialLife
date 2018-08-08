@@ -18,9 +18,12 @@ public class Pixel
 
 	public void Write(Pixbuf pixbuf, int OriginX, int OriginY)
 	{
-		if (pixbuf == null || pixbuf.NChannels < 3 || pixbuf.Colorspace != Colorspace.Rgb) return;
+		if (pixbuf == null || pixbuf.NChannels < 3 || pixbuf.Colorspace != Colorspace.Rgb)
+        {
+            return;
+        }
 
-		int x = OriginX + X;
+        int x = OriginX + X;
 		int y = OriginY + Y;
 
 		System.IntPtr offset;

@@ -16,17 +16,17 @@
     {
         this.Name = Name;
         this.Value = Value;
-        this.IsNumeric = false;
-        this.NumericValue = 0.0;
-        this.Min = 0.0;
-        this.Max = 0.0;
+        IsNumeric = false;
+        NumericValue = 0.0;
+        Min = 0.0;
+        Max = 0.0;
     }
 
     public Parameter(string Name, double NumericValue, double Min, double Max)
     {
         this.Name = Name;
-        this.Value = "";
-        this.IsNumeric = true;
+        Value = "";
+        IsNumeric = true;
         this.NumericValue = NumericValue;
         this.Min = Min;
         this.Max = Max;

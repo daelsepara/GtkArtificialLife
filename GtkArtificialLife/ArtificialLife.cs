@@ -17,7 +17,7 @@ public class Cell
 	}
 }
 
-abstract public class ArtificialLife
+public abstract class ArtificialLife
 {
 	public int Width;
 	public int Height;
@@ -27,11 +27,11 @@ abstract public class ArtificialLife
 	protected Gdk.Color EmptyColor = new Gdk.Color(0x0000, 0x0000, 0x0000);
 
 	// Rendering
-	abstract public List<Pixel> GetPixelWriteBuffer();
+	public abstract List<Pixel> GetPixelWriteBuffer();
 
-	abstract public void ClearPixelWriteBuffer();
+    public abstract void ClearPixelWriteBuffer();
 
-	abstract public void Update();
+    public abstract void Update();
 
-    abstract public List<Parameter> Parameters();
+    public abstract List<Parameter> Parameters();
 }

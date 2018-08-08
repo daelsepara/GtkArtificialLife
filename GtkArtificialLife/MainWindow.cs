@@ -12,27 +12,19 @@ public partial class MainWindow : Gtk.Window
 {
     bool IsSelecting;
     bool IsDragging;
-
     int X0, Y0, X1, Y1;
     int prevX, prevY;
-
     Mutex Rendering = new Mutex();
-
     FileChooserDialog ImageChooser;
-
     Stopwatch timer = new Stopwatch();
-
     List<Colony> Colonies = new List<Colony>();
     List<ColonyTypes.Type> ColoniesType = new List<ColonyTypes.Type>();
     List<Parameter> ColonyParameters = new List<Parameter>();
-
     const int PAGE_WORLD = 0;
     const int PAGE_WORLD_PARAMS = 1;
-
     Pixbuf worldPixbuf;
     bool Paused;
-
-    bool Disabled = false;
+    bool Disabled;
 
     public MainWindow() : base(Gtk.WindowType.Toplevel)
     {
@@ -70,7 +62,7 @@ public partial class MainWindow : Gtk.Window
         worldPixbuf = InitWorld(worldImage.WidthRequest, worldImage.HeightRequest);
         worldImage.Pixbuf = InitWorld(worldImage.WidthRequest, worldImage.HeightRequest);
 
-        foreach(ColonyTypes.Type type in Enum.GetValues(typeof(ColonyTypes.Type)))
+        foreach (ColonyTypes.Type type in Enum.GetValues(typeof(ColonyTypes.Type)))
         {
             ColoniesType.Add(type);
             ColonyTypeList.AppendText(type.ToString());
@@ -112,13 +104,19 @@ public partial class MainWindow : Gtk.Window
     protected void OnDeleteEvent(object sender, DeleteEventArgs a)
     {
         if (worldPixbuf != null)
+        {
             worldPixbuf.Dispose();
+        }
 
         if (worldImage.Pixbuf != null)
+        {
             worldImage.Pixbuf.Dispose();
+        }
 
         if (worldImage != null)
+        {
             worldImage.Dispose();
+        }
 
         Colonies.Clear();
 
@@ -180,8 +178,10 @@ public partial class MainWindow : Gtk.Window
     protected void DrawBoxes()
     {
         if (!Paused)
+        {
             return;
-        
+        }
+
         if (GtkSelection.Selection.Count() > 0)
         {
             var dest = worldImage.GdkWindow;
@@ -211,7 +211,9 @@ public partial class MainWindow : Gtk.Window
         if (Paused)
         {
             if (worldPixbuf == null)
+            {
                 return;
+            }
 
             var dest = worldImage.GdkWindow;
             var gc = new Gdk.GC(dest);
@@ -420,7 +422,9 @@ public partial class MainWindow : Gtk.Window
                 var FileName = ImageChooser.Filename;
 
                 if (!FileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                {
                     FileName += ".png";
+                }
 
                 worldPixbuf.Save(FileName, "png");
             }
@@ -479,9 +483,9 @@ public partial class MainWindow : Gtk.Window
                     }
 
                     if (colony.ArtificialLife is YinYangFire)
-					{
-						(colony.ArtificialLife as YinYangFire).Update();
-					}
+                    {
+                        (colony.ArtificialLife as YinYangFire).Update();
+                    }
                 });
 
                 RenderColonies(worldPixbuf);
@@ -552,7 +556,7 @@ public partial class MainWindow : Gtk.Window
                     RenderWorld(worldPixbuf);
 
                     break;
-                }    
+                }
             }
         }
         else
@@ -602,7 +606,10 @@ public partial class MainWindow : Gtk.Window
 
     protected void OnWorldImageEventBoxMotionNotifyEvent(object o, MotionNotifyEventArgs args)
     {
-        if (!IsSelecting && !IsDragging) return;
+        if (!IsSelecting && !IsDragging)
+        {
+            return;
+        }
 
         X1 = Convert.ToInt32(args.Event.X);
         Y1 = Convert.ToInt32(args.Event.Y);
@@ -622,22 +629,20 @@ public partial class MainWindow : Gtk.Window
             if (type >= 0)
             {
                 ColonyParameters.Clear();
-
-                if (ColoniesType[type] == ColonyTypes.Type.Life)
+                switch (ColoniesType[type])
                 {
-                    ColonyParameters.AddRange(ParameterSets.Life());
-                }
-                else if (ColoniesType[type] == ColonyTypes.Type.LangtonAnt)
-                {
-                    ColonyParameters.AddRange(ParameterSets.LangtonAnt());
-                }
-                else if (ColoniesType[type] == ColonyTypes.Type.Zhabotinsky)
-                {
-                    ColonyParameters.AddRange(ParameterSets.Zhabotinsky());
-                }
-                else if (ColoniesType[type] == ColonyTypes.Type.YinYangFire)
-                {
-                    ColonyParameters.AddRange(ParameterSets.YinYangFire());
+                    case ColonyTypes.Type.Life:
+                        ColonyParameters.AddRange(ParameterSets.Life());
+                        break;
+                    case ColonyTypes.Type.LangtonAnt:
+                        ColonyParameters.AddRange(ParameterSets.LangtonAnt());
+                        break;
+                    case ColonyTypes.Type.Zhabotinsky:
+                        ColonyParameters.AddRange(ParameterSets.Zhabotinsky());
+                        break;
+                    case ColonyTypes.Type.YinYangFire:
+                        ColonyParameters.AddRange(ParameterSets.YinYangFire());
+                        break;
                 }
 
                 Disable();
@@ -687,12 +692,9 @@ public partial class MainWindow : Gtk.Window
         {
             var param = ParameterList.Active;
 
-            if (param >= 0 && param < ColonyParameters.Count)
+            if (param >= 0 && param < ColonyParameters.Count && ColonyParameters[param].IsNumeric)
             {
-                if (ColonyParameters[param].IsNumeric)
-                {
-                    ColonyParameters[param].NumericValue = NumericValue.Value;
-                }
+                ColonyParameters[param].NumericValue = NumericValue.Value;
             }
         }
     }

@@ -13,179 +13,183 @@ public class Select
 
     public string BoxesString = "";
 
-	public void Clear()
+    public void Clear()
     {
         if (EllipseMode)
+        {
             Ellipses.Clear();
+        }
         else
+        {
             Boxes.Clear();
+        }
 
         Update();
     }
 
-	public int Find(int x, int y)
-	{
-		int region = 0;
+    public int Find(int x, int y)
+    {
+        int region = 0;
 
-		if (EllipseMode)
-		{
-			for (var i = 0; i < Ellipses.Count; i++)
-			{
-				if (InEllipse(x, y, Ellipses[i]))
-				{
-					region = i + 1;
-					
+        if (EllipseMode)
+        {
+            for (var i = 0; i < Ellipses.Count; i++)
+            {
+                if (InEllipse(x, y, Ellipses[i]))
+                {
+                    region = i + 1;
+
                     break;
-				}
-			}
-		}
-		else
-		{
-			for (var i = 0; i < Boxes.Count; i++)
-			{
-				if (InBox(x, y, Boxes[i]))
-				{
-					region = i + 1;
-					
+                }
+            }
+        }
+        else
+        {
+            for (var i = 0; i < Boxes.Count; i++)
+            {
+                if (InBox(x, y, Boxes[i]))
+                {
+                    region = i + 1;
+
                     break;
-				}
-			}
-		}
+                }
+            }
+        }
 
-		return region;
-	}
+        return region;
+    }
 
-	public void Switch(int Region, bool enabled)
-	{
-		if (EllipseMode)
-		{
-			if (Region > 0 && Region <= Ellipses.Count)
-			{
-				Ellipses[Region - 1].Enabled = enabled;
-			}
-		}
-		else
-		{
-			if (Region > 0 && Region <= Boxes.Count)
-			{
-				Boxes[Region - 1].Enabled = enabled;
-			}
-		}
+    public void Switch(int Region, bool enabled)
+    {
+        if (EllipseMode)
+        {
+            if (Region > 0 && Region <= Ellipses.Count)
+            {
+                Ellipses[Region - 1].Enabled = enabled;
+            }
+        }
+        else
+        {
+            if (Region > 0 && Region <= Boxes.Count)
+            {
+                Boxes[Region - 1].Enabled = enabled;
+            }
+        }
 
         Update();
-	}
+    }
 
-	public bool Status(int Region)
-	{
-		if (EllipseMode)
-		{
-			if (Region > 0 && Region <= Ellipses.Count)
-			{
-				return Ellipses[Region - 1].Enabled;
-			}
-		}
-		else
-		{
-			if (Region > 0 && Region <= Boxes.Count)
-			{
-				return Boxes[Region - 1].Enabled;
-			}
-		}
+    public bool Status(int Region)
+    {
+        if (EllipseMode)
+        {
+            if (Region > 0 && Region <= Ellipses.Count)
+            {
+                return Ellipses[Region - 1].Enabled;
+            }
+        }
+        else
+        {
+            if (Region > 0 && Region <= Boxes.Count)
+            {
+                return Boxes[Region - 1].Enabled;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     public void Size(int Region, out int width, out int height)
     {
         width = 0;
         height = 0;
 
-		if (EllipseMode)
-		{
-			if (Region > 0 && Region <= Ellipses.Count)
-			{
+        if (EllipseMode)
+        {
+            if (Region > 0 && Region <= Ellipses.Count)
+            {
                 width = Ellipses[Region - 1].Width;
                 height = Ellipses[Region - 1].Height;
-			}
-		}
-		else
-		{
-			if (Region > 0 && Region <= Boxes.Count)
-			{
+            }
+        }
+        else
+        {
+            if (Region > 0 && Region <= Boxes.Count)
+            {
                 width = Math.Abs(Boxes[Region - 1].X1 - Boxes[Region - 1].X0);
                 height = Math.Abs(Boxes[Region - 1].Y1 - Boxes[Region - 1].Y0);
-			}
-		}
+            }
+        }
     }
 
-	public void Location(int Region, out int x, out int y)
-	{
-		x = 0;
-		y = 0;
+    public void Location(int Region, out int x, out int y)
+    {
+        x = 0;
+        y = 0;
 
-		if (EllipseMode)
-		{
-			if (Region > 0 && Region <= Ellipses.Count)
-			{
-				x = Ellipses[Region - 1].X;
-				y = Ellipses[Region - 1].Y;
-			}
-		}
-		else
-		{
-			if (Region > 0 && Region <= Boxes.Count)
-			{
+        if (EllipseMode)
+        {
+            if (Region > 0 && Region <= Ellipses.Count)
+            {
+                x = Ellipses[Region - 1].X;
+                y = Ellipses[Region - 1].Y;
+            }
+        }
+        else
+        {
+            if (Region > 0 && Region <= Boxes.Count)
+            {
                 x = Boxes[Region - 1].X0;
-				y = Boxes[Region - 1].Y0;
-			}
-		}
-	}
+                y = Boxes[Region - 1].Y0;
+            }
+        }
+    }
 
-	public void ReSize(int Region, int width, int height)
-	{
-		if (EllipseMode)
-		{
-			if (Region > 0 && Region <= Ellipses.Count)
-			{
+    public void ReSize(int Region, int width, int height)
+    {
+        if (EllipseMode)
+        {
+            if (Region > 0 && Region <= Ellipses.Count)
+            {
                 Ellipses[Region - 1].Width = width;
                 Ellipses[Region - 1].Height = height;
-			}
-		}
-		else
-		{
-			if (Region > 0 && Region <= Boxes.Count)
-			{
+            }
+        }
+        else
+        {
+            if (Region > 0 && Region <= Boxes.Count)
+            {
                 Boxes[Region - 1].X1 = Boxes[Region - 1].X0 + width;
-				Boxes[Region - 1].Y1 = Boxes[Region - 1].Y0 + height;
-			}
-		}
+                Boxes[Region - 1].Y1 = Boxes[Region - 1].Y0 + height;
+            }
+        }
 
         Update();
-	}
+    }
 
-	public void Move(int dx, int dy, int Region)
-	{
-		if (EllipseMode)
-		{
-			if (Region > 0 && Region <= Ellipses.Count)
-			{
-				Ellipses[Region - 1].X += dx;
-				Ellipses[Region - 1].Y += dy;
-			}
-		}
-		else
-		{
-			if (Region > 0 && Region <= Boxes.Count)
-			{
-				Boxes[Region - 1].X0 += dx;
-				Boxes[Region - 1].X1 += dx;
-				Boxes[Region - 1].Y0 += dy;
-				Boxes[Region - 1].Y1 += dy;
-			}
-		}
+    public void Move(int dx, int dy, int Region)
+    {
+        if (EllipseMode)
+        {
+            if (Region > 0 && Region <= Ellipses.Count)
+            {
+                Ellipses[Region - 1].X += dx;
+                Ellipses[Region - 1].Y += dy;
+            }
+        }
+        else
+        {
+            if (Region > 0 && Region <= Boxes.Count)
+            {
+                Boxes[Region - 1].X0 += dx;
+                Boxes[Region - 1].X1 += dx;
+                Boxes[Region - 1].Y0 += dy;
+                Boxes[Region - 1].Y1 += dy;
+            }
+        }
 
         Update();
-	}
+    }
 
     bool ValidEllipse(Ellipse el)
     {
@@ -196,7 +200,9 @@ public class Select
             foreach (var ellipse in Ellipses.ToArray())
             {
                 if (ellipse.EllipseIntersect(el))
+                {
                     collisions++;
+                }
             }
         }
 
@@ -217,7 +223,9 @@ public class Select
             foreach (var ellipse in Ellipses)
             {
                 if (!InEllipse(x, y, ellipse))
+                {
                     list.Add(ellipse);
+                }
             }
         }
 
@@ -236,7 +244,9 @@ public class Select
             var ellipse = new Ellipse(x, y, a, b);
 
             if (ValidEllipse(ellipse))
+            {
                 Ellipses.Add(ellipse);
+            }
         }
     }
 
@@ -254,7 +264,9 @@ public class Select
             foreach (var box in Boxes)
             {
                 if (!InBox(x, y, box))
+                {
                     list.Add(box);
+                }
             }
         }
 
@@ -270,7 +282,9 @@ public class Select
             foreach (var box in Boxes.ToArray())
             {
                 if (box.BoxIntersect(bx))
+                {
                     collisions++;
+                }
             }
         }
 
@@ -292,16 +306,22 @@ public class Select
             var box = new Box(bx0, by0, bx1, by1);
 
             if (ValidBox(box))
+            {
                 Boxes.Add(box);
+            }
         }
     }
 
     public void Add(int X0, int Y0, int X1, int Y1)
     {
         if (EllipseMode)
+        {
             AddEllipse(X0, Y0, X1, Y1);
+        }
         else
+        {
             AddBox(X0, Y0, X1, Y1);
+        }
 
         Update();
     }
@@ -309,69 +329,81 @@ public class Select
     public void Update(int X0, int Y0)
     {
         if (EllipseMode)
+        {
             Ellipses = UpdateEllipses(X0, Y0);
+        }
         else
+        {
             Boxes = UpdateBoxes(X0, Y0);
+        }
 
         Update();
     }
 
-	public String GetEllipses()
-	{
-		var sb = new StringBuilder();
+    public String GetEllipses()
+    {
+        var sb = new StringBuilder();
 
-		for (var i = 0; i < Ellipses.Count; i++)
-		{
-			if (i > 0)
-				sb.Append(";");
+        for (var i = 0; i < Ellipses.Count; i++)
+        {
+            if (i > 0)
+            {
+                sb.Append(";");
+            }
 
-			var ellipse = Ellipses[i];
+            var ellipse = Ellipses[i];
 
-			sb.Append(ellipse.X);
-			sb.Append("," + ellipse.Y);
-			sb.Append("," + ellipse.Width);
-			sb.Append("," + ellipse.Height);
-			sb.Append("," + ellipse.Rotation);
-			sb.Append("," + ellipse.Enabled);
-		}
+            sb.Append(ellipse.X);
+            sb.Append("," + ellipse.Y);
+            sb.Append("," + ellipse.Width);
+            sb.Append("," + ellipse.Height);
+            sb.Append("," + ellipse.Rotation);
+            sb.Append("," + ellipse.Enabled);
+        }
 
-		return sb.ToString();
-	}
+        return sb.ToString();
+    }
 
-	public String GetBoxes()
-	{
-		var sb = new StringBuilder();
+    public String GetBoxes()
+    {
+        var sb = new StringBuilder();
 
-		for (var i = 0; i < Boxes.Count; i++)
-		{
-			if (i > 0)
-				sb.Append(";");
+        for (var i = 0; i < Boxes.Count; i++)
+        {
+            if (i > 0)
+            {
+                sb.Append(";");
+            }
 
-			var box = Boxes[i];
+            var box = Boxes[i];
 
-			sb.Append(box.X0);
-			sb.Append("," + box.Y0);
-			sb.Append("," + box.X1);
-			sb.Append("," + box.Y1);
-			sb.Append("," + box.Enabled);
-		}
+            sb.Append(box.X0);
+            sb.Append("," + box.Y0);
+            sb.Append("," + box.X1);
+            sb.Append("," + box.Y1);
+            sb.Append("," + box.Enabled);
+        }
 
-		return sb.ToString();
-	}
+        return sb.ToString();
+    }
 
-	public override String ToString()
+    public override String ToString()
     {
         var sb = new StringBuilder();
 
         if (EllipseMode)
         {
             if (EllipsesString != null)
+            {
                 sb.Append(EllipsesString);
+            }
         }
         else
         {
             if (BoxesString != null)
+            {
                 sb.Append(BoxesString);
+            }
         }
 
         return sb.ToString();
@@ -383,8 +415,8 @@ public class Select
         BoxesString = GetBoxes();
     }
 
-	public void Parse()
-	{
+    public void Parse()
+    {
         if (EllipsesString != null)
         {
             var ellipses = EllipsesString.Split(';');
@@ -437,7 +469,7 @@ public class Select
                 }
             }
         }
-	}
+    }
 
     public int Count()
     {
@@ -445,34 +477,31 @@ public class Select
         {
             return Ellipses.Count;
         }
-        else
-        {
-            return Boxes.Count;
-        }
+        return Boxes.Count;
     }
 
-	public List<Box> BoundingBoxes()
-	{
-		var boundingBoxes = new List<Box>();
+    public List<Box> BoundingBoxes()
+    {
+        var boundingBoxes = new List<Box>();
 
-		if (EllipseMode)
-		{
-			foreach (var ellipse in Ellipses)
-			{
-				var a = ((ellipse.Width - 1) / 2);
-				var b = ((ellipse.Height - 1) / 2);
+        if (EllipseMode)
+        {
+            foreach (var ellipse in Ellipses)
+            {
+                var a = ((ellipse.Width - 1) / 2);
+                var b = ((ellipse.Height - 1) / 2);
 
-				boundingBoxes.Add(new Box(ellipse.X - a, ellipse.Y - b, ellipse.X + a, ellipse.Y + b));
-			}
-		}
-		else
-		{
-			foreach (var box in Boxes)
-			{
-				boundingBoxes.Add(box);
-			}
-		}
+                boundingBoxes.Add(new Box(ellipse.X - a, ellipse.Y - b, ellipse.X + a, ellipse.Y + b));
+            }
+        }
+        else
+        {
+            foreach (var box in Boxes)
+            {
+                boundingBoxes.Add(box);
+            }
+        }
 
-		return boundingBoxes;
-	}
+        return boundingBoxes;
+    }
 }

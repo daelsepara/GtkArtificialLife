@@ -16,7 +16,6 @@ public static class Tests
         World.AddLifeColony(Colonies, w, h, 512, 256, 0.40, new Color(0, 255, 255));
 	}
 
-
     public static void ZhabotinskyTest(List<Colony> Colonies)
 	{
         var w = 256;

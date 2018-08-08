@@ -16,9 +16,11 @@ public static class GtkSelection
     public static void Draw(Gdk.GC gc, Window dest, int X0, int Y0, int X1, int Y1)
     {
 		if (gc == null || dest == null)
-			return;
-        
-		var w = Math.Abs(X1 - X0);
+        {
+            return;
+        }
+
+        var w = Math.Abs(X1 - X0);
 		var h = Math.Abs(Y1 - Y0);
 
 		if (w > 2 && h > 2)
@@ -28,9 +30,13 @@ public static class GtkSelection
 			gc.SetLineAttributes(MarkerSize, LineStyle.Solid, CapStyle.Round, JoinStyle.Round);
 
 	        if (Selection.EllipseMode)
-	            DrawEllipse(gc, dest, X0, Y0, X1, Y1, w, h);
-	        else
-	            DrawBox(gc, dest, X0, Y0, X1, Y1, w, h);
+            {
+                DrawEllipse(gc, dest, X0, Y0, X1, Y1, w, h);
+            }
+            else
+            {
+                DrawBox(gc, dest, X0, Y0, X1, Y1, w, h);
+            }
         }
     }
 
