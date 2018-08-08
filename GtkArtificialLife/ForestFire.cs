@@ -23,7 +23,7 @@ public class ForestFire : ArtificialLife
     {
         ColorPalette.Add(EmptyColor);
         ColorPalette.Add(ColonyColor);
-        ColorPalette.Add(new Color(255, 0, 0));
+        ColorPalette.Add(new Color((byte)(ColonyColor.Red / 2), (byte)(ColonyColor.Green / 2), (byte)(ColonyColor.Blue / 2)));
     }
 
     public ForestFire()
