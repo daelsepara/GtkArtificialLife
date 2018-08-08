@@ -74,4 +74,25 @@ public static class World
 
         Colonies.Add(new Colony(x, y, YinYangFireColony));
     }
+
+    public static void AddForestFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double F, double P, Color color)
+    {
+        var ForestFireColony = new ForestFire(width, height, color);
+        var maxDensity = (int)(width * height * Density);
+
+        ForestFireColony.Randomize(maxDensity);
+
+        ForestFireColony.AddNeighbor(new Cell(-1, -1));
+        ForestFireColony.AddNeighbor(new Cell(0, -1));
+        ForestFireColony.AddNeighbor(new Cell(1, -1));
+        ForestFireColony.AddNeighbor(new Cell(-1, 0));
+        ForestFireColony.AddNeighbor(new Cell(1, 0));
+        ForestFireColony.AddNeighbor(new Cell(-1, 1));
+        ForestFireColony.AddNeighbor(new Cell(0, 1));
+        ForestFireColony.AddNeighbor(new Cell(1, 1));
+
+        ForestFireColony.SetParameters(F, P);
+
+        Colonies.Add(new Colony(x, y, ForestFireColony));
+    }
 }

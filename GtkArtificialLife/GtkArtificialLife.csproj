@@ -87,6 +87,7 @@
     <Compile Include="Parameter.cs" />
     <Compile Include="ParameterSets.cs" />
     <Compile Include="World.cs" />
+    <Compile Include="ForestFire.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

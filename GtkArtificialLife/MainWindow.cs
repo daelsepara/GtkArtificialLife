@@ -250,6 +250,11 @@ public partial class MainWindow : Gtk.Window
             {
                 (Colonies[i].ArtificialLife as YinYangFire).Refresh();
             }
+
+            if (Colonies[i].ArtificialLife is ForestFire)
+            {
+                (Colonies[i].ArtificialLife as ForestFire).Refresh();
+            }
         }
     }
 
@@ -296,6 +301,14 @@ public partial class MainWindow : Gtk.Window
                         ColonyTypeList.Active = i;
                         ColonyParameters.AddRange((Colonies[colony].ArtificialLife as YinYangFire).Parameters());
                         var color = (Colonies[colony].ArtificialLife as YinYangFire).Color();
+                        ColonyColor.Color = new Color((byte)color.Red, (byte)color.Green, (byte)color.Blue);
+                    }
+
+                    if (Colonies[colony].ArtificialLife is ForestFire && ColoniesType[i] == ColonyTypes.Type.ForestFire)
+                    {
+                        ColonyTypeList.Active = i;
+                        ColonyParameters.AddRange((Colonies[colony].ArtificialLife as ForestFire).Parameters());
+                        var color = (Colonies[colony].ArtificialLife as ForestFire).Color();
                         ColonyColor.Color = new Color((byte)color.Red, (byte)color.Green, (byte)color.Blue);
                     }
                 }
@@ -376,6 +389,15 @@ public partial class MainWindow : Gtk.Window
                     var maxstates = (int)GetNumeric(ColonyParameters, "MaxStates");
 
                     World.AddYinYangFireColony(Colonies, w, h, x, y, density, maxstates, ColonyColor.Color);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.ForestFire)
+                {
+                    var density = GetNumeric(ColonyParameters, "Density");
+                    var F = GetNumeric(ColonyParameters, "F");
+                    var P = GetNumeric(ColonyParameters, "P");
+
+                    World.AddForestFireColony(Colonies, w, h, x, y, density, F, P, ColonyColor.Color);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -486,6 +508,11 @@ public partial class MainWindow : Gtk.Window
                     {
                         (colony.ArtificialLife as YinYangFire).Update();
                     }
+
+                    if (colony.ArtificialLife is ForestFire)
+                    {
+                        (colony.ArtificialLife as ForestFire).Update();
+                    }
                 });
 
                 RenderColonies(worldPixbuf);
@@ -554,6 +581,9 @@ public partial class MainWindow : Gtk.Window
                     RefreshColonies();
                     RenderColonies(worldPixbuf);
                     RenderWorld(worldPixbuf);
+
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
 
                     break;
                 }
@@ -642,6 +672,9 @@ public partial class MainWindow : Gtk.Window
                         break;
                     case ColonyTypes.Type.YinYangFire:
                         ColonyParameters.AddRange(ParameterSets.YinYangFire());
+                        break;
+                    case ColonyTypes.Type.ForestFire:
+                        ColonyParameters.AddRange(ParameterSets.ForestFire());
                         break;
                 }
 

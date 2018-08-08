@@ -48,4 +48,16 @@ public static class ParameterSets
 
         return set;
     }
+
+    public static List<Parameter> ForestFire()
+    {
+        var set = new List<Parameter>
+        {
+            new Parameter("Density", 0.4, 0.01, 1.0),
+            new Parameter("P", 1000, 1, 1000),
+            new Parameter("F", 100, 1, 1000),
+        };
+
+        return set;
+    }
 }
