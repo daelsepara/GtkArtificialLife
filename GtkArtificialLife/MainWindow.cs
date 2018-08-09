@@ -476,7 +476,8 @@ public partial class MainWindow : Gtk.Window
                     FileName += ".png";
                 }
 
-                worldPixbuf.Save(FileName, "png");
+                if (worldPixbuf != null)
+                    worldPixbuf.Save(FileName, "png");
             }
         }
 
