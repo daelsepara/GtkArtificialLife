@@ -1,4 +1,4 @@
-﻿using Gdk;
+using Gdk;
 using System.Collections.Generic;
 
 public static class World
@@ -67,5 +67,14 @@ public static class World
         ForestFireColony.Randomize(maxDensity);
 
         Colonies.Add(new Colony(x, y, ForestFireColony));
+    }
+
+    public static void AddElementaryCA(List<Colony> Colonies, int width, int height, int x, int y, int rule, Color color)
+    {
+        var ElementaryCA = new ElementaryCA(width, height, color);
+
+        ElementaryCA.SetRule(rule);
+
+        Colonies.Add(new Colony(x, y, ElementaryCA));
     }
 }

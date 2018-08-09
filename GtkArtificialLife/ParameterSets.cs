@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 public static class ParameterSets
 {
@@ -56,6 +56,16 @@ public static class ParameterSets
             new Parameter("Density", 0.4, 0.01, 1.0),
             new Parameter("P", 1000, 1, 1000),
             new Parameter("F", 100, 1, 1000)
+        };
+
+        return set;
+    }
+
+    public static List<Parameter> ElementaryCA()
+    {
+        var set = new List<Parameter>
+        {
+            new Parameter("Rule", 22, 0, 255),
         };
 
         return set;

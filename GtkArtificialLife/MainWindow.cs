@@ -275,6 +275,11 @@ public partial class MainWindow : Gtk.Window
             {
                 (Colonies[i].ArtificialLife as ForestFire).Refresh();
             }
+
+            if (Colonies[i].ArtificialLife is ElementaryCA)
+            {
+                (Colonies[i].ArtificialLife as ElementaryCA).Refresh();
+            }
         }
     }
 
@@ -332,6 +337,15 @@ public partial class MainWindow : Gtk.Window
                         ColonyTypeList.Active = i;
                         ColonyParameters.AddRange((Colonies[colony].ArtificialLife as ForestFire).Parameters());
                         var color = (Colonies[colony].ArtificialLife as ForestFire).Color();
+
+                        ColonyColor.Color = color;
+                    }
+
+                    if (Colonies[colony].ArtificialLife is ElementaryCA && ColoniesType[i] == ColonyTypes.Type.ElementaryCA)
+                    {
+                        ColonyTypeList.Active = i;
+                        ColonyParameters.AddRange((Colonies[colony].ArtificialLife as ElementaryCA).Parameters());
+                        var color = (Colonies[colony].ArtificialLife as ElementaryCA).Color();
 
                         ColonyColor.Color = color;
                     }
@@ -422,6 +436,13 @@ public partial class MainWindow : Gtk.Window
                     var P = GetNumeric(ColonyParameters, "P");
 
                     World.AddForestFireColony(Colonies, w, h, x, y, density, F, P, ColonyColor.Color);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.ElementaryCA)
+                {
+                    var rule = (int)GetNumeric(ColonyParameters, "Rule");
+
+                    World.AddElementaryCA(Colonies, w, h, x, y, rule, ColonyColor.Color);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -578,6 +599,11 @@ public partial class MainWindow : Gtk.Window
                     if (colony.ArtificialLife is ForestFire)
                     {
                         (colony.ArtificialLife as ForestFire).Update();
+                    }
+
+                    if (colony.ArtificialLife is ElementaryCA)
+                    {
+                        (colony.ArtificialLife as ElementaryCA).Update();
                     }
                 });
 
@@ -741,6 +767,9 @@ public partial class MainWindow : Gtk.Window
                         break;
                     case ColonyTypes.Type.ForestFire:
                         ColonyParameters.AddRange(ParameterSets.ForestFire());
+                        break;
+                    case ColonyTypes.Type.ElementaryCA:
+                        ColonyParameters.AddRange(ParameterSets.ElementaryCA());
                         break;
                 }
 

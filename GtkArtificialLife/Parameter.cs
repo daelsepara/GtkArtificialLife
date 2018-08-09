@@ -1,4 +1,4 @@
-﻿public class Parameter
+public class Parameter
 {
     public string Name;
     public string Value;
