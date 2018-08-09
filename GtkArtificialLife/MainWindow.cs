@@ -210,14 +210,14 @@ public partial class MainWindow : Gtk.Window
 
             for (int i = 0; i < boxes.Count; i++)
             {
-                if (i == GtkSelection.Selected - 1)
+                if (i == GtkSelection.Selected - 1 || ShowColonies.Active)
                 {
                     var box = boxes[i];
 
                     var w = Math.Abs(box.X1 - box.X0);
                     var h = Math.Abs(box.Y1 - box.Y0);
 
-                    gc.RgbFgColor = i != GtkSelection.Selected - 1 ? GtkSelection.SelectedColor : GtkSelection.MarkerColor;
+                    gc.RgbFgColor = i != GtkSelection.Selected - 1 ? GtkSelection.SelectedColor : Colonies[i].ArtificialLife.ColonyColor;
                     gc.SetLineAttributes(GtkSelection.MarkerSize, LineStyle.Solid, CapStyle.Round, JoinStyle.Round);
 
                     GtkSelection.DrawBox(gc, dest, box.X0, box.Y0, box.X1, box.Y1, w, h, false);
@@ -297,7 +297,8 @@ public partial class MainWindow : Gtk.Window
                         ColonyTypeList.Active = i;
                         ColonyParameters.AddRange((Colonies[colony].ArtificialLife as Life).Parameters());
                         var color = (Colonies[colony].ArtificialLife as Life).Color();
-                        ColonyColor.Color = new Color((byte)color.Red, (byte)color.Green, (byte)color.Blue);
+
+                        ColonyColor.Color = color;
                     }
 
                     if (Colonies[colony].ArtificialLife is Zhabotinsky && ColoniesType[i] == ColonyTypes.Type.Zhabotinsky)
@@ -313,7 +314,8 @@ public partial class MainWindow : Gtk.Window
                         ColonyTypeList.Active = i;
                         ColonyParameters.AddRange((Colonies[colony].ArtificialLife as LangtonAnt).Parameters());
                         var color = (Colonies[colony].ArtificialLife as LangtonAnt).Color();
-                        ColonyColor.Color = new Color((byte)color.Red, (byte)color.Green, (byte)color.Blue);
+
+                        ColonyColor.Color = color;
                     }
 
                     if (Colonies[colony].ArtificialLife is YinYangFire && ColoniesType[i] == ColonyTypes.Type.YinYangFire)
@@ -321,7 +323,8 @@ public partial class MainWindow : Gtk.Window
                         ColonyTypeList.Active = i;
                         ColonyParameters.AddRange((Colonies[colony].ArtificialLife as YinYangFire).Parameters());
                         var color = (Colonies[colony].ArtificialLife as YinYangFire).Color();
-                        ColonyColor.Color = new Color((byte)color.Red, (byte)color.Green, (byte)color.Blue);
+
+                        ColonyColor.Color = color;
                     }
 
                     if (Colonies[colony].ArtificialLife is ForestFire && ColoniesType[i] == ColonyTypes.Type.ForestFire)
@@ -329,7 +332,8 @@ public partial class MainWindow : Gtk.Window
                         ColonyTypeList.Active = i;
                         ColonyParameters.AddRange((Colonies[colony].ArtificialLife as ForestFire).Parameters());
                         var color = (Colonies[colony].ArtificialLife as ForestFire).Color();
-                        ColonyColor.Color = new Color((byte)color.Red, (byte)color.Green, (byte)color.Blue);
+
+                        ColonyColor.Color = color;
                     }
                 }
 
@@ -394,7 +398,7 @@ public partial class MainWindow : Gtk.Window
                     var ants = (int)GetNumeric(ColonyParameters, "Ants");
                     var rule = GetString(ColonyParameters, "Rule");
 
-                    World.AddLangtonAntColony(Colonies, w, h, x, y, ants, rule, ColonyColor.Color);
+                    World.AddLangtonAntColony(Colonies, w, h, x, y, ants, rule, ColonyColor.Color, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.Zhabotinsky)
@@ -404,7 +408,7 @@ public partial class MainWindow : Gtk.Window
                     var k1 = GetNumeric(ColonyParameters, "k1");
                     var k2 = GetNumeric(ColonyParameters, "k2");
 
-                    World.AddZhabotinskyColony(Colonies, w, h, x, y, density, k1, k2, g, ColonyColor.Color);
+                    World.AddZhabotinskyColony(Colonies, w, h, x, y, density, k1, k2, g, ColonyColor.Color, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.YinYangFire)
@@ -412,7 +416,7 @@ public partial class MainWindow : Gtk.Window
                     var density = GetNumeric(ColonyParameters, "Density");
                     var maxstates = (int)GetNumeric(ColonyParameters, "MaxStates");
 
-                    World.AddYinYangFireColony(Colonies, w, h, x, y, density, maxstates, ColonyColor.Color);
+                    World.AddYinYangFireColony(Colonies, w, h, x, y, density, maxstates, ColonyColor.Color, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.ForestFire)
@@ -505,12 +509,8 @@ public partial class MainWindow : Gtk.Window
                     if (LoadedImage.Pixbuf != null && temp != null)
                     {
                         LoadedImage.Pixbuf.Dispose();
-
-                        LoadedImage.Pixbuf = temp.ScaleSimple(LoadedImage.WidthRequest, LoadedImage.HeightRequest, InterpType.Hyper);
+                        LoadedImage.Pixbuf = temp;
                     }
-
-                    if (temp != null)
-                        temp.Dispose();
                 }
                 catch (Exception ex)
                 {
@@ -673,7 +673,7 @@ public partial class MainWindow : Gtk.Window
                 }
                 else
                 {
-                    IsSelecting = true;
+                    IsSelecting |= Paused;
                 }
             }
         }
@@ -825,7 +825,10 @@ public partial class MainWindow : Gtk.Window
             {
                 GtkSelection.Selected = 0;
 
-                var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, ColonyParameters, ColonyColor.Color);
+                var Width = Math.Min(worldImage.WidthRequest, LoadedImage.Pixbuf.Width);
+                var Height = Math.Min(worldImage.HeightRequest, LoadedImage.Pixbuf.Height);
+
+                var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, Width, Height, ColonyParameters, ColonyColor.Color, Gradient.Active);
 
                 if (!(colony is EmptyArtificialLife))
                 {
@@ -852,6 +855,19 @@ public partial class MainWindow : Gtk.Window
         if (Paused)
         {
             LoadImageFile();
+        }
+    }
+
+    protected void OnClearButtonClicked(object sender, EventArgs e)
+    {
+        if (Paused)
+        {
+            Colonies.Clear();
+            GtkSelection.Selection.Clear();
+            GtkSelection.Selected = 0;
+
+            worldPixbuf.Fill(0);
+            RenderWorld(worldPixbuf);
         }
     }
 }

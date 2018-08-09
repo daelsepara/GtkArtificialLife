@@ -45,6 +45,12 @@ public partial class MainWindow
 
 	private global::Gtk.Button AddImageButton;
 
+	private global::Gtk.CheckButton Gradient;
+
+	private global::Gtk.ToggleButton ShowColonies;
+
+	private global::Gtk.Button ClearButton;
+
 	private global::Gtk.Label worldLabel;
 
 	protected virtual void Build()
@@ -247,6 +253,40 @@ public partial class MainWindow
 		global::Gtk.Fixed.FixedChild w19 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.AddImageButton]));
 		w19.X = 950;
 		w19.Y = 640;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.Gradient = new global::Gtk.CheckButton();
+		this.Gradient.CanFocus = true;
+		this.Gradient.Name = "Gradient";
+		this.Gradient.Label = global::Mono.Unix.Catalog.GetString("Gradient");
+		this.Gradient.DrawIndicator = true;
+		this.Gradient.UseUnderline = true;
+		this.worldLayout.Add(this.Gradient);
+		global::Gtk.Fixed.FixedChild w20 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.Gradient]));
+		w20.X = 1155;
+		w20.Y = 105;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.ShowColonies = new global::Gtk.ToggleButton();
+		this.ShowColonies.CanFocus = true;
+		this.ShowColonies.Name = "ShowColonies";
+		this.ShowColonies.UseUnderline = true;
+		this.ShowColonies.FocusOnClick = false;
+		this.ShowColonies.Active = true;
+		this.ShowColonies.Label = global::Mono.Unix.Catalog.GetString("Show Colonies");
+		this.worldLayout.Add(this.ShowColonies);
+		global::Gtk.Fixed.FixedChild w21 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ShowColonies]));
+		w21.X = 205;
+		w21.Y = 640;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.ClearButton = new global::Gtk.Button();
+		this.ClearButton.CanFocus = true;
+		this.ClearButton.Name = "ClearButton";
+		this.ClearButton.UseUnderline = true;
+		this.ClearButton.FocusOnClick = false;
+		this.ClearButton.Label = global::Mono.Unix.Catalog.GetString("Clear");
+		this.worldLayout.Add(this.ClearButton);
+		global::Gtk.Fixed.FixedChild w22 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ClearButton]));
+		w22.X = 155;
+		w22.Y = 640;
 		this.worldNotebook.Add(this.worldLayout);
 		// Notebook tab
 		this.worldLabel = new global::Gtk.Label();
@@ -275,5 +315,6 @@ public partial class MainWindow
 		this.NumericValue.ValueChanged += new global::System.EventHandler(this.OnNumericValueValueChanged);
 		this.LoadImageButton.Clicked += new global::System.EventHandler(this.OnLoadImageButtonClicked);
 		this.AddImageButton.Clicked += new global::System.EventHandler(this.OnAddImageButtonClicked);
+		this.ClearButton.Clicked += new global::System.EventHandler(this.OnClearButtonClicked);
 	}
 }

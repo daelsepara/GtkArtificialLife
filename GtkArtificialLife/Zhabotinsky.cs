@@ -20,40 +20,34 @@ public class Zhabotinsky : ArtificialLife
 
     public void GenerateRandomColorPalette()
     {
-        var random = new Random(Guid.NewGuid().GetHashCode());
+        ColorPalette.Clear();
 
-        for (int i = 0; i < 256; i++)
-        {
-            int red = random.Next(256);
-            int green = random.Next(256);
-            int blue = random.Next(256);
+        ColorPalette.AddRange(Utility.GenerateRandomColorPalette(ColonyColor));
+    }
 
-            // mix the color
-            red = (red + ColonyColor.Red) / 2;
-            green = (green + ColonyColor.Green) / 2;
-            blue = (blue + ColonyColor.Blue) / 2;
+    public void GradientPalette()
+    {
+        ColorPalette.Clear();
 
-            ColorPalette.Add(new Color((byte)red, (byte)green, (byte)blue));
-        }
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
     }
 
     public void GreyPalette()
     {
         ColorPalette.Clear();
 
-        for (int i = 0; i < 256; i++)
-        {
-            ColorPalette.Add(new Color((byte)i, (byte)i, (byte)i));
-        }
+        ColorPalette.AddRange(Utility.GreyPalette());
     }
 
     public Zhabotinsky()
     {
-        ColonyColor = DefaultColor;
-
         InitGrid(256, 256);
 
+        ColonyColor = DefaultColor;
+
         GenerateRandomColorPalette();
+
+        AddMooreNeighborhood();
     }
 
     public Zhabotinsky(int width, int height)
@@ -63,15 +57,19 @@ public class Zhabotinsky : ArtificialLife
         ColonyColor = DefaultColor;
 
         GenerateRandomColorPalette();
+
+        AddMooreNeighborhood();
     }
 
     public Zhabotinsky(int width, int height, Color color)
     {
+        InitGrid(width, height);
+
         if (!color.Equal(EmptyColor))
         {
-            ColonyColor.Red = (ushort)(color.Red & 0xff);
-            ColonyColor.Green = (ushort)(color.Green & 0xff);
-            ColonyColor.Blue = (ushort)(color.Blue & 0xff);
+            ColonyColor.Red = color.Red;
+            ColonyColor.Green = color.Green;
+            ColonyColor.Blue = color.Blue;
         }
         else
         {
@@ -80,7 +78,7 @@ public class Zhabotinsky : ArtificialLife
 
         GenerateRandomColorPalette();
 
-        InitGrid(width, height);
+        AddMooreNeighborhood();
     }
 
     public void SetParameters(double k1, double k2, double g)
@@ -121,6 +119,20 @@ public class Zhabotinsky : ArtificialLife
         }
     }
 
+    public void AddMooreNeighborhood()
+    {
+        Neighborhood.Clear();
+
+        AddNeighbor(new Cell(-1, -1));
+        AddNeighbor(new Cell(0, -1));
+        AddNeighbor(new Cell(1, -1));
+        AddNeighbor(new Cell(-1, 0));
+        AddNeighbor(new Cell(1, 0));
+        AddNeighbor(new Cell(-1, 1));
+        AddNeighbor(new Cell(0, 1));
+        AddNeighbor(new Cell(1, 1));
+    }
+
     public void WriteCell(int x, int y, int val)
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
@@ -134,7 +146,9 @@ public class Zhabotinsky : ArtificialLife
     protected void RemovePixel(int index)
     {
         if (PixelWriteBuffer.Count > 0 && index < PixelWriteBuffer.Count)
+        {
             PixelWriteBuffer.RemoveAt(index);
+        }
     }
 
     public void PushPixel(Pixel pixel)
@@ -147,7 +161,10 @@ public class Zhabotinsky : ArtificialLife
 
     public Pixel PopPixel()
     {
-        if (PixelWriteBuffer.Count < 1) return null;
+        if (PixelWriteBuffer.Count < 1)
+        {
+            return null;
+        }
 
         var pixel = PixelWriteBuffer[PixelWriteBuffer.Count - 1];
 
@@ -228,7 +245,7 @@ public class Zhabotinsky : ArtificialLife
 
     public void Randomize(int maxDensity)
     {
-        this.Density = maxDensity;
+        Density = maxDensity;
 
         if (maxDensity > 0)
         {
@@ -261,26 +278,19 @@ public class Zhabotinsky : ArtificialLife
         }
     }
 
-    override public List<Parameter> Parameters()
+    public override List<Parameter> Parameters()
     {
-        var density = (Width > 0 && Width > 0) ? (double)Density / (Width * Height) : 0.0;
+        var density = (Width > 0 && Width > 0) ? Density / (Width * Height) : 0.0;
 
-        var set = new List<Parameter>();
-
-        set.Add(new Parameter("Density", density, 0.01, 1.0));
-        set.Add(new Parameter("g", G, 1, 100));
-        set.Add(new Parameter("k1", K1, 1, 100));
-        set.Add(new Parameter("k2", K2, 1, 100));
+        var set = new List<Parameter>
+        {
+            new Parameter("Density", density, 0.01, 1.0),
+            new Parameter("g", G, 1, 100),
+            new Parameter("k1", K1, 1, 100),
+            new Parameter("k2", K2, 1, 100)
+        };
 
         return set;
-    }
-
-    public void WriteGrid(int x, int y, int val)
-    {
-        if (x >= 0 && x < Width && y >= 0 && y < Height)
-        {
-            WriteCell(x, y, val);
-        }
     }
 
     public void SetDensity(int density)

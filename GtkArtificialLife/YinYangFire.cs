@@ -16,40 +16,32 @@ public class YinYangFire : ArtificialLife
     {
         ColorPalette.Clear();
 
-        var random = new Random(Guid.NewGuid().GetHashCode());
+        ColorPalette.AddRange(Utility.GenerateRandomColorPalette(ColonyColor));
+    }
 
-        for (int i = 0; i < 256; i++)
-        {
-            var red = random.Next(256);
-            var green = random.Next(256);
-            var blue = random.Next(256);
+    public void GradientPalette()
+    {
+        ColorPalette.Clear();
 
-            // mix the color
-            red = (red + ColonyColor.Red) / 2;
-            green = (green + ColonyColor.Green) / 2;
-            blue = (blue + ColonyColor.Blue) / 2;
-
-            ColorPalette.Add(new Color((byte)red, (byte)green, (byte)blue));
-        }
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
     }
 
     public void GreyPalette()
     {
         ColorPalette.Clear();
 
-        for (int i = 0; i < 256; i++)
-        {
-            ColorPalette.Add(new Color((byte)i, (byte)i, (byte)i));
-        }
+        ColorPalette.AddRange(Utility.GreyPalette());
     }
 
     public YinYangFire()
     {
-        ColonyColor = DefaultColor;
-
         InitGrid(256, 256);
 
+        ColonyColor = DefaultColor;
+
         GenerateRandomColorPalette();
+
+        AddMooreNeighborhood();
     }
 
     public YinYangFire(int width, int height)
@@ -59,15 +51,19 @@ public class YinYangFire : ArtificialLife
         ColonyColor = DefaultColor;
 
         GenerateRandomColorPalette();
+
+        AddMooreNeighborhood();
     }
 
     public YinYangFire(int width, int height, Color color)
     {
+        InitGrid(width, height);
+
         if (!color.Equal(EmptyColor))
         {
-            ColonyColor.Red = (ushort)(color.Red & 0xff);
-            ColonyColor.Green = (ushort)(color.Green & 0xff);
-            ColonyColor.Blue = (ushort)(color.Blue & 0xff);
+            ColonyColor.Red = color.Red;
+            ColonyColor.Green = color.Green;
+            ColonyColor.Blue = color.Blue;
         }
         else
         {
@@ -75,17 +71,16 @@ public class YinYangFire : ArtificialLife
         }
 
         GenerateRandomColorPalette();
-
-        InitGrid(width, height);
+        AddMooreNeighborhood();
     }
 
     public YinYangFire(int width, int height, int maxStates, Color color)
     {
+        InitGrid(width, height);
+
         if (!color.Equal(EmptyColor))
         {
-            ColonyColor.Red = (ushort)(color.Red & 0xff);
-            ColonyColor.Green = (ushort)(color.Green & 0xff);
-            ColonyColor.Blue = (ushort)(color.Blue & 0xff);
+            ColonyColor = color;
         }
         else
         {
@@ -96,7 +91,7 @@ public class YinYangFire : ArtificialLife
 
         GenerateRandomColorPalette();
 
-        InitGrid(width, height);
+        AddMooreNeighborhood();
     }
 
     protected void InitGrid(int width, int height)
@@ -128,6 +123,20 @@ public class YinYangFire : ArtificialLife
         {
             Neighborhood.Add(neighbor);
         }
+    }
+
+    public void AddMooreNeighborhood()
+    {
+        Neighborhood.Clear();
+
+        AddNeighbor(new Cell(-1, -1));
+        AddNeighbor(new Cell(0, -1));
+        AddNeighbor(new Cell(1, -1));
+        AddNeighbor(new Cell(-1, 0));
+        AddNeighbor(new Cell(1, 0));
+        AddNeighbor(new Cell(-1, 1));
+        AddNeighbor(new Cell(0, 1));
+        AddNeighbor(new Cell(1, 1));
     }
 
     public void WriteCell(int x, int y, int val)
@@ -290,11 +299,6 @@ public class YinYangFire : ArtificialLife
         {
             WriteCell(x, y, val);
         }
-    }
-
-    public void SetParameters(int maxStates)
-    {
-        MaxStates = maxStates;
     }
 
     public void SetDensity(int density)

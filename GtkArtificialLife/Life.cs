@@ -15,9 +15,12 @@ public class Life : ArtificialLife
 
     public Life()
     {
+        InitGrid(256, 256);
+
         ColonyColor = DefaultColor;
 
-        InitGrid(256, 256);
+        AddMooreNeighborhood();
+        AddRules();
     }
 
     public Life(int width, int height)
@@ -25,22 +28,28 @@ public class Life : ArtificialLife
         InitGrid(width, height);
 
         ColonyColor = DefaultColor;
+
+        AddMooreNeighborhood();
+        AddRules();
     }
 
     public Life(int width, int height, Color color)
     {
+        InitGrid(width, height);
+
         if (!color.Equal(EmptyColor))
         {
-            ColonyColor.Red = (ushort)(color.Red & 0xff);
-            ColonyColor.Green = (ushort)(color.Green & 0xff);
-            ColonyColor.Blue = (ushort)(color.Blue & 0xff);
+            ColonyColor.Red = color.Red;
+            ColonyColor.Green = color.Green;
+            ColonyColor.Blue = color.Blue;
         }
         else
         {
             ColonyColor = DefaultColor;
         }
 
-        InitGrid(width, height);
+        AddMooreNeighborhood();
+        AddRules();
     }
 
     protected void InitGrid(int width, int height)
@@ -72,6 +81,30 @@ public class Life : ArtificialLife
         {
             Neighborhood.Add(neighbor);
         }
+    }
+
+    public void AddMooreNeighborhood()
+    {
+        Neighborhood.Clear();
+
+        AddNeighbor(new Cell(-1, -1));
+        AddNeighbor(new Cell(0, -1));
+        AddNeighbor(new Cell(1, -1));
+        AddNeighbor(new Cell(-1, 0));
+        AddNeighbor(new Cell(1, 0));
+        AddNeighbor(new Cell(-1, 1));
+        AddNeighbor(new Cell(0, 1));
+        AddNeighbor(new Cell(1, 1));
+    }
+
+    public void AddRules()
+    {
+        BirthRules.Clear();
+        SurvivalRules.Clear();
+
+        AddBirthRule(3);
+        AddSurvivalRule(2);
+        AddSurvivalRule(3);
     }
 
     public void AddBirthRule(int count)
@@ -233,14 +266,6 @@ public class Life : ArtificialLife
         set.Add(new Parameter("Density", density, 0.01, 1.0));
 
         return set;
-    }
-
-    public void WriteGrid(int x, int y, int val)
-    {
-        if (x >= 0 && x < Width && y >= 0 && y < Height)
-        {
-            WriteCell(x, y, val);
-        }
     }
 
     public void SetDensity(int density)

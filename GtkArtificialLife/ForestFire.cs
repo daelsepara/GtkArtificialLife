@@ -21,9 +21,16 @@ public class ForestFire : ArtificialLife
 
     public void GenerateColorPalette()
     {
-        ColorPalette.Add(EmptyColor);
-        ColorPalette.Add(ColonyColor);
-        ColorPalette.Add(new Color((byte)(ColonyColor.Red / 2), (byte)(ColonyColor.Green / 2), (byte)(ColonyColor.Blue / 2)));
+        ColorPalette.Clear();
+
+        // Generate Gradient
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
+
+        // Preserve colors for tree states
+        var max = Math.Max(ColonyColor.Red, Math.Max(ColonyColor.Green, ColonyColor.Blue));
+        ColorPalette[Empty] = EmptyColor;
+        ColorPalette[Normal] = new Color((byte)(ColonyColor.Red / max * 128), (byte)(ColonyColor.Green / max * 128), (byte)(ColonyColor.Blue / max * 128));
+        ColorPalette[Burning] = ColonyColor;
     }
 
     public ForestFire()
@@ -33,6 +40,8 @@ public class ForestFire : ArtificialLife
         InitGrid(256, 256);
 
         GenerateColorPalette();
+
+        AddMooreNeighborhood();
     }
 
     public ForestFire(int width, int height)
@@ -42,10 +51,14 @@ public class ForestFire : ArtificialLife
         ColonyColor = DefaultColor;
 
         GenerateColorPalette();
+
+        AddMooreNeighborhood();
     }
 
     public ForestFire(int width, int height, Color color)
     {
+        InitGrid(width, height);
+
         if (!color.Equal(EmptyColor))
         {
             ColonyColor.Red = color.Red;
@@ -59,7 +72,7 @@ public class ForestFire : ArtificialLife
 
         GenerateColorPalette();
 
-        InitGrid(width, height);
+        AddMooreNeighborhood();
     }
 
     public void SetParameters(double f, double p)
@@ -99,11 +112,25 @@ public class ForestFire : ArtificialLife
         }
     }
 
+    public void AddMooreNeighborhood()
+    {
+        Neighborhood.Clear();
+
+        AddNeighbor(new Cell(-1, -1));
+        AddNeighbor(new Cell(0, -1));
+        AddNeighbor(new Cell(1, -1));
+        AddNeighbor(new Cell(-1, 0));
+        AddNeighbor(new Cell(1, 0));
+        AddNeighbor(new Cell(-1, 1));
+        AddNeighbor(new Cell(0, 1));
+        AddNeighbor(new Cell(1, 1));
+    }
+
     public void WriteCell(int x, int y, int val)
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
         {
-            PushPixel(new Pixel(x, y, val >= 0 && val < MaxStates ? ColorPalette[val] : EmptyColor));
+            PushPixel(new Pixel(x, y, ColorPalette[val]));
 
             ChangeList.Add(new Change(x, y, val));
         }
@@ -172,6 +199,12 @@ public class ForestFire : ArtificialLife
 
                 switch (state)
                 {
+                    case Empty:
+
+                        newstate = state;
+
+                        break;
+
                     case Normal:
 
                         var burning = CountNeighbors(x, y, Burning);
@@ -191,7 +224,8 @@ public class ForestFire : ArtificialLife
 
                     default:
 
-                        newstate = state;
+                        // deteriorate
+                        newstate = state - 1;
 
                         break;
                 }
@@ -215,17 +249,25 @@ public class ForestFire : ArtificialLife
             }
         }
 
-        // Random lightning strike / burning event
+        // Random lightning strike / burning / deterioration event
         for (int i = 0; i < (int)F; i++)
         {
             var burnx = random.Next(0, Width);
             var burny = random.Next(0, Height);
+            var state = Grid[burnx, burny];
 
-            if (Grid[burnx, burny] == Normal)
+            if (state == Normal || state > Burning)
             {
                 if (random.NextDouble() < F * scale)
                 {
-                    WriteCell(burnx, burny, Burning);
+                    if (state == Normal)
+                    {
+                        WriteCell(burnx, burny, Burning);
+                    }
+                    else
+                    {
+                        WriteCell(burnx, burny, state - 1);
+                    }
                 }
             }
         }
@@ -287,15 +329,6 @@ public class ForestFire : ArtificialLife
         };
 
         return set;
-    }
-
-    public void WriteGrid(int x, int y, int val)
-    {
-        if (x >= 0 && x < Width && y >= 0 && y < Height)
-        {
-            Grid[x, y] = val;
-            WriteCell(x, y, Grid[x, y]);
-        }
     }
 
     public void SetDensity(int density)

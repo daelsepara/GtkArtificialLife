@@ -267,6 +267,50 @@
                 <property name="Y">640</property>
               </packing>
             </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="Gradient">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Label" translatable="yes">Gradient</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="UseUnderline">True</property>
+              </widget>
+              <packing>
+                <property name="X">1155</property>
+                <property name="Y">105</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ToggleButton" id="ShowColonies">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Show Colonies</property>
+                <property name="UseUnderline">True</property>
+                <property name="FocusOnClick">False</property>
+                <property name="Active">True</property>
+              </widget>
+              <packing>
+                <property name="X">205</property>
+                <property name="Y">640</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="ClearButton">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Clear</property>
+                <property name="UseUnderline">True</property>
+                <property name="FocusOnClick">False</property>
+                <signal name="Clicked" handler="OnClearButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">155</property>
+                <property name="Y">640</property>
+              </packing>
+            </child>
           </widget>
         </child>
         <child>

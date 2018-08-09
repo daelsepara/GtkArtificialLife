@@ -89,6 +89,7 @@
     <Compile Include="World.cs" />
     <Compile Include="ForestFire.cs" />
     <Compile Include="ConvertImage.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

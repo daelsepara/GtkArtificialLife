@@ -10,67 +10,51 @@ public static class World
 
         LifeColony.Randomize(maxDensity);
 
-        LifeColony.AddNeighbor(new Cell(-1, -1));
-        LifeColony.AddNeighbor(new Cell(0, -1));
-        LifeColony.AddNeighbor(new Cell(1, -1));
-        LifeColony.AddNeighbor(new Cell(-1, 0));
-        LifeColony.AddNeighbor(new Cell(1, 0));
-        LifeColony.AddNeighbor(new Cell(-1, 1));
-        LifeColony.AddNeighbor(new Cell(0, 1));
-        LifeColony.AddNeighbor(new Cell(1, 1));
-
-        LifeColony.AddBirthRule(3);
-        LifeColony.AddSurvivalRule(2);
-        LifeColony.AddSurvivalRule(3);
-
         Colonies.Add(new Colony(x, y, LifeColony));
     }
 
-    public static void AddZhabotinskyColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double k1, double k2, double g, Color color)
+    public static void AddZhabotinskyColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double k1, double k2, double g, Color color, bool Gradient = false)
     {
         var ZhabotinskyColony = new Zhabotinsky(width, height, color);
         var maxDensity = (int)(width * height * Density);
 
-        ZhabotinskyColony.Randomize(maxDensity);
-
-        ZhabotinskyColony.AddNeighbor(new Cell(-1, -1));
-        ZhabotinskyColony.AddNeighbor(new Cell(0, -1));
-        ZhabotinskyColony.AddNeighbor(new Cell(1, -1));
-        ZhabotinskyColony.AddNeighbor(new Cell(-1, 0));
-        ZhabotinskyColony.AddNeighbor(new Cell(1, 0));
-        ZhabotinskyColony.AddNeighbor(new Cell(-1, 1));
-        ZhabotinskyColony.AddNeighbor(new Cell(0, 1));
-        ZhabotinskyColony.AddNeighbor(new Cell(1, 1));
+        if (Gradient)
+        {
+            ZhabotinskyColony.GradientPalette();
+        }
 
         ZhabotinskyColony.SetParameters(k1, k2, g);
+        ZhabotinskyColony.Randomize(maxDensity);
+
 
         Colonies.Add(new Colony(x, y, ZhabotinskyColony));
     }
 
-    public static void AddLangtonAntColony(List<Colony> Colonies, int width, int height, int x, int y, int ants, string rules, Color color)
+    public static void AddLangtonAntColony(List<Colony> Colonies, int width, int height, int x, int y, int ants, string rules, Color color, bool Gradient = false)
     {
         var LangtonAnt = new LangtonAnt(width, height, color);
+
+        if (Gradient)
+        {
+            LangtonAnt.GradientPalette();
+        }
 
         LangtonAnt.Randomize(ants, rules);
 
         Colonies.Add(new Colony(x, y, LangtonAnt));
     }
 
-    public static void AddYinYangFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, int maxStates, Color color)
+    public static void AddYinYangFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, int maxStates, Color color, bool Gradient = false)
     {
         var YinYangFireColony = new YinYangFire(width, height, color);
         var maxDensity = (int)(width * height * Density);
 
-        YinYangFireColony.Randomize(maxDensity, maxStates);
+        if (Gradient)
+        {
+            YinYangFireColony.GradientPalette();
+        }
 
-        YinYangFireColony.AddNeighbor(new Cell(-1, -1));
-        YinYangFireColony.AddNeighbor(new Cell(0, -1));
-        YinYangFireColony.AddNeighbor(new Cell(1, -1));
-        YinYangFireColony.AddNeighbor(new Cell(-1, 0));
-        YinYangFireColony.AddNeighbor(new Cell(1, 0));
-        YinYangFireColony.AddNeighbor(new Cell(-1, 1));
-        YinYangFireColony.AddNeighbor(new Cell(0, 1));
-        YinYangFireColony.AddNeighbor(new Cell(1, 1));
+        YinYangFireColony.Randomize(maxDensity, maxStates);
 
         Colonies.Add(new Colony(x, y, YinYangFireColony));
     }
@@ -80,18 +64,8 @@ public static class World
         var ForestFireColony = new ForestFire(width, height, color);
         var maxDensity = (int)(width * height * Density);
 
-        ForestFireColony.Randomize(maxDensity);
-
-        ForestFireColony.AddNeighbor(new Cell(-1, -1));
-        ForestFireColony.AddNeighbor(new Cell(0, -1));
-        ForestFireColony.AddNeighbor(new Cell(1, -1));
-        ForestFireColony.AddNeighbor(new Cell(-1, 0));
-        ForestFireColony.AddNeighbor(new Cell(1, 0));
-        ForestFireColony.AddNeighbor(new Cell(-1, 1));
-        ForestFireColony.AddNeighbor(new Cell(0, 1));
-        ForestFireColony.AddNeighbor(new Cell(1, 1));
-
         ForestFireColony.SetParameters(F, P);
+        ForestFireColony.Randomize(maxDensity);
 
         Colonies.Add(new Colony(x, y, ForestFireColony));
     }

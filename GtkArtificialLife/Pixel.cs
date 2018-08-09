@@ -1,4 +1,5 @@
 using Gdk;
+using System.Runtime.InteropServices;
 
 public class Pixel
 {
@@ -32,9 +33,9 @@ public class Pixel
 		{
 			offset = pixbuf.Pixels + y * pixbuf.Rowstride + x * pixbuf.NChannels;
 
-			System.Runtime.InteropServices.Marshal.WriteByte(offset, 0, (byte)Color.Red);
-			System.Runtime.InteropServices.Marshal.WriteByte(offset, 1, (byte)Color.Green);
-			System.Runtime.InteropServices.Marshal.WriteByte(offset, 2, (byte)Color.Blue);
+            Marshal.WriteByte(offset, 0, (byte)(Color.Red & 0xff));
+            Marshal.WriteByte(offset, 1, (byte)(Color.Green & 0xff));
+            Marshal.WriteByte(offset, 2, (byte)(Color.Blue & 0xff));
 		}
 	}
 

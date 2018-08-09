@@ -112,31 +112,16 @@ public class LangtonAnt : ArtificialLife
 
     public void GenerateRandomColorPalette()
     {
-        InitializeSeed();
+        ColorPalette.Clear();
 
-        for (int i = 0; i < 256; i++)
-        {
-            var red = random.Next(256);
-            var green = random.Next(256);
-            var blue = random.Next(256);
-
-            // mix the color
-            red = (red + ColonyColor.Red) / 2;
-            green = (green + ColonyColor.Green) / 2;
-            blue = (blue + ColonyColor.Blue) / 2;
-
-            ColorPalette.Add(new Color((byte)red, (byte)green, (byte)blue));
-        }
+        ColorPalette.AddRange(Utility.GenerateRandomColorPalette(ColonyColor));
     }
 
-    public void GreyPalette()
+    public void GradientPalette()
     {
         ColorPalette.Clear();
 
-        for (int i = 0; i < 256; i++)
-        {
-            ColorPalette.Add(new Color((byte)i, (byte)i, (byte)i));
-        }
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
     }
 
     public LangtonAnt()
@@ -151,22 +136,26 @@ public class LangtonAnt : ArtificialLife
         InitGrid(width, height);
 
         ColonyColor = DefaultColor;
+
+        GenerateRandomColorPalette();
     }
 
     public LangtonAnt(int width, int height, Color color)
     {
+        InitGrid(width, height);
+
         if (!color.Equal(EmptyColor))
         {
-            ColonyColor.Red = (ushort)(color.Red & 0xff);
-            ColonyColor.Green = (ushort)(color.Green & 0xff);
-            ColonyColor.Blue = (ushort)(color.Blue & 0xff);
+            ColonyColor.Red = color.Red;
+            ColonyColor.Green = color.Green;
+            ColonyColor.Blue = color.Blue;
         }
         else
         {
             ColonyColor = DefaultColor;
         }
 
-        InitGrid(width, height);
+        GenerateRandomColorPalette();
     }
 
     protected void InitGrid(int width, int height)
@@ -272,12 +261,21 @@ public class LangtonAnt : ArtificialLife
         }
     }
 
+    public void AddMoves(Ant ant)
+    {
+        ant.Moves.Add(new Ant.Movement(0, -1));
+        ant.Moves.Add(new Ant.Movement(1, 0));
+        ant.Moves.Add(new Ant.Movement(0, 1));
+        ant.Moves.Add(new Ant.Movement(-1, 0));
+    }
+
     public void Randomize(int ants, string rules)
     {
+        InitializeSeed();
+
         if (ants > 0 && rules.Length > 0)
         {
             RuleString = rules;
-            GenerateRandomColorPalette();
 
             for (int i = 0; i < ants; i++)
             {
@@ -289,10 +287,7 @@ public class LangtonAnt : ArtificialLife
 
                 ant.ParseRules(ant, rules, ColorPalette);
 
-                ant.Moves.Add(new Ant.Movement(0, -1));
-                ant.Moves.Add(new Ant.Movement(1, 0));
-                ant.Moves.Add(new Ant.Movement(0, 1));
-                ant.Moves.Add(new Ant.Movement(-1, 0));
+                AddMoves(ant);
 
                 Ants.Add(ant);
 
@@ -325,7 +320,7 @@ public class LangtonAnt : ArtificialLife
         return set;
     }
 
-    public void WriteGrid(int x, int y, int val)
+    public void WriteCell(int x, int y, int val)
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
         {
@@ -333,12 +328,9 @@ public class LangtonAnt : ArtificialLife
 
             ant.ParseRules(ant, RuleString, ColorPalette);
 
-            Ants.Add(ant);
+            AddMoves(ant);
 
-            ant.Moves.Add(new Ant.Movement(0, -1));
-            ant.Moves.Add(new Ant.Movement(1, 0));
-            ant.Moves.Add(new Ant.Movement(0, 1));
-            ant.Moves.Add(new Ant.Movement(-1, 0));
+            Ants.Add(ant);
 
             WriteCell(ant, 1);
         }
