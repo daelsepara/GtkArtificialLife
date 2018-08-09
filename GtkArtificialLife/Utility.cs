@@ -60,10 +60,10 @@ public static class Utility
             var factor = (i / 255.0);
 
             var r = color.Red / max * factor * 255.0;
-            var g = color.Green/ max * factor * 255.0;
+            var g = color.Green / max * factor * 255.0;
             var b = color.Blue / max * factor * 255.0;
 
-            var red =  (byte)r & 0xff;
+            var red = (byte)r & 0xff;
             var green = (byte)g & 0xff;
             var blue = (byte)b & 0xff;
 

@@ -1,24 +1,24 @@
 public class Colony
 {
     // coordinates in the common world
-	public int X;
-	public int Y;
+    public int X;
+    public int Y;
 
-	public ArtificialLife ArtificialLife;
+    public ArtificialLife ArtificialLife;
 
-	public Colony()
-	{
-		X = 0;
-		Y = 0;
+    public Colony()
+    {
+        X = 0;
+        Y = 0;
 
-		ArtificialLife = new EmptyArtificialLife();
-	}
+        ArtificialLife = new EmptyArtificialLife();
+    }
 
-	public Colony(int x, int y, ArtificialLife artificialLife)
-	{
-		X = x;
-		Y = y;
+    public Colony(int x, int y, ArtificialLife artificialLife)
+    {
+        X = x;
+        Y = y;
 
-		ArtificialLife = artificialLife;
-	}
+        ArtificialLife = artificialLife;
+    }
 }

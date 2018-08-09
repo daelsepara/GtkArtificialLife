@@ -15,21 +15,21 @@ public static class GtkSelection
 
     public static void Draw(Gdk.GC gc, Window dest, int X0, int Y0, int X1, int Y1)
     {
-		if (gc == null || dest == null)
+        if (gc == null || dest == null)
         {
             return;
         }
 
         var w = Math.Abs(X1 - X0);
-		var h = Math.Abs(Y1 - Y0);
+        var h = Math.Abs(Y1 - Y0);
 
-		if (w > 2 && h > 2)
-		{
-			gc.RgbFgColor = SelectedColor;
+        if (w > 2 && h > 2)
+        {
+            gc.RgbFgColor = SelectedColor;
 
-			gc.SetLineAttributes(MarkerSize, LineStyle.Solid, CapStyle.Round, JoinStyle.Round);
+            gc.SetLineAttributes(MarkerSize, LineStyle.Solid, CapStyle.Round, JoinStyle.Round);
 
-	        if (Selection.EllipseMode)
+            if (Selection.EllipseMode)
             {
                 DrawEllipse(gc, dest, X0, Y0, X1, Y1, w, h);
             }
@@ -40,13 +40,13 @@ public static class GtkSelection
         }
     }
 
-	public static void DrawBox(Gdk.GC gc, Window dest, int X0, int Y0, int X1, int Y1, int w, int h, bool filled = false)
-	{
-		dest.DrawRectangle(gc, filled, Math.Min(X0, X1), Math.Min(Y0, Y1), w, h);
-	}
+    public static void DrawBox(Gdk.GC gc, Window dest, int X0, int Y0, int X1, int Y1, int w, int h, bool filled = false)
+    {
+        dest.DrawRectangle(gc, filled, Math.Min(X0, X1), Math.Min(Y0, Y1), w, h);
+    }
 
     public static void DrawEllipse(Gdk.GC gc, Window dest, int X0, int Y0, int X1, int Y1, int a, int b, bool filled = false)
-	{
-		dest.DrawArc(gc, filled, Math.Min(X0, X1), Math.Min(Y0, Y1), a, b, 0, 360 * 64);
-	}
+    {
+        dest.DrawArc(gc, filled, Math.Min(X0, X1), Math.Min(Y0, Y1), a, b, 0, 360 * 64);
+    }
 }
