@@ -35,9 +35,9 @@ public class ForestFire : ArtificialLife
 
     public ForestFire()
     {
-        ColonyColor = DefaultColor;
-
         InitGrid(256, 256);
+
+        ColonyColor = DefaultColor;
 
         GenerateColorPalette();
 
@@ -168,8 +168,8 @@ public class ForestFire : ArtificialLife
 
     protected CountSum CountNeighbors(int x, int y, int state)
     {
-        int neighbors = 0;
-        int sum = 0;
+        var neighbors = 0;
+        var sum = 0;
 
         foreach (var neighbor in GetNeighborhood())
         {
@@ -194,8 +194,8 @@ public class ForestFire : ArtificialLife
         {
             for (int x = 0; x < Width; x++)
             {
-                int state = Grid[x, y];
-                int newstate = state;
+                var state = Grid[x, y];
+                var newstate = state;
 
                 switch (state)
                 {

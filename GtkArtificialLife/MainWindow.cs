@@ -349,16 +349,12 @@ public partial class MainWindow : Gtk.Window
     {
         var item = parameters.Find(parameter => parameter.Name == name);
 
-        Console.WriteLine("{0} = {1}", name, item.NumericValue);
-
         return item.NumericValue;
     }
 
     protected string GetString(List<Parameter> parameters, String name)
     {
         var item = parameters.Find(parameter => parameter.Name == name);
-
-        Console.WriteLine("{0} = {1}", name, item.Value);
 
         return item.Value;
     }
@@ -477,7 +473,9 @@ public partial class MainWindow : Gtk.Window
                 }
 
                 if (worldPixbuf != null)
+                {
                     worldPixbuf.Save(FileName, "png");
+                }
             }
         }
 

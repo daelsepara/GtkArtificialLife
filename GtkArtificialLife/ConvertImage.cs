@@ -35,20 +35,21 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.Zhabotinsky)
             {
+                var g = GetNumeric(Parameters, "g");
+                var k1 = GetNumeric(Parameters, "k1");
+                var k2 = GetNumeric(Parameters, "k2");
+
                 var colony = new Zhabotinsky(Width, Height, color);
+
+                colony.SetParameters(k1, k2, g);
 
                 if (Gradient)
                 {
                     colony.GradientPalette();
                 }
 
-                var g = GetNumeric(Parameters, "g");
-                var k1 = GetNumeric(Parameters, "k1");
-                var k2 = GetNumeric(Parameters, "k2");
-
                 Draw(image.Pixbuf, Width, Height, colony, 256, ref population);
 
-                colony.SetParameters(k1, k2, g);
                 colony.SetDensity(population);
 
                 colony.ApplyChanges();
@@ -63,6 +64,7 @@ public static class ConvertImage
                 Draw(image.Pixbuf, Width, Height, colony, 2, ref population);
 
                 colony.SetDensity(population);
+
                 colony.ApplyChanges();
 
                 return colony;
@@ -80,6 +82,7 @@ public static class ConvertImage
                 Draw(image.Pixbuf, Width, Height, colony, 3, ref population);
 
                 colony.SetDensity(population);
+
                 colony.ApplyChanges();
 
                 return colony;
@@ -113,16 +116,12 @@ public static class ConvertImage
     {
         var item = parameters.Find(parameter => parameter.Name == name);
 
-        Console.WriteLine("{0} = {1}", name, item.NumericValue);
-
         return item.NumericValue;
     }
 
     static string GetString(List<Parameter> parameters, String name)
     {
         var item = parameters.Find(parameter => parameter.Name == name);
-
-        Console.WriteLine("{0} = {1}", name, item.Value);
 
         return item.Value;
     }
@@ -162,16 +161,18 @@ public static class ConvertImage
 
                 if (colony is YinYangFire)
                 {
-                    (colony as YinYangFire).WriteCell(x, y, (int)Mod(val, MaxStates));
+                    var value = (int)Mod(val, MaxStates);
 
-                    population++;
+                    (colony as YinYangFire).WriteCell(x, y, value);
+
+                    population += value > 0 ? 1 : 0;
                 }
 
                 if (colony is Zhabotinsky)
                 {
                     (colony as Zhabotinsky).WriteCell(x, y, val);
 
-                    population++;
+                    population += val > 0 ? 1 : 0;
                 }
 
                 if (colony is LangtonAnt)

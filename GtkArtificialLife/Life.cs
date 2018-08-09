@@ -259,11 +259,12 @@ public class Life : ArtificialLife
 
     public override List<Parameter> Parameters()
     {
-        var set = new List<Parameter>();
-
         var density = (Width > 0 && Width > 0) ? (double)Density / (Width * Height) : 0.0;
 
-        set.Add(new Parameter("Density", density, 0.01, 1.0));
+        var set = new List<Parameter>
+        {
+            new Parameter("Density", density, 0.01, 1.0)
+        };
 
         return set;
     }

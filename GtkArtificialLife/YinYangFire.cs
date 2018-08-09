@@ -283,12 +283,13 @@ public class YinYangFire : ArtificialLife
 
     public override List<Parameter> Parameters()
     {
-        var set = new List<Parameter>();
-
         var density = (Width > 0 && Width > 0) ? (double)Density / (Width * Height) : 0.0;
 
-        set.Add(new Parameter("Density", density, 0.01, 1.0));
-        set.Add(new Parameter("MaxStates", MaxStates, 2, 256));
+        var set = new List<Parameter>
+        {
+            new Parameter("Density", density, 0.01, 1.0),
+            new Parameter("MaxStates", MaxStates, 2, 256)
+        };
 
         return set;
     }

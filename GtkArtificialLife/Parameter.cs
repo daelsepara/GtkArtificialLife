@@ -12,33 +12,33 @@
     {
     }
 
-    public Parameter(string Name, string Value)
+    public Parameter(string name, string value)
     {
-        this.Name = Name;
-        this.Value = Value;
+        Name = name;
+        Value = value;
         IsNumeric = false;
         NumericValue = 0.0;
         Min = 0.0;
         Max = 0.0;
     }
 
-    public Parameter(string Name, double NumericValue, double Min, double Max)
+    public Parameter(string name, double numericValue, double min, double max)
     {
-        this.Name = Name;
+        Name = name;
         Value = "";
         IsNumeric = true;
-        this.NumericValue = NumericValue;
-        this.Min = Min;
-        this.Max = Max;
+        NumericValue = numericValue;
+        Min = min;
+        Max = max;
     }
 
-    public Parameter(string Name, string Value, bool IsNumeric, double NumericValue, double Min, double Max)
+    public Parameter(string name, string value, bool isNumeric, double numericValue, double min, double max)
     {
-        this.Name = Name;
-        this.Value = Value;
-        this.IsNumeric = IsNumeric;
-        this.NumericValue = NumericValue;
-        this.Min = Min;
-        this.Max = Max;
+        Name = name;
+        Value = value;
+        IsNumeric = isNumeric;
+        NumericValue = numericValue;
+        Min = min;
+        Max = max;
     }
 }

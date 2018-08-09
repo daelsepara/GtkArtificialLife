@@ -26,7 +26,6 @@ public static class World
         ZhabotinskyColony.SetParameters(k1, k2, g);
         ZhabotinskyColony.Randomize(maxDensity);
 
-
         Colonies.Add(new Colony(x, y, ZhabotinskyColony));
     }
 

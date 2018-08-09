@@ -63,8 +63,6 @@ public class LangtonAnt : ArtificialLife
             Y = y;
 
             MoveDirection = moveDirection;
-
-            InitializeSeed();
         }
 
         public void ParseRules(Ant ant, string rules, List<Color> ColorPalette)
@@ -126,9 +124,9 @@ public class LangtonAnt : ArtificialLife
 
     public LangtonAnt()
     {
-        ColonyColor = DefaultColor;
-
         InitGrid(256, 256);
+
+        ColonyColor = DefaultColor;
     }
 
     public LangtonAnt(int width, int height)
