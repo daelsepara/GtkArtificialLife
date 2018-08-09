@@ -67,6 +67,8 @@ public partial class MainWindow : Gtk.Window
         StopButton.Sensitive = false;
         RunButton.Sensitive = true;
         SaveButton.Sensitive = true;
+        ShowColonies.Sensitive = true;
+        ClearButton.Sensitive = true;
 
         worldPixbuf = InitWorld(worldImage.WidthRequest, worldImage.HeightRequest);
         worldImage.Pixbuf = InitWorld(worldImage.WidthRequest, worldImage.HeightRequest);
@@ -624,11 +626,16 @@ public partial class MainWindow : Gtk.Window
 
     protected void OnRunButtonClicked(object sender, EventArgs e)
     {
-        Paused = false;
+        if (Colonies.Count > 0)
+        {
+            Paused = false;
 
-        RunButton.Sensitive = false;
-        StopButton.Sensitive = true;
-        SaveButton.Sensitive = false;
+            RunButton.Sensitive = false;
+            StopButton.Sensitive = true;
+            SaveButton.Sensitive = false;
+            ShowColonies.Sensitive = false;
+            ClearButton.Sensitive = false;
+        }
     }
 
     protected void OnStopButtonClicked(object sender, EventArgs e)
@@ -638,6 +645,8 @@ public partial class MainWindow : Gtk.Window
         RunButton.Sensitive = true;
         StopButton.Sensitive = false;
         SaveButton.Sensitive = true;
+        ShowColonies.Sensitive = true;
+        ClearButton.Sensitive = true;
     }
 
     protected void OnSaveButtonClicked(object sender, EventArgs e)
@@ -658,26 +667,29 @@ public partial class MainWindow : Gtk.Window
 
         if (args.Event.Button == 3)
         {
-            IsSelecting = false;
-            IsDragging = false;
-
-            var box = GtkSelection.Selection.BoundingBoxes();
-
-            for (int i = 0; i < GtkSelection.Selection.Count(); i++)
+            if (Paused)
             {
-                if (GtkSelection.Selection.InBox(X1, Y1, box[i]))
+                IsSelecting = false;
+                IsDragging = false;
+
+                var box = GtkSelection.Selection.BoundingBoxes();
+
+                for (int i = 0; i < GtkSelection.Selection.Count(); i++)
                 {
-                    Colonies.RemoveAt(i);
-                    GtkSelection.Selection.Boxes.RemoveAt(i);
+                    if (GtkSelection.Selection.InBox(X1, Y1, box[i]))
+                    {
+                        Colonies.RemoveAt(i);
+                        GtkSelection.Selection.Boxes.RemoveAt(i);
 
-                    RefreshColonies();
-                    RenderColonies(worldPixbuf);
-                    RenderWorld(worldPixbuf);
+                        RefreshColonies();
+                        RenderColonies(worldPixbuf);
+                        RenderWorld(worldPixbuf);
 
-                    System.GC.Collect();
-                    System.GC.WaitForPendingFinalizers();
+                        System.GC.Collect();
+                        System.GC.WaitForPendingFinalizers();
 
-                    break;
+                        break;
+                    }
                 }
             }
         }
@@ -896,6 +908,10 @@ public partial class MainWindow : Gtk.Window
 
             worldPixbuf.Fill(0);
             RenderWorld(worldPixbuf);
+
+            RunButton.Sensitive = true;
+            StopButton.Sensitive = false;
+            SaveButton.Sensitive = true;
         }
     }
 }

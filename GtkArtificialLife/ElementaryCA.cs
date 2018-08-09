@@ -120,8 +120,6 @@ public class ElementaryCA : ArtificialLife
 
     public override void Update()
     {
-        Refresh();
-
         if (Current < Height - 1)
         {
             for (int x = 1; x < Width - 1; x++)
@@ -158,7 +156,7 @@ public class ElementaryCA : ArtificialLife
 
     public void Refresh()
     {
-        for (int y = 0; y < Height; y++)
+        for (int y = 0; y < Current + 1; y++)
         {
             for (int x = 0; x < Width; x++)
             {
