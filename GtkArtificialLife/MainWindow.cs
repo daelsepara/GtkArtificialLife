@@ -22,7 +22,6 @@ public partial class MainWindow : Gtk.Window
     List<ColonyTypes.Type> ColoniesType = new List<ColonyTypes.Type>();
     List<Parameter> ColonyParameters = new List<Parameter>();
     const int PAGE_WORLD = 0;
-    const int PAGE_WORLD_PARAMS = 1;
     Pixbuf worldPixbuf;
     bool Paused;
     bool Disabled;
@@ -353,7 +352,6 @@ public partial class MainWindow : Gtk.Window
                     }
                 }
 
-                ColonyColor.ModifyCursor(ColonyColor.Color, ColonyColor.Color);
                 CopyParameterValues(ParameterList, ColonyParameters);
 
                 Enable();
@@ -444,7 +442,9 @@ public partial class MainWindow : Gtk.Window
                 {
                     var rule = (int)GetNumeric(ColonyParameters, "Rule");
 
-                    World.AddElementaryCA(Colonies, w, h, x, y, rule, ColonyColor.Color);
+                    GtkSelection.Selection.BoundingBoxes()[added - 1].Y1 = y + w / 2;
+
+                    World.AddElementaryCA(Colonies, w, w / 2, x, y, rule, ColonyColor.Color);
                 }
 
                 RenderColonies(worldPixbuf);

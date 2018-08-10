@@ -18,6 +18,8 @@ public class ElementaryCA : ArtificialLife
 
         ColonyColor = DefaultColor;
 
+        WriteCell(128, 0, 1);
+
         ApplyChanges();
     }
 
@@ -120,6 +122,8 @@ public class ElementaryCA : ArtificialLife
 
     public override void Update()
     {
+        Refresh();
+
         if (Current < Height - 1)
         {
             for (int x = 1; x < Width - 1; x++)
