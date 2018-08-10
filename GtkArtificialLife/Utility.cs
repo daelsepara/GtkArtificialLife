@@ -49,19 +49,22 @@ public static class Utility
         return ColorPalette;
     }
 
-    public static List<Color> Gradient(Color color)
+    public static List<Color> Gradient(Color color, int states = 1)
     {
         var ColorPalette = new List<Color>();
 
-        double max = Math.Max(color.Red, Math.Max(color.Green, color.Blue));
+        var max = Math.Max(color.Red, Math.Max(color.Green, color.Blue));
+
+        var delta = (256 / states);
 
         for (int i = 0; i < 256; i++)
         {
-            var factor = (i / 255.0);
+            int block = (int)(i/delta);
+            var factor = (double)block * delta / 255;
 
-            var r = color.Red / max * factor * 255.0;
-            var g = color.Green / max * factor * 255.0;
-            var b = color.Blue / max * factor * 255.0;
+            var r = (double) color.Red / max * factor * 255.0;
+            var g = (double) color.Green / max * factor * 255.0;
+            var b = (double) color.Blue / max * factor * 255.0;
 
             var red = (byte)r & 0xff;
             var green = (byte)g & 0xff;

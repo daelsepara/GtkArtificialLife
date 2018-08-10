@@ -1,3 +1,4 @@
+using Gdk;
 using System.Collections.Generic;
 
 public class EmptyArtificialLife : ArtificialLife
@@ -20,5 +21,15 @@ public class EmptyArtificialLife : ArtificialLife
     public override List<Parameter> Parameters()
     {
         return new List<Parameter>();
+    }
+
+    public override void Refresh()
+    {
+
+    }
+
+    public override Color Color()
+    {
+        return DefaultColor;
     }
 }

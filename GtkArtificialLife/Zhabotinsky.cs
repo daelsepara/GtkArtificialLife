@@ -264,7 +264,7 @@ public class Zhabotinsky : ArtificialLife
         }
     }
 
-    public void Refresh()
+    public override void Refresh()
     {
         for (int y = 0; y < Height; y++)
         {
@@ -298,7 +298,7 @@ public class Zhabotinsky : ArtificialLife
         Density = density;
     }
 
-    public Color Color()
+    public override Color Color()
     {
         return ColonyColor;
     }

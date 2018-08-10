@@ -1,3 +1,4 @@
+using Gdk;
 using System.Collections.Generic;
 
 public class Cell
@@ -21,10 +22,10 @@ public abstract class ArtificialLife
 {
     public int Width;
     public int Height;
-    public Gdk.Color ColonyColor;
+    public Color ColonyColor;
 
-    protected Gdk.Color DefaultColor = new Gdk.Color(0x00ff, 0x00ff, 0x00ff);
-    protected Gdk.Color EmptyColor = new Gdk.Color(0x0000, 0x0000, 0x0000);
+    protected Color DefaultColor = new Gdk.Color(0x00ff, 0x00ff, 0x00ff);
+    protected Color EmptyColor = new Gdk.Color(0x0000, 0x0000, 0x0000);
 
     // Rendering
     public abstract List<Pixel> GetPixelWriteBuffer();
@@ -34,4 +35,8 @@ public abstract class ArtificialLife
     public abstract void Update();
 
     public abstract List<Parameter> Parameters();
+
+    public abstract void Refresh();
+
+    public abstract Color Color();
 }

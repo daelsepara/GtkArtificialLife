@@ -230,7 +230,8 @@ public class ForestFire : ArtificialLife
                         break;
                 }
 
-                WriteCell(x, y, newstate);
+                if (state != newstate || newstate > 0)
+                    WriteCell(x, y, newstate);
             }
         }
 
@@ -303,7 +304,7 @@ public class ForestFire : ArtificialLife
         }
     }
 
-    public void Refresh()
+    public override void Refresh()
     {
         for (int y = 0; y < Height; y++)
         {
@@ -336,7 +337,7 @@ public class ForestFire : ArtificialLife
         Density = density;
     }
 
-    public Color Color()
+    public override Color Color()
     {
         return ColonyColor;
     }

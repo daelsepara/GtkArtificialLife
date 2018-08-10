@@ -100,6 +100,7 @@ public static class ConvertImage
                 }
 
                 colony.SetRules(rules);
+                colony.ParseRulesOnce();
 
                 Draw(image.Pixbuf, Width, Height, colony, 4, ref population);
 

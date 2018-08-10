@@ -70,4 +70,9 @@ public static class ParameterSets
 
         return set;
     }
+
+    public static List<Parameter> Snowflake()
+    {
+        return new List<Parameter>();
+    }
 }

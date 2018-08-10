@@ -158,7 +158,7 @@ public class ElementaryCA : ArtificialLife
         ChangeList.Clear();
     }
 
-    public void Refresh()
+    public override void Refresh()
     {
         for (int y = 0; y < Current + 1; y++)
         {
@@ -187,7 +187,7 @@ public class ElementaryCA : ArtificialLife
         Rule = rule & 0xff;
     }
 
-    public Color Color()
+    public override Color Color()
     {
         return ColonyColor;
     }

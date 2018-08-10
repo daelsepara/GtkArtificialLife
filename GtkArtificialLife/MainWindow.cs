@@ -101,51 +101,6 @@ public partial class MainWindow : Gtk.Window
         Disabled = false;
     }
 
-    protected void RenderWorld(Pixbuf pixbuf)
-    {
-        if (pixbuf != null)
-        {
-            var dest = worldImage.GdkWindow;
-            var gc = new Gdk.GC(dest);
-
-            dest.DrawPixbuf(gc, pixbuf, 0, 0, 0, 0, pixbuf.Width, pixbuf.Height, RgbDither.None, 0, 0);
-        }
-    }
-
-    protected void OnDeleteEvent(object sender, DeleteEventArgs a)
-    {
-        if (worldPixbuf != null)
-        {
-            worldPixbuf.Dispose();
-        }
-
-        if (worldImage.Pixbuf != null)
-        {
-            worldImage.Pixbuf.Dispose();
-        }
-
-        if (worldImage != null)
-        {
-            worldImage.Dispose();
-        }
-
-        if (LoadedImage.Pixbuf != null)
-        {
-            LoadedImage.Pixbuf.Dispose();
-        }
-
-        if (LoadedImage != null)
-        {
-            LoadedImage.Dispose();
-        }
-
-        Colonies.Clear();
-
-        Application.Quit();
-
-        a.RetVal = true;
-    }
-
     protected void Tic()
     {
         timer.Restart();
@@ -165,24 +120,15 @@ public partial class MainWindow : Gtk.Window
         return elapsed;
     }
 
-    protected void RenderColonies(Pixbuf pixbuf)
+    protected int RenderArtificialLife(Pixbuf pixbuf, ArtificialLife artificialLife, int x, int y, bool Clear = true)
     {
-        pixbuf.Fill(0);
+        var Updates = 0;
 
-        Parallel.ForEach(Colonies, (colony) =>
-        {
-            RenderArtificialLife(pixbuf, colony.ArtificialLife, colony.X, colony.Y);
-        });
-
-        System.GC.Collect();
-        System.GC.WaitForPendingFinalizers();
-    }
-
-    protected void RenderArtificialLife(Pixbuf pixbuf, ArtificialLife artificialLife, int x, int y)
-    {
         if (pixbuf != null && artificialLife != null)
         {
             var writeBuffer = artificialLife.GetPixelWriteBuffer();
+
+            Updates += writeBuffer.Count;
 
             if (writeBuffer.Count > 0)
             {
@@ -191,7 +137,114 @@ public partial class MainWindow : Gtk.Window
                     pixel.Write(pixbuf, x, y);
                 });
 
-                artificialLife.ClearPixelWriteBuffer();
+                if (Clear)
+                    artificialLife.ClearPixelWriteBuffer();
+            }
+        }
+
+        return Updates;
+    }
+
+    protected void RenderColonies(Pixbuf pixbuf)
+    {
+        var Updates = 0;
+
+        pixbuf.Fill(0);
+
+        Parallel.ForEach(Colonies, (colony) =>
+        {
+            Updates += RenderArtificialLife(pixbuf, colony.ArtificialLife, colony.X, colony.Y, true);
+        });
+
+        if (Updates == 0)
+            Pause();
+
+        System.GC.Collect();
+        System.GC.WaitForPendingFinalizers();
+    }
+
+    void RefreshColonies()
+    {
+        for (int i = 0; i < Colonies.Count; i++)
+        {
+            Colonies[i].ArtificialLife.Refresh();
+        }
+    }
+
+    protected void RenderWorld(Pixbuf pixbuf)
+    {
+        if (pixbuf != null)
+        {
+            var dest = worldImage.GdkWindow;
+            var gc = new Gdk.GC(dest);
+
+            dest.DrawPixbuf(gc, pixbuf, 0, 0, 0, 0, pixbuf.Width, pixbuf.Height, RgbDither.None, 0, 0);
+        }
+    }
+
+    void Refresh()
+    {
+        RefreshColonies();
+        RenderColonies(worldPixbuf);
+        RenderWorld(worldPixbuf);
+    }
+
+    void InitializeSelected()
+    {
+        if (GtkSelection.Selected > 0)
+        {
+            var colony = GtkSelection.Selected - 1;
+
+            if (colony < Colonies.Count)
+            {
+                Disable();
+
+                ColonyParameters.Clear();
+                ColonyParameters.AddRange(Colonies[colony].ArtificialLife.Parameters());
+
+                ColonyColor.Color = Colonies[colony].ArtificialLife.Color();
+
+                for (int i = 0; i < ColoniesType.Count; i++)
+                {
+                    if (Colonies[colony].ArtificialLife is Life && ColoniesType[i] == ColonyTypes.Type.Life)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
+
+                    if (Colonies[colony].ArtificialLife is Zhabotinsky && ColoniesType[i] == ColonyTypes.Type.Zhabotinsky)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
+
+                    if (Colonies[colony].ArtificialLife is LangtonAnt && ColoniesType[i] == ColonyTypes.Type.LangtonAnt)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
+
+                    if (Colonies[colony].ArtificialLife is YinYangFire && ColoniesType[i] == ColonyTypes.Type.YinYangFire)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
+
+                    if (Colonies[colony].ArtificialLife is ForestFire && ColoniesType[i] == ColonyTypes.Type.ForestFire)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
+
+                    if (Colonies[colony].ArtificialLife is ElementaryCA && ColoniesType[i] == ColonyTypes.Type.ElementaryCA)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
+
+                    if (Colonies[colony].ArtificialLife is Snowflake && ColoniesType[i] == ColonyTypes.Type.Snowflake)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
+                }
+
+                CopyParameterValues(ParameterList, ColonyParameters);
+
+                Enable();
             }
         }
     }
@@ -248,117 +301,6 @@ public partial class MainWindow : Gtk.Window
         }
     }
 
-    void RefreshColonies()
-    {
-        for (int i = 0; i < Colonies.Count; i++)
-        {
-            if (Colonies[i].ArtificialLife is Life)
-            {
-                (Colonies[i].ArtificialLife as Life).Refresh();
-            }
-
-            if (Colonies[i].ArtificialLife is LangtonAnt)
-            {
-                (Colonies[i].ArtificialLife as LangtonAnt).Refresh();
-            }
-
-            if (Colonies[i].ArtificialLife is Zhabotinsky)
-            {
-                (Colonies[i].ArtificialLife as Zhabotinsky).Refresh();
-            }
-
-            if (Colonies[i].ArtificialLife is YinYangFire)
-            {
-                (Colonies[i].ArtificialLife as YinYangFire).Refresh();
-            }
-
-            if (Colonies[i].ArtificialLife is ForestFire)
-            {
-                (Colonies[i].ArtificialLife as ForestFire).Refresh();
-            }
-
-            if (Colonies[i].ArtificialLife is ElementaryCA)
-            {
-                (Colonies[i].ArtificialLife as ElementaryCA).Refresh();
-            }
-        }
-    }
-
-    void InitializeSelected()
-    {
-        if (GtkSelection.Selected > 0)
-        {
-            var colony = GtkSelection.Selected - 1;
-
-            if (colony < Colonies.Count)
-            {
-                Disable();
-
-                ColonyParameters.Clear();
-
-                for (int i = 0; i < ColoniesType.Count; i++)
-                {
-                    if (Colonies[colony].ArtificialLife is Life && ColoniesType[i] == ColonyTypes.Type.Life)
-                    {
-                        ColonyTypeList.Active = i;
-                        ColonyParameters.AddRange((Colonies[colony].ArtificialLife as Life).Parameters());
-                        var color = (Colonies[colony].ArtificialLife as Life).Color();
-
-                        ColonyColor.Color = color;
-                    }
-
-                    if (Colonies[colony].ArtificialLife is Zhabotinsky && ColoniesType[i] == ColonyTypes.Type.Zhabotinsky)
-                    {
-                        ColonyTypeList.Active = i;
-                        ColonyParameters.AddRange((Colonies[colony].ArtificialLife as Zhabotinsky).Parameters());
-                        var color = (Colonies[colony].ArtificialLife as Zhabotinsky).Color();
-                        ColonyColor.Color = new Color((byte)color.Red, (byte)color.Green, (byte)color.Blue);
-                    }
-
-                    if (Colonies[colony].ArtificialLife is LangtonAnt && ColoniesType[i] == ColonyTypes.Type.LangtonAnt)
-                    {
-                        ColonyTypeList.Active = i;
-                        ColonyParameters.AddRange((Colonies[colony].ArtificialLife as LangtonAnt).Parameters());
-                        var color = (Colonies[colony].ArtificialLife as LangtonAnt).Color();
-
-                        ColonyColor.Color = color;
-                    }
-
-                    if (Colonies[colony].ArtificialLife is YinYangFire && ColoniesType[i] == ColonyTypes.Type.YinYangFire)
-                    {
-                        ColonyTypeList.Active = i;
-                        ColonyParameters.AddRange((Colonies[colony].ArtificialLife as YinYangFire).Parameters());
-                        var color = (Colonies[colony].ArtificialLife as YinYangFire).Color();
-
-                        ColonyColor.Color = color;
-                    }
-
-                    if (Colonies[colony].ArtificialLife is ForestFire && ColoniesType[i] == ColonyTypes.Type.ForestFire)
-                    {
-                        ColonyTypeList.Active = i;
-                        ColonyParameters.AddRange((Colonies[colony].ArtificialLife as ForestFire).Parameters());
-                        var color = (Colonies[colony].ArtificialLife as ForestFire).Color();
-
-                        ColonyColor.Color = color;
-                    }
-
-                    if (Colonies[colony].ArtificialLife is ElementaryCA && ColoniesType[i] == ColonyTypes.Type.ElementaryCA)
-                    {
-                        ColonyTypeList.Active = i;
-                        ColonyParameters.AddRange((Colonies[colony].ArtificialLife as ElementaryCA).Parameters());
-                        var color = (Colonies[colony].ArtificialLife as ElementaryCA).Color();
-
-                        ColonyColor.Color = color;
-                    }
-                }
-
-                CopyParameterValues(ParameterList, ColonyParameters);
-
-                Enable();
-            }
-        }
-    }
-
     protected double GetNumeric(List<Parameter> parameters, String name)
     {
         var item = parameters.Find(parameter => parameter.Name == name);
@@ -387,9 +329,11 @@ public partial class MainWindow : Gtk.Window
 
             if (added > count)
             {
+                var colony = added - 1;
+
                 RefreshColonies();
 
-                var box = GtkSelection.Selection.BoundingBoxes()[added - 1];
+                var box = GtkSelection.Selection.BoundingBoxes()[colony];
 
                 var w = Math.Abs(box.X1 - box.X0);
                 var h = Math.Abs(box.Y1 - box.Y0);
@@ -441,11 +385,17 @@ public partial class MainWindow : Gtk.Window
                 if (ColoniesType[type] == ColonyTypes.Type.ElementaryCA)
                 {
                     var rule = (int)GetNumeric(ColonyParameters, "Rule");
+                    var height = w / 2;
 
-                    GtkSelection.Selection.BoundingBoxes()[added - 1].Y0 = y;
-                    GtkSelection.Selection.BoundingBoxes()[added - 1].Y1 = y + w / 2;
+                    GtkSelection.Selection.BoundingBoxes()[colony].Y0 = y;
+                    GtkSelection.Selection.BoundingBoxes()[colony].Y1 = y + height - 1;
 
-                    World.AddElementaryCA(Colonies, w, w / 2, x, y, rule, ColonyColor.Color);
+                    World.AddElementaryCA(Colonies, w, height, x, y, rule, ColonyColor.Color);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.Snowflake)
+                {
+                    World.AddSnowflakeColony(Colonies, w, h, x, y, ColonyColor.Color, Gradient.Active);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -496,9 +446,34 @@ public partial class MainWindow : Gtk.Window
                     FileName += ".png";
                 }
 
-                if (worldPixbuf != null)
+                if (GtkSelection.Selected > 0 && Colonies.Count > 0 && (GtkSelection.Selected - 1) < Colonies.Count)
                 {
-                    worldPixbuf.Save(FileName, "png");
+                    var num = GtkSelection.Selected - 1;
+                    var colony = Colonies[num];
+
+                    var temp = InitWorld(colony.ArtificialLife.Width, colony.ArtificialLife.Height);
+
+                    if (temp != null)
+                    {
+                        // Populate Write Buffer
+                        colony.ArtificialLife.Refresh();
+
+                        temp.Fill(0);
+
+                        // Render to pixbuf but do not clear the write buffer
+                        RenderArtificialLife(temp, colony.ArtificialLife, 0, 0, false);
+
+                        temp.Save(FileName, "png");
+
+                        temp.Dispose();
+                    }
+                }
+                else
+                {
+                    if (worldPixbuf != null)
+                    {
+                        worldPixbuf.Save(FileName, "png");
+                    }
                 }
             }
         }
@@ -565,6 +540,62 @@ public partial class MainWindow : Gtk.Window
         StringValue.Sensitive = false;
     }
 
+    protected void Run()
+    {
+        Paused = false;
+
+        RunButton.Sensitive = false;
+        StopButton.Sensitive = true;
+        SaveButton.Sensitive = false;
+        ShowColonies.Sensitive = false;
+        ClearButton.Sensitive = false;
+    }
+
+    protected void Pause()
+    {
+        Paused = true;
+
+        RunButton.Sensitive = true;
+        StopButton.Sensitive = false;
+        SaveButton.Sensitive = true;
+        ShowColonies.Sensitive = true;
+        ClearButton.Sensitive = true;
+    }
+
+    protected void OnDeleteEvent(object sender, DeleteEventArgs a)
+    {
+        if (worldPixbuf != null)
+        {
+            worldPixbuf.Dispose();
+        }
+
+        if (worldImage.Pixbuf != null)
+        {
+            worldImage.Pixbuf.Dispose();
+        }
+
+        if (worldImage != null)
+        {
+            worldImage.Dispose();
+        }
+
+        if (LoadedImage.Pixbuf != null)
+        {
+            LoadedImage.Pixbuf.Dispose();
+        }
+
+        if (LoadedImage != null)
+        {
+            LoadedImage.Dispose();
+        }
+
+        Colonies.Clear();
+
+        Application.Quit();
+
+        a.RetVal = true;
+    }
+
     bool OnIdle()
     {
         Rendering.WaitOne();
@@ -579,35 +610,7 @@ public partial class MainWindow : Gtk.Window
 
                 Parallel.ForEach(Colonies, (colony) =>
                 {
-                    if (colony.ArtificialLife is Life)
-                    {
-                        (colony.ArtificialLife as Life).Update();
-                    }
-
-                    if (colony.ArtificialLife is Zhabotinsky)
-                    {
-                        (colony.ArtificialLife as Zhabotinsky).Update();
-                    }
-
-                    if (colony.ArtificialLife is LangtonAnt)
-                    {
-                        (colony.ArtificialLife as LangtonAnt).Update();
-                    }
-
-                    if (colony.ArtificialLife is YinYangFire)
-                    {
-                        (colony.ArtificialLife as YinYangFire).Update();
-                    }
-
-                    if (colony.ArtificialLife is ForestFire)
-                    {
-                        (colony.ArtificialLife as ForestFire).Update();
-                    }
-
-                    if (colony.ArtificialLife is ElementaryCA)
-                    {
-                        (colony.ArtificialLife as ElementaryCA).Update();
-                    }
+                    colony.ArtificialLife.Update();
                 });
 
                 RenderColonies(worldPixbuf);
@@ -629,25 +632,13 @@ public partial class MainWindow : Gtk.Window
     {
         if (Colonies.Count > 0)
         {
-            Paused = false;
-
-            RunButton.Sensitive = false;
-            StopButton.Sensitive = true;
-            SaveButton.Sensitive = false;
-            ShowColonies.Sensitive = false;
-            ClearButton.Sensitive = false;
+            Run();
         }
     }
 
     protected void OnStopButtonClicked(object sender, EventArgs e)
     {
-        Paused = true;
-
-        RunButton.Sensitive = true;
-        StopButton.Sensitive = false;
-        SaveButton.Sensitive = true;
-        ShowColonies.Sensitive = true;
-        ClearButton.Sensitive = true;
+        Pause();
     }
 
     protected void OnSaveButtonClicked(object sender, EventArgs e)
@@ -682,9 +673,7 @@ public partial class MainWindow : Gtk.Window
                         Colonies.RemoveAt(i);
                         GtkSelection.Selection.Boxes.RemoveAt(i);
 
-                        RefreshColonies();
-                        RenderColonies(worldPixbuf);
-                        RenderWorld(worldPixbuf);
+                        Refresh();
 
                         System.GC.Collect();
                         System.GC.WaitForPendingFinalizers();
@@ -732,9 +721,7 @@ public partial class MainWindow : Gtk.Window
 
             if (GtkSelection.Selected > 0)
             {
-                RefreshColonies();
-                RenderColonies(worldPixbuf);
-                RenderWorld(worldPixbuf);
+                Refresh();
             }
         }
     }
@@ -764,6 +751,7 @@ public partial class MainWindow : Gtk.Window
             if (type >= 0)
             {
                 ColonyParameters.Clear();
+
                 switch (ColoniesType[type])
                 {
                     case ColonyTypes.Type.Life:
@@ -783,6 +771,8 @@ public partial class MainWindow : Gtk.Window
                         break;
                     case ColonyTypes.Type.ElementaryCA:
                         ColonyParameters.AddRange(ParameterSets.ElementaryCA());
+                        break;
+                    case ColonyTypes.Type.Snowflake:
                         break;
                 }
 
@@ -871,7 +861,8 @@ public partial class MainWindow : Gtk.Window
 
                 var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, Width, Height, ColonyParameters, ColonyColor.Color, Gradient.Active);
 
-                if (!(colony is EmptyArtificialLife))
+                // Cannot handle Add Image for Elementary CA (1D)
+                if (!(colony is EmptyArtificialLife || colony is ElementaryCA))
                 {
                     var count = GtkSelection.Selection.Count();
 
@@ -883,11 +874,8 @@ public partial class MainWindow : Gtk.Window
                     }
                 }
 
-                RefreshColonies();
-                RenderColonies(worldPixbuf);
-                RenderWorld(worldPixbuf);
+                Refresh();
             }
-
         }
     }
 
@@ -910,9 +898,7 @@ public partial class MainWindow : Gtk.Window
             worldPixbuf.Fill(0);
             RenderWorld(worldPixbuf);
 
-            RunButton.Sensitive = true;
-            StopButton.Sensitive = false;
-            SaveButton.Sensitive = true;
+            Pause();
         }
     }
 }

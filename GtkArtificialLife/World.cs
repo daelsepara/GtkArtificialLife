@@ -71,10 +71,22 @@ public static class World
 
     public static void AddElementaryCA(List<Colony> Colonies, int width, int height, int x, int y, int rule, Color color)
     {
-        var ElementaryCA = new ElementaryCA(width, height, color);
+        var ElementaryCAColony = new ElementaryCA(width, height, color);
 
-        ElementaryCA.SetRule(rule);
+        ElementaryCAColony.SetRule(rule);
 
-        Colonies.Add(new Colony(x, y, ElementaryCA));
+        Colonies.Add(new Colony(x, y, ElementaryCAColony));
+    }
+
+    public static void AddSnowflakeColony(List<Colony> Colonies, int width, int height, int x, int y, Color color, bool Gradient = false)
+    {
+        var SnowflakeColony = new Snowflake(width, height, color);
+
+        if (Gradient)
+        {
+            SnowflakeColony.GradientPalette();
+        }
+
+        Colonies.Add(new Colony(x, y, SnowflakeColony));
     }
 }
