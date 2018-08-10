@@ -442,6 +442,7 @@ public partial class MainWindow : Gtk.Window
                 {
                     var rule = (int)GetNumeric(ColonyParameters, "Rule");
 
+                    GtkSelection.Selection.BoundingBoxes()[added - 1].Y0 = y;
                     GtkSelection.Selection.BoundingBoxes()[added - 1].Y1 = y + w / 2;
 
                     World.AddElementaryCA(Colonies, w, w / 2, x, y, rule, ColonyColor.Color);
