@@ -311,6 +311,140 @@
                 <property name="Y">640</property>
               </packing>
             </child>
+            <child>
+              <widget class="Gtk.Label" id="NeighborhoodLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;Neighborhood&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="X">1160</property>
+                <property name="Y">140</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="TL">
+                <property name="MemberName" />
+                <property name="Label" translatable="yes" />
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1160</property>
+                <property name="Y">160</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="TM">
+                <property name="MemberName" />
+                <property name="Label" translatable="yes" />
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1190</property>
+                <property name="Y">160</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="TR">
+                <property name="MemberName" />
+                <property name="Label" translatable="yes" />
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1220</property>
+                <property name="Y">160</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="ML">
+                <property name="MemberName" />
+                <property name="Label" translatable="yes" />
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1160</property>
+                <property name="Y">190</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="MR">
+                <property name="MemberName" />
+                <property name="Label" translatable="yes" />
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1220</property>
+                <property name="Y">190</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="CentralLabel">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;C&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="X">1195</property>
+                <property name="Y">195</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="BL">
+                <property name="MemberName" />
+                <property name="Label" translatable="yes" />
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1160</property>
+                <property name="Y">220</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="BM">
+                <property name="MemberName" />
+                <property name="Label" translatable="yes" />
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1190</property>
+                <property name="Y">220</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="BR">
+                <property name="MemberName" />
+                <property name="Label" translatable="yes" />
+                <property name="Active">True</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1220</property>
+                <property name="Y">220</property>
+              </packing>
+            </child>
           </widget>
         </child>
         <child>

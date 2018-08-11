@@ -51,6 +51,26 @@ public partial class MainWindow
 
 	private global::Gtk.Button ClearButton;
 
+	private global::Gtk.Label NeighborhoodLabel;
+
+	private global::Gtk.CheckButton TL;
+
+	private global::Gtk.CheckButton TM;
+
+	private global::Gtk.CheckButton TR;
+
+	private global::Gtk.CheckButton ML;
+
+	private global::Gtk.CheckButton MR;
+
+	private global::Gtk.Label CentralLabel;
+
+	private global::Gtk.CheckButton BL;
+
+	private global::Gtk.CheckButton BM;
+
+	private global::Gtk.CheckButton BR;
+
 	private global::Gtk.Label worldLabel;
 
 	protected virtual void Build()
@@ -287,6 +307,112 @@ public partial class MainWindow
 		global::Gtk.Fixed.FixedChild w22 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ClearButton]));
 		w22.X = 155;
 		w22.Y = 640;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.NeighborhoodLabel = new global::Gtk.Label();
+		this.NeighborhoodLabel.Name = "NeighborhoodLabel";
+		this.NeighborhoodLabel.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Neighborhood</b>");
+		this.NeighborhoodLabel.UseMarkup = true;
+		this.worldLayout.Add(this.NeighborhoodLabel);
+		global::Gtk.Fixed.FixedChild w23 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.NeighborhoodLabel]));
+		w23.X = 1160;
+		w23.Y = 140;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.TL = new global::Gtk.CheckButton();
+		this.TL.Name = "TL";
+		this.TL.Label = "";
+		this.TL.Active = true;
+		this.TL.DrawIndicator = true;
+		this.TL.FocusOnClick = false;
+		this.worldLayout.Add(this.TL);
+		global::Gtk.Fixed.FixedChild w24 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TL]));
+		w24.X = 1160;
+		w24.Y = 160;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.TM = new global::Gtk.CheckButton();
+		this.TM.Name = "TM";
+		this.TM.Label = "";
+		this.TM.Active = true;
+		this.TM.DrawIndicator = true;
+		this.TM.FocusOnClick = false;
+		this.worldLayout.Add(this.TM);
+		global::Gtk.Fixed.FixedChild w25 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TM]));
+		w25.X = 1190;
+		w25.Y = 160;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.TR = new global::Gtk.CheckButton();
+		this.TR.Name = "TR";
+		this.TR.Label = "";
+		this.TR.Active = true;
+		this.TR.DrawIndicator = true;
+		this.TR.FocusOnClick = false;
+		this.worldLayout.Add(this.TR);
+		global::Gtk.Fixed.FixedChild w26 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TR]));
+		w26.X = 1220;
+		w26.Y = 160;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.ML = new global::Gtk.CheckButton();
+		this.ML.Name = "ML";
+		this.ML.Label = "";
+		this.ML.Active = true;
+		this.ML.DrawIndicator = true;
+		this.ML.FocusOnClick = false;
+		this.worldLayout.Add(this.ML);
+		global::Gtk.Fixed.FixedChild w27 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ML]));
+		w27.X = 1160;
+		w27.Y = 190;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.MR = new global::Gtk.CheckButton();
+		this.MR.Name = "MR";
+		this.MR.Label = "";
+		this.MR.Active = true;
+		this.MR.DrawIndicator = true;
+		this.MR.FocusOnClick = false;
+		this.worldLayout.Add(this.MR);
+		global::Gtk.Fixed.FixedChild w28 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.MR]));
+		w28.X = 1220;
+		w28.Y = 190;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.CentralLabel = new global::Gtk.Label();
+		this.CentralLabel.Name = "CentralLabel";
+		this.CentralLabel.LabelProp = global::Mono.Unix.Catalog.GetString("<b>C</b>");
+		this.CentralLabel.UseMarkup = true;
+		this.worldLayout.Add(this.CentralLabel);
+		global::Gtk.Fixed.FixedChild w29 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.CentralLabel]));
+		w29.X = 1195;
+		w29.Y = 195;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.BL = new global::Gtk.CheckButton();
+		this.BL.Name = "BL";
+		this.BL.Label = "";
+		this.BL.Active = true;
+		this.BL.DrawIndicator = true;
+		this.BL.FocusOnClick = false;
+		this.worldLayout.Add(this.BL);
+		global::Gtk.Fixed.FixedChild w30 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.BL]));
+		w30.X = 1160;
+		w30.Y = 220;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.BM = new global::Gtk.CheckButton();
+		this.BM.Name = "BM";
+		this.BM.Label = "";
+		this.BM.Active = true;
+		this.BM.DrawIndicator = true;
+		this.BM.FocusOnClick = false;
+		this.worldLayout.Add(this.BM);
+		global::Gtk.Fixed.FixedChild w31 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.BM]));
+		w31.X = 1190;
+		w31.Y = 220;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.BR = new global::Gtk.CheckButton();
+		this.BR.Name = "BR";
+		this.BR.Label = "";
+		this.BR.Active = true;
+		this.BR.DrawIndicator = true;
+		this.BR.FocusOnClick = false;
+		this.worldLayout.Add(this.BR);
+		global::Gtk.Fixed.FixedChild w32 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.BR]));
+		w32.X = 1220;
+		w32.Y = 220;
 		this.worldNotebook.Add(this.worldLayout);
 		// Notebook tab
 		this.worldLabel = new global::Gtk.Label();

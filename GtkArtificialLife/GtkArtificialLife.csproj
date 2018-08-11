@@ -91,6 +91,7 @@
     <Compile Include="ConvertImage.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="ElementaryCA.cs" />
+    <Compile Include="Snowflake.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
