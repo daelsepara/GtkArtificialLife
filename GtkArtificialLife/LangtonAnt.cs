@@ -86,7 +86,7 @@ public class LangtonAnt : ArtificialLife
     {
         ColorPalette.Clear();
 
-        ColorPalette.AddRange(Utility.Gradient(ColonyColor, 4));
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor, RuleString.Length));
     }
 
     public LangtonAnt()
@@ -180,12 +180,14 @@ public class LangtonAnt : ArtificialLife
         return pixel;
     }
 
-    public void ParseRules(List<Rule> Rules, string rules, List<Color> ColorPalette)
+    public void ParseRules(List<Rule> Rules, string rules, List<Color> ColorPalette, bool randomize = true)
     {
         InitializeSeed();
 
         if (rules.Length > 0)
         {
+            var Delta = 256 / rules.Length;
+
             for (int i = 0; i < rules.Length; i++)
             {
                 if (rules[i] == 'R' || rules[i] == 'r')
@@ -196,19 +198,12 @@ public class LangtonAnt : ArtificialLife
                     }
                     else
                     {
-                        Rules.Add(new Rule(0, ColorPalette[random.Next(0, ColorPalette.Count)]));
+                        Rules.Add(new Rule(0, randomize ? ColorPalette[random.Next(0, ColorPalette.Count)] : ColorPalette[i * Delta]));
                     }
                 }
                 else
                 {
-                    if (i == 0)
-                    {
-                        Rules.Add(new Rule(1, new Color(0, 0, 0)));
-                    }
-                    else
-                    {
-                        Rules.Add(new Rule(1, ColorPalette[random.Next(0, ColorPalette.Count)]));
-                    }
+                    Rules.Add(new Rule(1, randomize ? ColorPalette[random.Next(0, ColorPalette.Count)] : ColorPalette[i * Delta]));
                 }
             }
         }
@@ -270,17 +265,14 @@ public class LangtonAnt : ArtificialLife
         ant.Moves.Add(new Ant.Movement(-1, 0));
     }
 
-    public void Randomize(int ants, string rules)
+    public void Randomize(int ants, string rules, bool randomize =  true)
     {
         InitializeSeed();
 
         if (ants > 0 && rules.Length > 0)
         {
             RuleString = rules;
-
-            Rules.Clear();
-
-            ParseRules(Rules, rules, ColorPalette);
+            ParseRulesOnce(randomize);
 
             for (int i = 0; i < ants; i++)
             {
@@ -291,7 +283,6 @@ public class LangtonAnt : ArtificialLife
                 var ant = new Ant(x, y, dir);
 
                 AddMoves(ant);
-
                 Ants.Add(ant);
 
                 WriteCell(ant, random.Next(0, rules.Length));
@@ -326,24 +317,17 @@ public class LangtonAnt : ArtificialLife
         return set;
     }
 
-    public void ParseRulesOnce()
+    public void ParseRulesOnce(bool randomize = true)
     {
         Rules.Clear();
-
-        ParseRules(Rules, RuleString, ColorPalette);
+        ParseRules(Rules, RuleString, ColorPalette, randomize);
     }
 
     public void WriteCell(int x, int y, int val)
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
         {
-            var ant = new Ant(x, y, val);
-
-            AddMoves(ant);
-
-            Ants.Add(ant);
-
-            WriteCell(ant, 1);
+            ChangeList.Add(new Change(x, y, val));
         }
     }
 

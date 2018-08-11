@@ -49,7 +49,7 @@ public static class Utility
         return ColorPalette;
     }
 
-    public static List<Color> Gradient(Color color, int states = 1)
+    public static List<Color> Gradient(Color color, int states = 255)
     {
         var ColorPalette = new List<Color>();
 

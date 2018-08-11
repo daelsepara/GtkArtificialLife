@@ -91,18 +91,20 @@ public static class ConvertImage
             if (type == ColonyTypes.Type.LangtonAnt)
             {
                 var rules = GetString(Parameters, "Rule");
+                var ants = (int)GetNumeric(Parameters, "Ants");
 
                 var colony = new LangtonAnt(Width, Height, color);
+
+                colony.SetRules(rules);
 
                 if (Gradient)
                 {
                     colony.GradientPalette();
                 }
 
-                colony.SetRules(rules);
-                colony.ParseRulesOnce();
+                colony.Randomize(ants, rules, !Gradient);
 
-                Draw(image.Pixbuf, Width, Height, colony, 4, ref population);
+                Draw(image.Pixbuf, Width, Height, colony, rules.Length, ref population);
 
                 colony.ApplyChanges();
 
@@ -130,6 +132,8 @@ public static class ConvertImage
     public static void Draw(Pixbuf pixbuf, int Width, int Height, ArtificialLife colony, int MaxStates, ref int population)
     {
         population = 0;
+
+        double delta = Math.Ceiling(256.0 / MaxStates);
 
         for (int y = 0; y < Height; y++)
         {
@@ -162,7 +166,7 @@ public static class ConvertImage
 
                 if (colony is YinYangFire)
                 {
-                    var value = (int)Mod(val, MaxStates);
+                    var value = (int)(val / delta);
 
                     (colony as YinYangFire).WriteCell(x, y, value);
 
@@ -178,7 +182,9 @@ public static class ConvertImage
 
                 if (colony is LangtonAnt)
                 {
-                    (colony as LangtonAnt).WriteCell(x, y, (int)Mod(val, MaxStates));
+                    var value = (int)(val / delta);
+
+                    (colony as LangtonAnt).WriteCell(x, y, value);
                 }
 
                 if (colony is ForestFire)
@@ -189,10 +195,5 @@ public static class ConvertImage
                 }
             }
         }
-    }
-
-    public static double Mod(double a, double m)
-    {
-        return a - m * Math.Floor(a / m);
     }
 }

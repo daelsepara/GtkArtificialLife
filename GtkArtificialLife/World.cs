@@ -33,12 +33,14 @@ public static class World
     {
         var LangtonAnt = new LangtonAnt(width, height, color);
 
+        LangtonAnt.SetRules(rules);
+
         if (Gradient)
         {
             LangtonAnt.GradientPalette();
         }
 
-        LangtonAnt.Randomize(ants, rules);
+        LangtonAnt.Randomize(ants, rules, !Gradient);
 
         Colonies.Add(new Colony(x, y, LangtonAnt));
     }
