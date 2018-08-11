@@ -202,6 +202,8 @@ public partial class MainWindow : Gtk.Window
                 ColonyParameters.Clear();
                 ColonyParameters.AddRange(Colonies[colony].ArtificialLife.Parameters());
 
+                CopyNeighborhood(Colonies[colony].ArtificialLife.GetNeighborhood());
+
                 ColonyColor.Color = Colonies[colony].ArtificialLife.Color();
 
                 for (int i = 0; i < ColoniesType.Count; i++)
@@ -340,11 +342,13 @@ public partial class MainWindow : Gtk.Window
                 var x = Math.Min(box.X0, box.X1);
                 var y = Math.Min(box.Y0, box.Y1);
 
+                var neighborhood = SetNeighborhood();
+
                 if (ColoniesType[type] == ColonyTypes.Type.Life)
                 {
                     var density = GetNumeric(ColonyParameters, "Density");
 
-                    World.AddLifeColony(Colonies, w, h, x, y, density, ColonyColor.Color);
+                    World.AddLifeColony(Colonies, w, h, x, y, density, ColonyColor.Color, neighborhood);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.LangtonAnt)
@@ -362,7 +366,7 @@ public partial class MainWindow : Gtk.Window
                     var k1 = GetNumeric(ColonyParameters, "k1");
                     var k2 = GetNumeric(ColonyParameters, "k2");
 
-                    World.AddZhabotinskyColony(Colonies, w, h, x, y, density, k1, k2, g, ColonyColor.Color, Gradient.Active);
+                    World.AddZhabotinskyColony(Colonies, w, h, x, y, density, k1, k2, g, ColonyColor.Color, neighborhood, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.YinYangFire)
@@ -370,7 +374,7 @@ public partial class MainWindow : Gtk.Window
                     var density = GetNumeric(ColonyParameters, "Density");
                     var maxstates = (int)GetNumeric(ColonyParameters, "MaxStates");
 
-                    World.AddYinYangFireColony(Colonies, w, h, x, y, density, maxstates, ColonyColor.Color, Gradient.Active);
+                    World.AddYinYangFireColony(Colonies, w, h, x, y, density, maxstates, ColonyColor.Color, neighborhood, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.ForestFire)
@@ -379,7 +383,7 @@ public partial class MainWindow : Gtk.Window
                     var F = GetNumeric(ColonyParameters, "F");
                     var P = GetNumeric(ColonyParameters, "P");
 
-                    World.AddForestFireColony(Colonies, w, h, x, y, density, F, P, ColonyColor.Color);
+                    World.AddForestFireColony(Colonies, w, h, x, y, density, F, P, ColonyColor.Color, neighborhood);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.ElementaryCA)
@@ -395,7 +399,7 @@ public partial class MainWindow : Gtk.Window
 
                 if (ColoniesType[type] == ColonyTypes.Type.Snowflake)
                 {
-                    World.AddSnowflakeColony(Colonies, w, h, x, y, ColonyColor.Color, Gradient.Active);
+                    World.AddSnowflakeColony(Colonies, w, h, x, y, ColonyColor.Color, neighborhood, Gradient.Active);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -538,6 +542,81 @@ public partial class MainWindow : Gtk.Window
         ParameterList.Active = -1;
         NumericValue.Sensitive = false;
         StringValue.Sensitive = false;
+    }
+
+    protected void ClearNeighborhood()
+    {
+        TL.Active = false;
+        TM.Active = false;
+        TR.Active = false;
+        ML.Active = false;
+        MR.Active = false;
+        BL.Active = false;
+        BM.Active = false;
+        BR.Active = false;
+    }
+
+    protected void CopyNeighborhood(List<Cell> neighborhood)
+    {
+        ClearNeighborhood();
+
+        foreach(var neighbor in neighborhood)
+        {
+            if (neighbor.X == -1 && neighbor.Y == -1)
+                TL.Active = true;
+
+            if (neighbor.X == 0 && neighbor.Y == -1)
+                TM.Active = true;
+
+            if (neighbor.X == 1 && neighbor.Y == -1)
+                TR.Active = true;
+
+            if (neighbor.X == -1 && neighbor.Y == 0)
+                ML.Active = true;
+            
+            if (neighbor.X == 1 && neighbor.Y == 0)
+                MR.Active = true;
+
+            if (neighbor.X == -1 && neighbor.Y == 1)
+                BL.Active = true;
+
+            if (neighbor.X == 0 && neighbor.Y == 1)
+                BM.Active = true;
+
+            if (neighbor.X == 1 && neighbor.Y == 1)
+                BR.Active = true;
+        }
+    }
+
+    protected List<Cell> SetNeighborhood()
+    {
+        var neighborhood = new List<Cell>();
+
+        if (TL.Active)
+            ParameterSets.AddNeighbor(neighborhood, new Cell(-1, -1));
+
+        if (TM.Active)
+            ParameterSets.AddNeighbor(neighborhood, new Cell(0, -1));
+
+        if (TR.Active)
+            ParameterSets.AddNeighbor(neighborhood, new Cell(1, -1));
+
+        if (ML.Active)
+            ParameterSets.AddNeighbor(neighborhood, new Cell(-1, 0));
+
+        if (MR.Active)
+            ParameterSets.AddNeighbor(neighborhood, new Cell(1, 0));
+
+        if (BL.Active)
+            ParameterSets.AddNeighbor(neighborhood, new Cell(-1, 1));
+
+        if (BM.Active)
+            ParameterSets.AddNeighbor(neighborhood, new Cell(0, 1));
+
+        if (BR.Active)
+            ParameterSets.AddNeighbor(neighborhood, new Cell(1, 1));
+
+        return neighborhood;
     }
 
     protected void Run()
@@ -756,23 +835,30 @@ public partial class MainWindow : Gtk.Window
                 {
                     case ColonyTypes.Type.Life:
                         ColonyParameters.AddRange(ParameterSets.Life());
+                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
                         break;
                     case ColonyTypes.Type.LangtonAnt:
                         ColonyParameters.AddRange(ParameterSets.LangtonAnt());
+                        CopyNeighborhood(ParameterSets.EmptyNeighborhood());
                         break;
                     case ColonyTypes.Type.Zhabotinsky:
                         ColonyParameters.AddRange(ParameterSets.Zhabotinsky());
+                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
                         break;
                     case ColonyTypes.Type.YinYangFire:
                         ColonyParameters.AddRange(ParameterSets.YinYangFire());
+                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
                         break;
                     case ColonyTypes.Type.ForestFire:
                         ColonyParameters.AddRange(ParameterSets.ForestFire());
+                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
                         break;
                     case ColonyTypes.Type.ElementaryCA:
                         ColonyParameters.AddRange(ParameterSets.ElementaryCA());
+                        CopyNeighborhood(ParameterSets.EmptyNeighborhood());
                         break;
                     case ColonyTypes.Type.Snowflake:
+                        CopyNeighborhood(ParameterSets.HexNeighborhood());
                         break;
                 }
 
@@ -859,7 +945,8 @@ public partial class MainWindow : Gtk.Window
                 var Width = Math.Min(worldImage.WidthRequest, LoadedImage.Pixbuf.Width);
                 var Height = Math.Min(worldImage.HeightRequest, LoadedImage.Pixbuf.Height);
 
-                var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, Width, Height, ColonyParameters, ColonyColor.Color, Gradient.Active);
+                var neighborhood = SetNeighborhood();
+                var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, Width, Height, ColonyParameters, ColonyColor.Color, neighborhood, Gradient.Active);
 
                 // Cannot handle Add Image for Elementary CA (1D)
                 if (!(colony is EmptyArtificialLife || colony is ElementaryCA))

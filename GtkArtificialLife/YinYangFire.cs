@@ -115,31 +115,10 @@ public class YinYangFire : ArtificialLife
         return new List<Pixel>(PixelWriteBuffer);
     }
 
-    public List<Cell> GetNeighborhood()
-    {
-        return new List<Cell>(Neighborhood);
-    }
-
-    public void AddNeighbor(Cell neighbor)
-    {
-        if (!Neighborhood.Contains(neighbor))
-        {
-            Neighborhood.Add(neighbor);
-        }
-    }
-
     public void AddMooreNeighborhood()
     {
         Neighborhood.Clear();
-
-        AddNeighbor(new Cell(-1, -1));
-        AddNeighbor(new Cell(0, -1));
-        AddNeighbor(new Cell(1, -1));
-        AddNeighbor(new Cell(-1, 0));
-        AddNeighbor(new Cell(1, 0));
-        AddNeighbor(new Cell(-1, 1));
-        AddNeighbor(new Cell(0, 1));
-        AddNeighbor(new Cell(1, 1));
+        Neighborhood.AddRange(ParameterSets.MooreNeighborhood());
     }
 
     public void WriteCell(int x, int y, int val)
@@ -313,5 +292,16 @@ public class YinYangFire : ArtificialLife
     public override Color Color()
     {
         return ColonyColor;
+    }
+
+    public override List<Cell> GetNeighborhood()
+    {
+        return new List<Cell>(Neighborhood);
+    }
+
+    public override void SetNeighborhood(List<Cell> neighborhood)
+    {
+        Neighborhood.Clear();
+        Neighborhood.AddRange(neighborhood);
     }
 }

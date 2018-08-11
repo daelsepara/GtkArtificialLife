@@ -32,4 +32,14 @@ public class EmptyArtificialLife : ArtificialLife
     {
         return DefaultColor;
     }
+
+    public override List<Cell> GetNeighborhood()
+    {
+        return new List<Cell>();
+    }
+
+    public override void SetNeighborhood(List<Cell> neighborhood)
+    {
+
+    }
 }

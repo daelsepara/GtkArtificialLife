@@ -3,17 +3,18 @@ using System.Collections.Generic;
 
 public static class World
 {
-    public static void AddLifeColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, Color color)
+    public static void AddLifeColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, Color color, List<Cell> Neighborhood)
     {
         var LifeColony = new Life(width, height, color);
         var maxDensity = (int)(width * height * Density);
 
         LifeColony.Randomize(maxDensity);
+        LifeColony.SetNeighborhood(Neighborhood);
 
         Colonies.Add(new Colony(x, y, LifeColony));
     }
 
-    public static void AddZhabotinskyColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double k1, double k2, double g, Color color, bool Gradient = false)
+    public static void AddZhabotinskyColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double k1, double k2, double g, Color color, List<Cell> Neighborhood, bool Gradient = false)
     {
         var ZhabotinskyColony = new Zhabotinsky(width, height, color);
         var maxDensity = (int)(width * height * Density);
@@ -25,6 +26,7 @@ public static class World
 
         ZhabotinskyColony.SetParameters(k1, k2, g);
         ZhabotinskyColony.Randomize(maxDensity);
+        ZhabotinskyColony.SetNeighborhood(Neighborhood);
 
         Colonies.Add(new Colony(x, y, ZhabotinskyColony));
     }
@@ -45,7 +47,7 @@ public static class World
         Colonies.Add(new Colony(x, y, LangtonAnt));
     }
 
-    public static void AddYinYangFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, int maxStates, Color color, bool Gradient = false)
+    public static void AddYinYangFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, int maxStates, Color color, List<Cell> Neighborhood, bool Gradient = false)
     {
         var YinYangFireColony = new YinYangFire(width, height, color);
         var maxDensity = (int)(width * height * Density);
@@ -56,17 +58,19 @@ public static class World
         }
 
         YinYangFireColony.Randomize(maxDensity, maxStates);
+        YinYangFireColony.SetNeighborhood(Neighborhood);
 
         Colonies.Add(new Colony(x, y, YinYangFireColony));
     }
 
-    public static void AddForestFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double F, double P, Color color)
+    public static void AddForestFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double F, double P, Color color, List<Cell> Neighborhood)
     {
         var ForestFireColony = new ForestFire(width, height, color);
         var maxDensity = (int)(width * height * Density);
 
         ForestFireColony.SetParameters(F, P);
         ForestFireColony.Randomize(maxDensity);
+        ForestFireColony.SetNeighborhood(Neighborhood);
 
         Colonies.Add(new Colony(x, y, ForestFireColony));
     }
@@ -80,7 +84,7 @@ public static class World
         Colonies.Add(new Colony(x, y, ElementaryCAColony));
     }
 
-    public static void AddSnowflakeColony(List<Colony> Colonies, int width, int height, int x, int y, Color color, bool Gradient = false)
+    public static void AddSnowflakeColony(List<Colony> Colonies, int width, int height, int x, int y, Color color, List<Cell> Neighborhood, bool Gradient = false)
     {
         var SnowflakeColony = new Snowflake(width, height, color);
 
@@ -88,6 +92,8 @@ public static class World
         {
             SnowflakeColony.GradientPalette();
         }
+
+        SnowflakeColony.SetNeighborhood(Neighborhood);
 
         Colonies.Add(new Colony(x, y, SnowflakeColony));
     }

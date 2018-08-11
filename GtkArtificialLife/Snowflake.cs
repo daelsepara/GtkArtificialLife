@@ -48,7 +48,7 @@ public class Snowflake : ArtificialLife
 
         AddHexNeighborhood();
 
-        WriteCell(128, 128, 1);
+        WriteCell(128, 128, Utility.NextRandom(1, MaxStates + 1));
 
         ApplyChanges();
     }
@@ -63,7 +63,7 @@ public class Snowflake : ArtificialLife
 
         AddHexNeighborhood();
 
-        WriteCell(width / 2, height / 2, 1);
+        WriteCell(width / 2, height / 2, Utility.NextRandom(1, MaxStates + 1));
 
         ApplyChanges();
     }
@@ -84,31 +84,12 @@ public class Snowflake : ArtificialLife
         }
 
         GenerateRandomColorPalette();
+
         AddHexNeighborhood();
 
-        WriteCell(width / 2, height / 2, 1);
+        WriteCell(width / 2, height / 2, Utility.NextRandom(1, MaxStates + 1));
 
         ApplyChanges();
-    }
-
-    public Snowflake(int width, int height, int maxStates, Color color)
-    {
-        InitGrid(width, height);
-
-        if (!color.Equal(EmptyColor))
-        {
-            ColonyColor = color;
-        }
-        else
-        {
-            ColonyColor = DefaultColor;
-        }
-
-        MaxStates = maxStates;
-
-        GenerateRandomColorPalette();
-
-        AddHexNeighborhood();
     }
 
     protected void InitGrid(int width, int height)
@@ -129,30 +110,10 @@ public class Snowflake : ArtificialLife
         return new List<Pixel>(PixelWriteBuffer);
     }
 
-    public List<Cell> GetNeighborhood()
-    {
-        return new List<Cell>(Neighborhood);
-    }
-
-    public void AddNeighbor(Cell neighbor)
-    {
-        if (!Neighborhood.Contains(neighbor))
-        {
-            Neighborhood.Add(neighbor);
-        }
-    }
-
-    // 6 Neighbor approximation of the hexagonal lattice
     public void AddHexNeighborhood()
     {
         Neighborhood.Clear();
-
-        AddNeighbor(new Cell(-1, -1));
-        AddNeighbor(new Cell(0, -1));
-        AddNeighbor(new Cell(-1, 0));
-        AddNeighbor(new Cell(1, 0));
-        AddNeighbor(new Cell(0, 1));
-        AddNeighbor(new Cell(1, 1));
+        Neighborhood.AddRange(ParameterSets.HexNeighborhood());
     }
 
     public void WriteCell(int x, int y, int val)
@@ -297,5 +258,16 @@ public class Snowflake : ArtificialLife
     public override Color Color()
     {
         return ColonyColor;
+    }
+
+    public override List<Cell> GetNeighborhood()
+    {
+        return new List<Cell>(Neighborhood);
+    }
+
+    public override void SetNeighborhood(List<Cell> neighborhood)
+    {
+        Neighborhood.Clear();
+        Neighborhood.AddRange(neighborhood);
     }
 }

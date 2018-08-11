@@ -75,4 +75,48 @@ public static class ParameterSets
     {
         return new List<Parameter>();
     }
+
+    public static void AddNeighbor(List<Cell> Neighborhood, Cell neighbor)
+    {
+        if (!Neighborhood.Contains(neighbor))
+        {
+            Neighborhood.Add(neighbor);
+        }
+    }
+
+    public static List<Cell> EmptyNeighborhood()
+    {
+        return new List<Cell>();
+    }
+
+    public static List<Cell> MooreNeighborhood()
+    {
+        var neighborhood = new List<Cell>();
+
+        AddNeighbor(neighborhood, new Cell(-1, -1));
+        AddNeighbor(neighborhood, new Cell(0, -1));
+        AddNeighbor(neighborhood, new Cell(1, -1));
+        AddNeighbor(neighborhood, new Cell(-1, 0));
+        AddNeighbor(neighborhood, new Cell(1, 0));
+        AddNeighbor(neighborhood, new Cell(-1, 1));
+        AddNeighbor(neighborhood, new Cell(0, 1));
+        AddNeighbor(neighborhood, new Cell(1, 1));
+
+        return neighborhood;
+    }
+
+    // 6 Neighbor approximation of the hexagonal lattice
+    public static List<Cell>  HexNeighborhood()
+    {
+        var neighborhood = new List<Cell>();
+
+        AddNeighbor(neighborhood, new Cell(-1, -1));
+        AddNeighbor(neighborhood, new Cell(0, -1));
+        AddNeighbor(neighborhood, new Cell(-1, 0));
+        AddNeighbor(neighborhood, new Cell(1, 0));
+        AddNeighbor(neighborhood, new Cell(0, 1));
+        AddNeighbor(neighborhood, new Cell(1, 1));
+
+        return neighborhood;
+    }
 }

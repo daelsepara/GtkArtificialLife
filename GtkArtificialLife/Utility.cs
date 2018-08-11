@@ -75,4 +75,11 @@ public static class Utility
 
         return ColorPalette;
     }
+
+    public static int NextRandom(int a, int b)
+    {
+        InitializeSeed();
+        
+        return random.Next(a, b);    
+    }
 }

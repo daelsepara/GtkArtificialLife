@@ -7,7 +7,7 @@ public static class ConvertImage
 {
     static Random random = new Random(Guid.NewGuid().GetHashCode());
 
-    public static ArtificialLife Convert(ColonyTypes.Type type, Gtk.Image image, int Width, int Height, List<Parameter> Parameters, Color color, bool Gradient = false)
+    public static ArtificialLife Convert(ColonyTypes.Type type, Gtk.Image image, int Width, int Height, List<Parameter> Parameters, Color color, List<Cell> Neighborhood, bool Gradient = false)
     {
         int population = 0;
 
@@ -23,6 +23,8 @@ public static class ConvertImage
                 {
                     colony.GradientPalette();
                 }
+
+                colony.SetNeighborhood(Neighborhood);
 
                 Draw(image.Pixbuf, Width, Height, colony, maxstates, ref population);
 
@@ -48,6 +50,8 @@ public static class ConvertImage
                     colony.GradientPalette();
                 }
 
+                colony.SetNeighborhood(Neighborhood);
+
                 Draw(image.Pixbuf, Width, Height, colony, 256, ref population);
 
                 colony.SetDensity(population);
@@ -60,6 +64,8 @@ public static class ConvertImage
             if (type == ColonyTypes.Type.Life)
             {
                 var colony = new Life(Width, Height, color);
+
+                colony.SetNeighborhood(Neighborhood);
 
                 Draw(image.Pixbuf, Width, Height, colony, 2, ref population);
 
@@ -78,6 +84,8 @@ public static class ConvertImage
                 var colony = new ForestFire(Width, Height, color);
 
                 colony.SetParameters(F, P);
+
+                colony.SetNeighborhood(Neighborhood);
 
                 Draw(image.Pixbuf, Width, Height, colony, 3, ref population);
 
