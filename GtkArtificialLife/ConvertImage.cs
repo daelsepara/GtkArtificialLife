@@ -118,6 +118,24 @@ public static class ConvertImage
 
                 return colony;
             }
+
+            if (type == ColonyTypes.Type.Snowflake)
+            {
+                var colony = new Snowflake(Width, Height, color);
+
+                if (Gradient)
+                {
+                    colony.GradientPalette();
+                }
+
+                colony.SetNeighborhood(Neighborhood);
+
+                Draw(image.Pixbuf, Width, Height, colony, 12, ref population);
+
+                colony.ApplyChanges();
+
+                return colony;
+            }
         }
 
         return new EmptyArtificialLife();
@@ -198,6 +216,15 @@ public static class ConvertImage
                 if (colony is ForestFire)
                 {
                     (colony as ForestFire).WriteCell(x, y, Math.Max(3, val));
+
+                    population += val & 1;
+                }
+
+                if (colony is Snowflake)
+                {
+                    var value = (int)(val / delta);
+
+                    (colony as Snowflake).WriteCell(x, y, value);
 
                     population += val & 1;
                 }

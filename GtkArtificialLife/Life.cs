@@ -124,6 +124,7 @@ public class Life : ArtificialLife
         if (x >= 0 && x < Width && y >= 0 && y < Height)
         {
             PushPixel(new Pixel(x, y, val >= 0 && val < ColorPalette.Count ? ColorPalette[val] : EmptyColor));
+
             ChangeList.Add(new Change(x, y, val));
         }
     }
@@ -189,20 +190,26 @@ public class Life : ArtificialLife
             {
                 var neighbors = CountCellNeighbors(x, y);
 
+                var state = Grid[x, y];
+                var newstate = state;
+                
                 if (IsAlive(x, y))
                 {
                     if (!SurvivalRules.Contains(neighbors))
                     {
-                        WriteCell(x, y, 0);
+                        newstate = 0;
                     }
                 }
                 else
                 {
                     if (BirthRules.Contains(neighbors))
                     {
-                        WriteCell(x, y, 1);
+                        newstate = 1;
                     }
                 }
+
+                if (state != newstate || newstate > 0)
+                    WriteCell(x, y, newstate);
             }
         }
 
