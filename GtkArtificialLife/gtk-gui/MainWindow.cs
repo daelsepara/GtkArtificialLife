@@ -71,6 +71,8 @@ public partial class MainWindow
 
 	private global::Gtk.CheckButton BR;
 
+	private global::Gtk.Button TestButton;
+
 	private global::Gtk.Label worldLabel;
 
 	protected virtual void Build()
@@ -413,6 +415,16 @@ public partial class MainWindow
 		global::Gtk.Fixed.FixedChild w32 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.BR]));
 		w32.X = 1220;
 		w32.Y = 220;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.TestButton = new global::Gtk.Button();
+		this.TestButton.CanFocus = true;
+		this.TestButton.Name = "TestButton";
+		this.TestButton.UseUnderline = true;
+		this.TestButton.Label = global::Mono.Unix.Catalog.GetString("Test");
+		this.worldLayout.Add(this.TestButton);
+		global::Gtk.Fixed.FixedChild w33 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TestButton]));
+		w33.X = 1160;
+		w33.Y = 40;
 		this.worldNotebook.Add(this.worldLayout);
 		// Notebook tab
 		this.worldLabel = new global::Gtk.Label();
@@ -442,5 +454,6 @@ public partial class MainWindow
 		this.LoadImageButton.Clicked += new global::System.EventHandler(this.OnLoadImageButtonClicked);
 		this.AddImageButton.Clicked += new global::System.EventHandler(this.OnAddImageButtonClicked);
 		this.ClearButton.Clicked += new global::System.EventHandler(this.OnClearButtonClicked);
+		this.TestButton.Clicked += new global::System.EventHandler(this.OnTestButtonClicked);
 	}
 }

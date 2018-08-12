@@ -167,7 +167,7 @@ public static class ConvertImage
 
                 if (colony is Life)
                 {
-                    (colony as Life).WriteCell(x, y, val & 1);
+                    (colony as Life).WriteCell(x, y, val);
 
                     population += val & 1;
                 }

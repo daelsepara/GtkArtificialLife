@@ -445,6 +445,20 @@
                 <property name="Y">220</property>
               </packing>
             </child>
+            <child>
+              <widget class="Gtk.Button" id="TestButton">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Test</property>
+                <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnTestButtonClicked" />
+              </widget>
+              <packing>
+                <property name="X">1160</property>
+                <property name="Y">40</property>
+              </packing>
+            </child>
           </widget>
         </child>
         <child>

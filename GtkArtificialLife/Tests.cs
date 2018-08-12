@@ -5,8 +5,10 @@ public static class Tests
 {
     public static void LifeTest(List<Colony> Colonies)
     {
+        Colonies.Clear();
+
         var w = 256;
-        var h = 56;
+        var h = 256;
 
         var neighborhood = ParameterSets.MooreNeighborhood();
 
@@ -16,12 +18,16 @@ public static class Tests
         World.AddLifeColony(Colonies, w, h, 256, 0, 0.40, new Color(255, 0, 255), neighborhood);
         World.AddLifeColony(Colonies, w, h, 0, 256, 0.40, new Color(255, 255, 0), neighborhood);
         World.AddLifeColony(Colonies, w, h, 512, 256, 0.40, new Color(0, 255, 255), neighborhood);
+
+        AddSelection(w, h);
     }
 
     public static void ZhabotinskyTest(List<Colony> Colonies)
     {
+        Colonies.Clear();
+
         var w = 256;
-        var h = 56;
+        var h = 256;
 
         var neighborhood = ParameterSets.MooreNeighborhood();
 
@@ -31,13 +37,16 @@ public static class Tests
         World.AddZhabotinskyColony(Colonies, w, h, 256, 0, 0.40, 1, 1, 10, new Color(255, 0, 255), neighborhood);
         World.AddZhabotinskyColony(Colonies, w, h, 0, 256, 0.40, 1, 1, 10, new Color(255, 255, 0), neighborhood);
         World.AddZhabotinskyColony(Colonies, w, h, 512, 256, 0.40, 1, 1, 10, new Color(0, 255, 255), neighborhood);
-    }
 
+        AddSelection(w, h);
+    }
 
     public static void LangtonAntTest(List<Colony> Colonies)
     {
+        Colonies.Clear();
+
         var w = 256;
-        var h = 56;
+        var h = 256;
 
         var neighborhood = ParameterSets.EmptyNeighborhood();
 
@@ -47,12 +56,16 @@ public static class Tests
         World.AddLangtonAntColony(Colonies, w, h, 256, 0, 40, "RRLRLRLLRL", new Color(255, 0, 255));
         World.AddLangtonAntColony(Colonies, w, h, 0, 256, 40, "RRRLLLRLLLRR", new Color(255, 255, 0));
         World.AddLangtonAntColony(Colonies, w, h, 512, 256, 40, "RRRLR", new Color(0, 255, 255));
+
+        AddSelection(w, h);
     }
 
     public static void YinYangFireTest(List<Colony> Colonies)
     {
+        Colonies.Clear();
+
         var w = 256;
-        var h = 56;
+        var h = 256;
 
         var neighborhood = ParameterSets.MooreNeighborhood();
 
@@ -62,20 +75,85 @@ public static class Tests
         World.AddYinYangFireColony(Colonies, w, h, 256, 0, 0.40, 256, new Color(255, 0, 255), neighborhood);
         World.AddYinYangFireColony(Colonies, w, w, 0, 256, 0.40, 128, new Color(255, 255, 0), neighborhood);
         World.AddYinYangFireColony(Colonies, w, h, 512, 256, 0.40, 64, new Color(0, 255, 255), neighborhood);
+
+        AddSelection(w, h);
     }
 
-    public static void LifeZhabotinskyTest(List<Colony> Colonies)
+    public static void SnowflakeTest(List<Colony> Colonies)
     {
+        Colonies.Clear();
+
         var w = 256;
-        var h = 56;
+        var h = 256;
+
+        var neighborhood = ParameterSets.HexNeighborhood();
+
+        World.AddSnowflakeColony(Colonies, w, h, 0, 0, new Color(255, 0, 0), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, h, 256, 256, new Color(0, 255, 0), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, h, 512, 0, new Color(0, 0, 255), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, h, 256, 0, new Color(255, 0, 255), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, w, 0, 256, new Color(255, 255, 0), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, h, 512, 256, new Color(0, 255, 255), neighborhood, true);
+
+        AddSelection(w, h);
+    }
+
+    public static void ForestFireTest(List<Colony> Colonies)
+    {
+        Colonies.Clear();
+
+        var w = 256;
+        var h = 256;
 
         var neighborhood = ParameterSets.MooreNeighborhood();
 
-        World.AddLifeColony(Colonies, w, h, 0, 0, 0.40, new Color(255, 0, 0), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 256, 256, 0.40, new Color(0, 255, 0), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 512, 0, 0.40, new Color(0, 0, 255), neighborhood);
-        World.AddZhabotinskyColony(Colonies, w, h, 256, 0, 0.40, 1, 1, 10, new Color(255, 0, 255), neighborhood);
-        World.AddZhabotinskyColony(Colonies, w, h, 0, 256, 0.40, 1, 1, 10, new Color(255, 255, 0), neighborhood);
-        World.AddZhabotinskyColony(Colonies, w, h, 512, 256, 0.40, 1, 1, 10, new Color(0, 255, 255), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 0, 0, 0.4, 100, 1000, new Color(255, 0, 0), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 256, 256, 0.4, 100, 1000, new Color(0, 255, 0), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 512, 0, 0.4, 100, 1000, new Color(0, 0, 255), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 256, 0, 0.4, 100, 1000, new Color(255, 0, 255), neighborhood);
+        World.AddForestFireColony(Colonies, w, w, 0, 256, 0.4, 100, 1000, new Color(255, 255, 0), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 512, 256, 0.4, 100, 1000, new Color(0, 255, 255), neighborhood);
+
+        AddSelection(w, h);
+    }
+
+    public static void ElementaryCATest(List<Colony> Colonies)
+    {
+        Colonies.Clear();
+
+        var w = 256;
+        var h = 256;
+
+        World.AddElementaryCA(Colonies, w, h, 0, 0, 30, new Color(255, 0, 0));
+        World.AddElementaryCA(Colonies, w, h, 256, 256, 110, new Color(0, 255, 0));
+        World.AddElementaryCA(Colonies, w, h, 512, 0, 75, new Color(0, 0, 255));
+        World.AddElementaryCA(Colonies, w, h, 256, 0, 45, new Color(255, 0, 255));
+        World.AddElementaryCA(Colonies, w, w, 0, 256, 18, new Color(255, 255, 0));
+        World.AddElementaryCA(Colonies, w, h, 512, 256, 118, new Color(0, 255, 255));
+
+        AddSelection(w, h);
+    }
+
+    public static void ClearSelection()
+    {
+        GtkSelection.Selection.Clear();
+        GtkSelection.Selected = 0;        
+    }
+
+    public static void AddBox(int x, int y, int w, int h)
+    {
+        GtkSelection.Selection.Add(x, y, x + w - 1, y + h - 1);
+    }
+
+    public static void AddSelection(int w, int h)
+    {
+        ClearSelection();
+
+        AddBox(0, 0, w, h);
+        AddBox(256, 256, w, h);
+        AddBox(512, 0, w, h);
+        AddBox(256, 0, w, h);
+        AddBox(0, 256, w, h);
+        AddBox(512, 256, w, h);
     }
 }

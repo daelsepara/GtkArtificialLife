@@ -560,7 +560,7 @@ public partial class MainWindow : Gtk.Window
     {
         ClearNeighborhood();
 
-        foreach(var neighbor in neighborhood)
+        foreach (var neighbor in neighborhood)
         {
             if (neighbor.X == -1 && neighbor.Y == -1)
                 TL.Active = true;
@@ -573,7 +573,7 @@ public partial class MainWindow : Gtk.Window
 
             if (neighbor.X == -1 && neighbor.Y == 0)
                 ML.Active = true;
-            
+
             if (neighbor.X == 1 && neighbor.Y == 0)
                 MR.Active = true;
 
@@ -986,6 +986,55 @@ public partial class MainWindow : Gtk.Window
             RenderWorld(worldPixbuf);
 
             Pause();
+        }
+    }
+
+    protected void OnTestButtonClicked(object sender, EventArgs e)
+    {
+        if (Paused)
+        {
+            var type = ColonyTypeList.Active;
+
+            if (type >= 0)
+            {
+                if (ColoniesType[type] == ColonyTypes.Type.Life)
+                {
+                    Tests.LifeTest(Colonies);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.LangtonAnt)
+                {
+                    Tests.LangtonAntTest(Colonies);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.Zhabotinsky)
+                {
+                    Tests.ZhabotinskyTest(Colonies);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.YinYangFire)
+                {
+                    Tests.YinYangFireTest(Colonies);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.ForestFire)
+                {
+                    Tests.ForestFireTest(Colonies);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.ElementaryCA)
+                {
+                    Tests.ElementaryCATest(Colonies);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.Snowflake)
+                {
+                    Tests.SnowflakeTest(Colonies);
+                }
+
+                RenderColonies(worldPixbuf);
+                RenderWorld(worldPixbuf);
+            }
         }
     }
 }

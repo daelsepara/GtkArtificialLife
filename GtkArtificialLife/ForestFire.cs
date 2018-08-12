@@ -8,6 +8,7 @@ public class ForestFire : ArtificialLife
     readonly List<Cell> Neighborhood = new List<Cell>();
     List<Change> ChangeList = new List<Change>();
     List<Color> ColorPalette = new List<Color>();
+
     int[,] Grid;
     const int MaxStates = 3;
     double Density = 1;
@@ -17,6 +18,7 @@ public class ForestFire : ArtificialLife
     const int Empty = 0;
     const int Normal = 1;
     const int Burning = 2;
+
     Random random = new Random(Guid.NewGuid().GetHashCode());
 
     public void GenerateColorPalette()

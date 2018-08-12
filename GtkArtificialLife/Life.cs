@@ -9,9 +9,21 @@ public class Life : ArtificialLife
     List<int> SurvivalRules = new List<int>();
     List<Cell> Neighborhood = new List<Cell>();
     List<Change> ChangeList = new List<Change>();
+    List<Color> ColorPalette = new List<Color>();
 
     int Density;
     int[,] Grid;
+
+    public void GenerateColorPalette()
+    {
+        ColorPalette.Clear();
+
+        // Generate Gradient
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
+
+        ColorPalette[0] = EmptyColor;
+        ColorPalette[1] = ColonyColor;
+    }
 
     public Life()
     {
@@ -30,7 +42,10 @@ public class Life : ArtificialLife
         ColonyColor = DefaultColor;
 
         AddMooreNeighborhood();
+
         AddRules();
+
+        GenerateColorPalette();
     }
 
     public Life(int width, int height, Color color)
@@ -50,6 +65,8 @@ public class Life : ArtificialLife
 
         AddMooreNeighborhood();
         AddRules();
+
+        GenerateColorPalette();
     }
 
     protected void InitGrid(int width, int height)
@@ -106,8 +123,8 @@ public class Life : ArtificialLife
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
         {
-            PushPixel(new Pixel(x, y, val > 0 ? ColonyColor : EmptyColor));
-            ChangeList.Add(new Change(x, y, val > 0 ? 1 : 0));
+            PushPixel(new Pixel(x, y, val >= 0 && val < ColorPalette.Count ? ColorPalette[val] : EmptyColor));
+            ChangeList.Add(new Change(x, y, val));
         }
     }
 
@@ -143,7 +160,7 @@ public class Life : ArtificialLife
 
     protected bool IsAlive(int x, int y)
     {
-        return Grid[x, y] != 0;
+        return Grid[x, y] > 0;
     }
 
     protected int CountCellNeighbors(int x, int y)
@@ -157,7 +174,7 @@ public class Life : ArtificialLife
 
             if (nx >= 0 && nx < Width && ny >= 0 && ny < Height)
             {
-                neighbors += Grid[nx, ny];
+                neighbors += IsAlive(nx, ny) ? 1 : 0;
             }
         }
 
@@ -230,7 +247,7 @@ public class Life : ArtificialLife
             {
                 if (Grid[x, y] > 0)
                 {
-                    WriteCell(x, y, 1);
+                    WriteCell(x, y, Grid[x, y]);
                 }
             }
         }
