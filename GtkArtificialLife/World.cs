@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 public static class World
 {
-    public static void AddLifeColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, Color color, List<Cell> Neighborhood)
+    public static void AddLifeColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, string Birth, string Survival, Color color, List<Cell> Neighborhood)
     {
         var LifeColony = new Life(width, height, color);
         var maxDensity = (int)(width * height * Density);
 
         LifeColony.Randomize(maxDensity);
         LifeColony.SetNeighborhood(Neighborhood);
+        LifeColony.SetParameters(Birth, Survival);
+        LifeColony.AddRules();
 
         Colonies.Add(new Colony(x, y, LifeColony));
     }
@@ -84,7 +86,7 @@ public static class World
         Colonies.Add(new Colony(x, y, ElementaryCAColony));
     }
 
-    public static void AddSnowflakeColony(List<Colony> Colonies, int width, int height, int x, int y, Color color, List<Cell> Neighborhood, bool Gradient = false)
+    public static void AddSnowflakeColony(List<Colony> Colonies, int width, int height, int x, int y, int MaxStates, string Growth, Color color, List<Cell> Neighborhood, bool Gradient = false)
     {
         var SnowflakeColony = new Snowflake(width, height, color);
 
@@ -94,6 +96,8 @@ public static class World
         }
 
         SnowflakeColony.SetNeighborhood(Neighborhood);
+        SnowflakeColony.SetParameters(Growth, MaxStates);
+        SnowflakeColony.AddRules();
 
         Colonies.Add(new Colony(x, y, SnowflakeColony));
     }

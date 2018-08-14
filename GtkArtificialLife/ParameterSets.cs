@@ -8,7 +8,9 @@ public static class ParameterSets
     {
         var set = new List<Parameter>
         {
-            new Parameter("Density", 0.4, 0.01, 1.0)
+            new Parameter("Density", 0.4, 0.01, 1.0),
+            new Parameter("Birth", "3"),
+            new Parameter("Survival", "2,3")
         };
 
         return set;
@@ -73,7 +75,13 @@ public static class ParameterSets
 
     public static List<Parameter> Snowflake()
     {
-        return new List<Parameter>();
+        var set = new List<Parameter>
+        {
+            new Parameter("Growth", "1,3,6"),
+            new Parameter("MaxStates", 12, 1, 256)
+        };
+
+        return set;
     }
 
     public static void AddNeighbor(List<Cell> Neighborhood, Cell neighbor)

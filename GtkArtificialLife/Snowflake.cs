@@ -8,6 +8,9 @@ public class Snowflake : ArtificialLife
     List<Cell> Neighborhood = new List<Cell>();
     List<Change> ChangeList = new List<Change>();
     List<Color> ColorPalette = new List<Color>();
+    List<int> GrowthRules = new List<int>();
+
+    string Growth = "1,3,6";
     int[,] Grid;
     int MaxStates = 12;
     int Delta = 1;
@@ -116,6 +119,11 @@ public class Snowflake : ArtificialLife
         Neighborhood.AddRange(ParameterSets.HexNeighborhood());
     }
 
+    public void AddRules()
+    {
+        ParseRules(GrowthRules, Growth);
+    }
+
     public void WriteCell(int x, int y, int val)
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
@@ -196,11 +204,11 @@ public class Snowflake : ArtificialLife
 
                     if (state == 0)
                     {
-                        newstate = (CellSum == 1 || CellSum == 3 || CellSum == 6) ? (state % 12) + 1 : 0;
+                        newstate = GrowthRules.Contains(CellSum) ? (state % MaxStates) + 1 : 0;
                     }
                     else
                     {
-                        newstate = (state % 12) + 1;
+                        newstate = (state % MaxStates) + 1;
                     }
 
                     if (state != newstate || newstate > 0)
@@ -244,7 +252,13 @@ public class Snowflake : ArtificialLife
 
     public override List<Parameter> Parameters()
     {
-        return new List<Parameter>();
+        var set = new List<Parameter>
+        {
+            new Parameter("Growth", Growth),
+            new Parameter("MaxStates", MaxStates, 1, 256)
+        };
+
+        return set;
     }
 
     public void WriteGrid(int x, int y, int val)
@@ -269,5 +283,45 @@ public class Snowflake : ArtificialLife
     {
         Neighborhood.Clear();
         Neighborhood.AddRange(neighborhood);
+    }
+
+    public void SetParameters(string growth, int maxStates)
+    {
+        if (!String.IsNullOrEmpty(growth))
+            Growth = growth;
+
+        if (maxStates > 0)
+        {
+            MaxStates = maxStates;
+            Delta = maxStates > 0 ? (256 / maxStates) : 0;
+        }
+    }
+
+    public void ParseRules(List<int> Set, string rules)
+    {
+        if (!String.IsNullOrEmpty(rules))
+        {
+            var conditions = rules.Split(',');
+
+            if (conditions.Length > 0)
+            {
+                Set.Clear();
+
+                for (int i = 0; i < conditions.Length; i++)
+                {
+                    try
+                    {
+                        var count = Convert.ToInt32(conditions[i]);
+
+                        if (count > 0 && !Set.Contains(count))
+                            Set.Add(count);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("{0}: Unable to convert: {1}", ex.Message, conditions[i]);
+                    }
+                }
+            }
+        }
     }
 }

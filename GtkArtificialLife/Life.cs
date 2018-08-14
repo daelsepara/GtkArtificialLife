@@ -11,6 +11,9 @@ public class Life : ArtificialLife
     List<Change> ChangeList = new List<Change>();
     List<Color> ColorPalette = new List<Color>();
 
+    String Birth = "3";
+    String Survival = "2,3";
+
     int Density;
     int[,] Grid;
 
@@ -32,7 +35,6 @@ public class Life : ArtificialLife
         ColonyColor = DefaultColor;
 
         AddMooreNeighborhood();
-        AddRules();
     }
 
     public Life(int width, int height)
@@ -42,8 +44,6 @@ public class Life : ArtificialLife
         ColonyColor = DefaultColor;
 
         AddMooreNeighborhood();
-
-        AddRules();
 
         GenerateColorPalette();
     }
@@ -64,7 +64,6 @@ public class Life : ArtificialLife
         }
 
         AddMooreNeighborhood();
-        AddRules();
 
         GenerateColorPalette();
     }
@@ -95,28 +94,8 @@ public class Life : ArtificialLife
 
     public void AddRules()
     {
-        BirthRules.Clear();
-        SurvivalRules.Clear();
-
-        AddBirthRule(3);
-        AddSurvivalRule(2);
-        AddSurvivalRule(3);
-    }
-
-    public void AddBirthRule(int count)
-    {
-        if (count > 0 && !BirthRules.Contains(count))
-        {
-            BirthRules.Add(count);
-        }
-    }
-
-    public void AddSurvivalRule(int count)
-    {
-        if (count > 0 && !SurvivalRules.Contains(count))
-        {
-            SurvivalRules.Add(count);
-        }
+        ParseRules(BirthRules, Birth);
+        ParseRules(SurvivalRules, Survival);
     }
 
     public void WriteCell(int x, int y, int val)
@@ -192,7 +171,7 @@ public class Life : ArtificialLife
 
                 var state = Grid[x, y];
                 var newstate = state;
-                
+
                 if (IsAlive(x, y))
                 {
                     if (!SurvivalRules.Contains(neighbors))
@@ -266,7 +245,9 @@ public class Life : ArtificialLife
 
         var set = new List<Parameter>
         {
-            new Parameter("Density", density, 0.01, 1.0)
+            new Parameter("Density", density, 0.01, 1.0),
+            new Parameter("Birth", Birth),
+            new Parameter("Survival", Survival)
         };
 
         return set;
@@ -291,5 +272,42 @@ public class Life : ArtificialLife
     {
         Neighborhood.Clear();
         Neighborhood.AddRange(neighborhood);
+    }
+
+    public void SetParameters(string birth, string survival)
+    {
+        if (!String.IsNullOrEmpty(birth))
+            Birth = birth;
+
+        if (!String.IsNullOrEmpty(survival))
+            Survival = survival;
+    }
+
+    public void ParseRules(List<int> Set, string rules)
+    {
+        if (!String.IsNullOrEmpty(rules))
+        {
+            var conditions = rules.Split(',');
+
+            if (conditions.Length > 0)
+            {
+                Set.Clear();
+
+                for (int i = 0; i < conditions.Length; i++)
+                {
+                    try
+                    {
+                        var count = Convert.ToInt32(conditions[i]);
+
+                        if (count > 0 && !Set.Contains(count))
+                            Set.Add(count);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("{0}: Unable to convert: {1}", ex.Message, conditions[i]);
+                    }
+                }
+            }
+        }
     }
 }

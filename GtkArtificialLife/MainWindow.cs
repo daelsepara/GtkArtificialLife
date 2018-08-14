@@ -347,8 +347,10 @@ public partial class MainWindow : Gtk.Window
                 if (ColoniesType[type] == ColonyTypes.Type.Life)
                 {
                     var density = GetNumeric(ColonyParameters, "Density");
+                    var Birth = GetString(ColonyParameters, "Birth");
+                    var Survival = GetString(ColonyParameters, "Survival");
 
-                    World.AddLifeColony(Colonies, w, h, x, y, density, ColonyColor.Color, neighborhood);
+                    World.AddLifeColony(Colonies, w, h, x, y, density, Birth, Survival, ColonyColor.Color, neighborhood);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.LangtonAnt)
@@ -399,7 +401,10 @@ public partial class MainWindow : Gtk.Window
 
                 if (ColoniesType[type] == ColonyTypes.Type.Snowflake)
                 {
-                    World.AddSnowflakeColony(Colonies, w, h, x, y, ColonyColor.Color, neighborhood, Gradient.Active);
+                    var MaxStates = (int)GetNumeric(ColonyParameters, "MaxStates");
+                    var Growth = GetString(ColonyParameters, "Growth");
+
+                    World.AddSnowflakeColony(Colonies, w, h, x, y, MaxStates, Growth, ColonyColor.Color, neighborhood, Gradient.Active);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -858,6 +863,7 @@ public partial class MainWindow : Gtk.Window
                         CopyNeighborhood(ParameterSets.EmptyNeighborhood());
                         break;
                     case ColonyTypes.Type.Snowflake:
+                        ColonyParameters.AddRange(ParameterSets.Snowflake());
                         CopyNeighborhood(ParameterSets.HexNeighborhood());
                         break;
                 }

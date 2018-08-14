@@ -79,14 +79,18 @@ public partial class MainWindow
 	{
 		global::Stetic.Gui.Initialize(this);
 		// Widget MainWindow
-		this.WidthRequest = 1280;
+		this.WidthRequest = 1200;
 		this.HeightRequest = 720;
 		this.Name = "MainWindow";
 		this.Title = global::Mono.Unix.Catalog.GetString("MainWindow");
 		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+		this.Resizable = false;
+		this.AllowGrow = false;
+		this.DefaultWidth = 1200;
+		this.DefaultHeight = 720;
 		// Container child MainWindow.Gtk.Container+ContainerChild
 		this.worldNotebook = new global::Gtk.Notebook();
-		this.worldNotebook.WidthRequest = 1280;
+		this.worldNotebook.WidthRequest = 1200;
 		this.worldNotebook.HeightRequest = 720;
 		this.worldNotebook.CanFocus = true;
 		this.worldNotebook.Name = "worldNotebook";
@@ -144,7 +148,7 @@ public partial class MainWindow
 		w5.Y = 640;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.ColonyTypeList = global::Gtk.ComboBox.NewText();
-		this.ColonyTypeList.WidthRequest = 300;
+		this.ColonyTypeList.WidthRequest = 200;
 		this.ColonyTypeList.Name = "ColonyTypeList";
 		this.worldLayout.Add(this.ColonyTypeList);
 		global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ColonyTypeList]));
@@ -161,7 +165,7 @@ public partial class MainWindow
 		w7.Y = 20;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.ColonyColor = new global::Gtk.ColorButton();
-		this.ColonyColor.WidthRequest = 300;
+		this.ColonyColor.WidthRequest = 200;
 		this.ColonyColor.CanFocus = true;
 		this.ColonyColor.Events = ((global::Gdk.EventMask)(784));
 		this.ColonyColor.Name = "ColonyColor";
@@ -189,7 +193,7 @@ public partial class MainWindow
 		w10.Y = 140;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.ParameterList = global::Gtk.ComboBox.NewText();
-		this.ParameterList.WidthRequest = 300;
+		this.ParameterList.WidthRequest = 200;
 		this.ParameterList.Name = "ParameterList";
 		this.worldLayout.Add(this.ParameterList);
 		global::Gtk.Fixed.FixedChild w11 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ParameterList]));
@@ -206,7 +210,7 @@ public partial class MainWindow
 		w12.Y = 200;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.StringValue = new global::Gtk.Entry();
-		this.StringValue.WidthRequest = 300;
+		this.StringValue.WidthRequest = 200;
 		this.StringValue.CanFocus = true;
 		this.StringValue.Name = "StringValue";
 		this.StringValue.IsEditable = true;
@@ -226,7 +230,7 @@ public partial class MainWindow
 		w14.Y = 260;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.NumericValue = new global::Gtk.SpinButton(0D, 100D, 1D);
-		this.NumericValue.WidthRequest = 300;
+		this.NumericValue.WidthRequest = 200;
 		this.NumericValue.CanFocus = true;
 		this.NumericValue.Name = "NumericValue";
 		this.NumericValue.Adjustment.PageIncrement = 10D;
@@ -284,7 +288,7 @@ public partial class MainWindow
 		this.Gradient.UseUnderline = true;
 		this.worldLayout.Add(this.Gradient);
 		global::Gtk.Fixed.FixedChild w20 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.Gradient]));
-		w20.X = 1155;
+		w20.X = 1055;
 		w20.Y = 105;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.ShowColonies = new global::Gtk.ToggleButton();
@@ -316,7 +320,7 @@ public partial class MainWindow
 		this.NeighborhoodLabel.UseMarkup = true;
 		this.worldLayout.Add(this.NeighborhoodLabel);
 		global::Gtk.Fixed.FixedChild w23 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.NeighborhoodLabel]));
-		w23.X = 1160;
+		w23.X = 1060;
 		w23.Y = 140;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.TL = new global::Gtk.CheckButton();
@@ -327,7 +331,7 @@ public partial class MainWindow
 		this.TL.FocusOnClick = false;
 		this.worldLayout.Add(this.TL);
 		global::Gtk.Fixed.FixedChild w24 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TL]));
-		w24.X = 1160;
+		w24.X = 1060;
 		w24.Y = 160;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.TM = new global::Gtk.CheckButton();
@@ -338,7 +342,7 @@ public partial class MainWindow
 		this.TM.FocusOnClick = false;
 		this.worldLayout.Add(this.TM);
 		global::Gtk.Fixed.FixedChild w25 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TM]));
-		w25.X = 1190;
+		w25.X = 1090;
 		w25.Y = 160;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.TR = new global::Gtk.CheckButton();
@@ -349,7 +353,7 @@ public partial class MainWindow
 		this.TR.FocusOnClick = false;
 		this.worldLayout.Add(this.TR);
 		global::Gtk.Fixed.FixedChild w26 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TR]));
-		w26.X = 1220;
+		w26.X = 1120;
 		w26.Y = 160;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.ML = new global::Gtk.CheckButton();
@@ -360,7 +364,7 @@ public partial class MainWindow
 		this.ML.FocusOnClick = false;
 		this.worldLayout.Add(this.ML);
 		global::Gtk.Fixed.FixedChild w27 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ML]));
-		w27.X = 1160;
+		w27.X = 1060;
 		w27.Y = 190;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.MR = new global::Gtk.CheckButton();
@@ -371,7 +375,7 @@ public partial class MainWindow
 		this.MR.FocusOnClick = false;
 		this.worldLayout.Add(this.MR);
 		global::Gtk.Fixed.FixedChild w28 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.MR]));
-		w28.X = 1220;
+		w28.X = 1120;
 		w28.Y = 190;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.CentralLabel = new global::Gtk.Label();
@@ -380,7 +384,7 @@ public partial class MainWindow
 		this.CentralLabel.UseMarkup = true;
 		this.worldLayout.Add(this.CentralLabel);
 		global::Gtk.Fixed.FixedChild w29 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.CentralLabel]));
-		w29.X = 1195;
+		w29.X = 1095;
 		w29.Y = 195;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.BL = new global::Gtk.CheckButton();
@@ -391,7 +395,7 @@ public partial class MainWindow
 		this.BL.FocusOnClick = false;
 		this.worldLayout.Add(this.BL);
 		global::Gtk.Fixed.FixedChild w30 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.BL]));
-		w30.X = 1160;
+		w30.X = 1060;
 		w30.Y = 220;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.BM = new global::Gtk.CheckButton();
@@ -402,7 +406,7 @@ public partial class MainWindow
 		this.BM.FocusOnClick = false;
 		this.worldLayout.Add(this.BM);
 		global::Gtk.Fixed.FixedChild w31 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.BM]));
-		w31.X = 1190;
+		w31.X = 1090;
 		w31.Y = 220;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.BR = new global::Gtk.CheckButton();
@@ -413,7 +417,7 @@ public partial class MainWindow
 		this.BR.FocusOnClick = false;
 		this.worldLayout.Add(this.BR);
 		global::Gtk.Fixed.FixedChild w32 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.BR]));
-		w32.X = 1220;
+		w32.X = 1120;
 		w32.Y = 220;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.TestButton = new global::Gtk.Button();
@@ -423,7 +427,7 @@ public partial class MainWindow
 		this.TestButton.Label = global::Mono.Unix.Catalog.GetString("Test");
 		this.worldLayout.Add(this.TestButton);
 		global::Gtk.Fixed.FixedChild w33 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TestButton]));
-		w33.X = 1160;
+		w33.X = 1060;
 		w33.Y = 40;
 		this.worldNotebook.Add(this.worldLayout);
 		// Notebook tab
@@ -437,8 +441,6 @@ public partial class MainWindow
 		{
 			this.Child.ShowAll();
 		}
-		this.DefaultWidth = 1280;
-		this.DefaultHeight = 720;
 		this.Show();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
 		this.worldImageEventBox.ButtonPressEvent += new global::Gtk.ButtonPressEventHandler(this.OnWorldImageEventBoxButtonPressEvent);

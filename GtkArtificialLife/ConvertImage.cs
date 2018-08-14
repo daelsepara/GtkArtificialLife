@@ -63,7 +63,13 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.Life)
             {
+                var Birth = GetString(Parameters, "Birth");
+                var Survival = GetString(Parameters, "Survival");
+
                 var colony = new Life(Width, Height, color);
+
+                colony.SetParameters(Birth, Survival);
+                colony.AddRules();
 
                 colony.SetNeighborhood(Neighborhood);
 
@@ -121,7 +127,13 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.Snowflake)
             {
+                var MaxStates = (int)GetNumeric(Parameters, "MaxStates");
+                var Growth = GetString(Parameters, "Growth");
+
                 var colony = new Snowflake(Width, Height, color);
+
+                colony.SetParameters(Growth, MaxStates);
+                colony.AddRules();
 
                 if (Gradient)
                 {
@@ -130,7 +142,7 @@ public static class ConvertImage
 
                 colony.SetNeighborhood(Neighborhood);
 
-                Draw(image.Pixbuf, Width, Height, colony, 12, ref population);
+                Draw(image.Pixbuf, Width, Height, colony, MaxStates, ref population);
 
                 colony.ApplyChanges();
 
@@ -226,7 +238,7 @@ public static class ConvertImage
 
                     (colony as Snowflake).WriteCell(x, y, value);
 
-                    population += val & 1;
+                    population += val > 0 ? 1 : 0;
                 }
             }
         }

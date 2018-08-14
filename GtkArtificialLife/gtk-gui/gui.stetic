@@ -10,15 +10,19 @@
   </import>
   <widget class="Gtk.Window" id="MainWindow" design-size="1280 720">
     <property name="MemberName" />
-    <property name="WidthRequest">1280</property>
+    <property name="WidthRequest">1200</property>
     <property name="HeightRequest">720</property>
     <property name="Title" translatable="yes">MainWindow</property>
     <property name="WindowPosition">CenterOnParent</property>
+    <property name="Resizable">False</property>
+    <property name="AllowGrow">False</property>
+    <property name="DefaultWidth">1200</property>
+    <property name="DefaultHeight">720</property>
     <signal name="DeleteEvent" handler="OnDeleteEvent" />
     <child>
       <widget class="Gtk.Notebook" id="worldNotebook">
         <property name="MemberName" />
-        <property name="WidthRequest">1280</property>
+        <property name="WidthRequest">1200</property>
         <property name="HeightRequest">720</property>
         <property name="CanFocus">True</property>
         <property name="CurrentPage">0</property>
@@ -94,7 +98,7 @@
             <child>
               <widget class="Gtk.ComboBox" id="ColonyTypeList">
                 <property name="MemberName" />
-                <property name="WidthRequest">300</property>
+                <property name="WidthRequest">200</property>
                 <property name="IsTextCombo">True</property>
                 <property name="Items" translatable="yes" />
                 <signal name="Changed" handler="OnColonyTypeListChanged" />
@@ -118,7 +122,7 @@
             <child>
               <widget class="Gtk.ColorButton" id="ColonyColor">
                 <property name="MemberName" />
-                <property name="WidthRequest">300</property>
+                <property name="WidthRequest">200</property>
                 <property name="CanFocus">True</property>
                 <property name="Events">ButtonMotionMask, ButtonPressMask, ButtonReleaseMask</property>
                 <property name="Alpha">-1</property>
@@ -153,7 +157,7 @@
             <child>
               <widget class="Gtk.ComboBox" id="ParameterList">
                 <property name="MemberName" />
-                <property name="WidthRequest">300</property>
+                <property name="WidthRequest">200</property>
                 <property name="IsTextCombo">True</property>
                 <property name="Items" translatable="yes" />
                 <signal name="Changed" handler="OnParameterListChanged" />
@@ -177,7 +181,7 @@
             <child>
               <widget class="Gtk.Entry" id="StringValue">
                 <property name="MemberName" />
-                <property name="WidthRequest">300</property>
+                <property name="WidthRequest">200</property>
                 <property name="CanFocus">True</property>
                 <property name="IsEditable">True</property>
                 <property name="InvisibleChar">●</property>
@@ -202,7 +206,7 @@
             <child>
               <widget class="Gtk.SpinButton" id="NumericValue">
                 <property name="MemberName" />
-                <property name="WidthRequest">300</property>
+                <property name="WidthRequest">200</property>
                 <property name="CanFocus">True</property>
                 <property name="Upper">100</property>
                 <property name="PageIncrement">10</property>
@@ -277,7 +281,7 @@
                 <property name="UseUnderline">True</property>
               </widget>
               <packing>
-                <property name="X">1155</property>
+                <property name="X">1055</property>
                 <property name="Y">105</property>
               </packing>
             </child>
@@ -318,7 +322,7 @@
                 <property name="UseMarkup">True</property>
               </widget>
               <packing>
-                <property name="X">1160</property>
+                <property name="X">1060</property>
                 <property name="Y">140</property>
               </packing>
             </child>
@@ -332,7 +336,7 @@
                 <property name="FocusOnClick">False</property>
               </widget>
               <packing>
-                <property name="X">1160</property>
+                <property name="X">1060</property>
                 <property name="Y">160</property>
               </packing>
             </child>
@@ -346,7 +350,7 @@
                 <property name="FocusOnClick">False</property>
               </widget>
               <packing>
-                <property name="X">1190</property>
+                <property name="X">1090</property>
                 <property name="Y">160</property>
               </packing>
             </child>
@@ -360,7 +364,7 @@
                 <property name="FocusOnClick">False</property>
               </widget>
               <packing>
-                <property name="X">1220</property>
+                <property name="X">1120</property>
                 <property name="Y">160</property>
               </packing>
             </child>
@@ -374,7 +378,7 @@
                 <property name="FocusOnClick">False</property>
               </widget>
               <packing>
-                <property name="X">1160</property>
+                <property name="X">1060</property>
                 <property name="Y">190</property>
               </packing>
             </child>
@@ -388,7 +392,7 @@
                 <property name="FocusOnClick">False</property>
               </widget>
               <packing>
-                <property name="X">1220</property>
+                <property name="X">1120</property>
                 <property name="Y">190</property>
               </packing>
             </child>
@@ -399,7 +403,7 @@
                 <property name="UseMarkup">True</property>
               </widget>
               <packing>
-                <property name="X">1195</property>
+                <property name="X">1095</property>
                 <property name="Y">195</property>
               </packing>
             </child>
@@ -413,7 +417,7 @@
                 <property name="FocusOnClick">False</property>
               </widget>
               <packing>
-                <property name="X">1160</property>
+                <property name="X">1060</property>
                 <property name="Y">220</property>
               </packing>
             </child>
@@ -427,7 +431,7 @@
                 <property name="FocusOnClick">False</property>
               </widget>
               <packing>
-                <property name="X">1190</property>
+                <property name="X">1090</property>
                 <property name="Y">220</property>
               </packing>
             </child>
@@ -441,7 +445,7 @@
                 <property name="FocusOnClick">False</property>
               </widget>
               <packing>
-                <property name="X">1220</property>
+                <property name="X">1120</property>
                 <property name="Y">220</property>
               </packing>
             </child>
@@ -455,7 +459,7 @@
                 <signal name="Clicked" handler="OnTestButtonClicked" />
               </widget>
               <packing>
-                <property name="X">1160</property>
+                <property name="X">1060</property>
                 <property name="Y">40</property>
               </packing>
             </child>

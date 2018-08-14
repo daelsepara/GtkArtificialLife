@@ -1,4 +1,5 @@
 using Gdk;
+using System;
 using System.Collections.Generic;
 
 public static class Tests
@@ -12,12 +13,15 @@ public static class Tests
 
         var neighborhood = ParameterSets.MooreNeighborhood();
 
-        World.AddLifeColony(Colonies, w, h, 0, 0, 0.40, new Color(255, 0, 0), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 256, 256, 0.40, new Color(0, 255, 0), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 512, 0, 0.40, new Color(0, 0, 255), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 256, 0, 0.40, new Color(255, 0, 255), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 0, 256, 0.40, new Color(255, 255, 0), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 512, 256, 0.40, new Color(0, 255, 255), neighborhood);
+        var Birth = "3";
+        var Survival = "2,3";
+
+        World.AddLifeColony(Colonies, w, h, 0, 0, 0.40, Birth, Survival, new Color(255, 0, 0), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 256, 256, 0.40, Birth, Survival, new Color(0, 255, 0), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 512, 0, 0.40, Birth, Survival, new Color(0, 0, 255), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 256, 0, 0.40, Birth, Survival, new Color(255, 0, 255), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 0, 256, 0.40, Birth, Survival, new Color(255, 255, 0), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 512, 256, 0.40, Birth, Survival, new Color(0, 255, 255), neighborhood);
 
         AddSelection(w, h);
     }
@@ -88,12 +92,15 @@ public static class Tests
 
         var neighborhood = ParameterSets.HexNeighborhood();
 
-        World.AddSnowflakeColony(Colonies, w, h, 0, 0, new Color(255, 0, 0), neighborhood, true);
-        World.AddSnowflakeColony(Colonies, w, h, 256, 256, new Color(0, 255, 0), neighborhood, true);
-        World.AddSnowflakeColony(Colonies, w, h, 512, 0, new Color(0, 0, 255), neighborhood, true);
-        World.AddSnowflakeColony(Colonies, w, h, 256, 0, new Color(255, 0, 255), neighborhood, true);
-        World.AddSnowflakeColony(Colonies, w, w, 0, 256, new Color(255, 255, 0), neighborhood, true);
-        World.AddSnowflakeColony(Colonies, w, h, 512, 256, new Color(0, 255, 255), neighborhood, true);
+        var Growth = "1,3,6";
+        var MaxStates = 12;
+
+        World.AddSnowflakeColony(Colonies, w, h, 0, 0, MaxStates, Growth, new Color(255, 0, 0), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, h, 256, 256, MaxStates, Growth, new Color(0, 255, 0), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, h, 512, 0, MaxStates, Growth, new Color(0, 0, 255), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, h, 256, 0, MaxStates, Growth, new Color(255, 0, 255), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, w, 0, 256, MaxStates, Growth, new Color(255, 255, 0), neighborhood, true);
+        World.AddSnowflakeColony(Colonies, w, h, 512, 256, MaxStates, Growth, new Color(0, 255, 255), neighborhood, true);
 
         AddSelection(w, h);
     }
