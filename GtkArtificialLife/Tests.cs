@@ -152,6 +152,25 @@ public static class Tests
         GtkSelection.Selection.Add(x, y, x + w - 1, y + h - 1);
     }
 
+    public static void IceTest(List<Colony> Colonies)
+    {
+        Colonies.Clear();
+
+        var w = 256;
+        var h = 256;
+
+        var neighborhood = ParameterSets.MooreNeighborhood();
+
+        World.AddIceColony(Colonies, w, h, 0, 0, 0.4, 30, new Color(255, 0, 0), neighborhood);
+        World.AddIceColony(Colonies, w, h, 256, 256, 0.4, 30, new Color(0, 255, 0), neighborhood);
+        World.AddIceColony(Colonies, w, h, 512, 0, 0.4, 30, new Color(0, 0, 255), neighborhood);
+        World.AddIceColony(Colonies, w, h, 256, 0, 0.4, 30, new Color(255, 0, 255), neighborhood);
+        World.AddIceColony(Colonies, w, w, 0, 256, 0.4, 30, new Color(255, 255, 0), neighborhood);
+        World.AddIceColony(Colonies, w, h, 512, 256, 0.4, 30, new Color(0, 255, 255), neighborhood);
+
+        AddSelection(w, h);
+    }
+
     public static void AddSelection(int w, int h)
     {
         ClearSelection();

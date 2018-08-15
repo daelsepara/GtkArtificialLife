@@ -84,6 +84,17 @@ public static class ParameterSets
         return set;
     }
 
+    public static List<Parameter> Ice()
+    {
+        var set = new List<Parameter>
+        {
+            new Parameter("Density", 0.01, 0.01, 1.0),
+            new Parameter("Freeze", 30, 1, 1000)
+        };
+
+        return set;
+    }
+
     public static void AddNeighbor(List<Cell> Neighborhood, Cell neighbor)
     {
         if (!Neighborhood.Contains(neighbor))
@@ -124,6 +135,19 @@ public static class ParameterSets
         AddNeighbor(neighborhood, new Cell(1, 0));
         AddNeighbor(neighborhood, new Cell(0, 1));
         AddNeighbor(neighborhood, new Cell(1, 1));
+
+        return neighborhood;
+    }
+
+    // 4 Neighbor Von Neumann
+    public static List<Cell> VonNeumannNeighborhood()
+    {
+        var neighborhood = new List<Cell>();
+
+        AddNeighbor(neighborhood, new Cell(0, -1));
+        AddNeighbor(neighborhood, new Cell(-1, 0));
+        AddNeighbor(neighborhood, new Cell(1, 0));
+        AddNeighbor(neighborhood, new Cell(0, 1));
 
         return neighborhood;
     }

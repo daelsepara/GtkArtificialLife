@@ -77,6 +77,18 @@ public static class World
         Colonies.Add(new Colony(x, y, ForestFireColony));
     }
 
+    public static void AddIceColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double Freeze, Color color, List<Cell> Neighborhood)
+    {
+        var IceColony = new Ice(width, height, color);
+        var maxDensity = (int)(width * height * Density);
+
+        IceColony.SetParameters(Freeze);
+        IceColony.Randomize(maxDensity);
+        IceColony.SetNeighborhood(Neighborhood);
+
+        Colonies.Add(new Colony(x, y, IceColony));
+    }
+
     public static void AddElementaryCA(List<Colony> Colonies, int width, int height, int x, int y, int rule, Color color)
     {
         var ElementaryCAColony = new ElementaryCA(width, height, color);

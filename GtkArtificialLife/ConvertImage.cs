@@ -148,6 +148,25 @@ public static class ConvertImage
 
                 return colony;
             }
+
+            if (type == ColonyTypes.Type.Ice)
+            {
+                var Freeze = (int)GetNumeric(Parameters, "Freeze");
+
+                var colony = new Ice(Width, Height, color);
+
+                colony.SetParameters(Freeze);
+
+                colony.SetNeighborhood(Neighborhood);
+
+                Draw(image.Pixbuf, Width, Height, colony, 3, ref population);
+
+                colony.SetDensity(population);
+
+                colony.ApplyChanges();
+
+                return colony;
+            }
         }
 
         return new EmptyArtificialLife();
@@ -228,6 +247,13 @@ public static class ConvertImage
                 if (colony is ForestFire)
                 {
                     (colony as ForestFire).WriteCell(x, y, Math.Max(3, val));
+
+                    population += val & 1;
+                }
+
+                if (colony is Ice)
+                {
+                    (colony as Ice).WriteCell(x, y, Math.Max(3, val));
 
                     population += val & 1;
                 }

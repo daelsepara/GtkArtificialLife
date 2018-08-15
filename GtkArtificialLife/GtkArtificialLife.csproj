@@ -92,6 +92,7 @@
     <Compile Include="Utility.cs" />
     <Compile Include="ElementaryCA.cs" />
     <Compile Include="Snowflake.cs" />
+    <Compile Include="Ice.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -242,6 +242,11 @@ public partial class MainWindow : Gtk.Window
                     {
                         ColonyTypeList.Active = i;
                     }
+
+                    if (Colonies[colony].ArtificialLife is Ice && ColoniesType[i] == ColonyTypes.Type.Ice)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
                 }
 
                 CopyParameterValues(ParameterList, ColonyParameters);
@@ -405,6 +410,14 @@ public partial class MainWindow : Gtk.Window
                     var Growth = GetString(ColonyParameters, "Growth");
 
                     World.AddSnowflakeColony(Colonies, w, h, x, y, MaxStates, Growth, ColonyColor.Color, neighborhood, Gradient.Active);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.Ice)
+                {
+                    var density = GetNumeric(ColonyParameters, "Density");
+                    var Freeze = GetNumeric(ColonyParameters, "Freeze");
+
+                    World.AddIceColony(Colonies, w, h, x, y, density, Freeze, ColonyColor.Color, neighborhood);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -866,6 +879,10 @@ public partial class MainWindow : Gtk.Window
                         ColonyParameters.AddRange(ParameterSets.Snowflake());
                         CopyNeighborhood(ParameterSets.HexNeighborhood());
                         break;
+                    case ColonyTypes.Type.Ice:
+                        ColonyParameters.AddRange(ParameterSets.Ice());
+                        CopyNeighborhood(ParameterSets.VonNeumannNeighborhood());
+                        break;
                 }
 
                 Disable();
@@ -1037,6 +1054,12 @@ public partial class MainWindow : Gtk.Window
                 {
                     Tests.SnowflakeTest(Colonies);
                 }
+
+                if (ColoniesType[type] == ColonyTypes.Type.Ice)
+                {
+                    Tests.IceTest(Colonies);
+                }
+
 
                 RenderColonies(worldPixbuf);
                 RenderWorld(worldPixbuf);
