@@ -144,7 +144,7 @@ public static class Tests
     public static void ClearSelection()
     {
         GtkSelection.Selection.Clear();
-        GtkSelection.Selected = 0;        
+        GtkSelection.Selected = 0;
     }
 
     public static void AddBox(int x, int y, int w, int h)
@@ -167,6 +167,25 @@ public static class Tests
         World.AddIceColony(Colonies, w, h, 256, 0, 0.4, 30, new Color(255, 0, 255), neighborhood);
         World.AddIceColony(Colonies, w, w, 0, 256, 0.4, 30, new Color(255, 255, 0), neighborhood);
         World.AddIceColony(Colonies, w, h, 512, 256, 0.4, 30, new Color(0, 255, 255), neighborhood);
+
+        AddSelection(w, h);
+    }
+
+    public static void CyclicTest(List<Colony> Colonies)
+    {
+        Colonies.Clear();
+
+        var w = 256;
+        var h = 256;
+
+        var neighborhood = ParameterSets.MooreNeighborhood();
+
+        World.AddCyclicColony(Colonies, w, h, 0, 0, 4, new Color(255, 0, 0), neighborhood);
+        World.AddCyclicColony(Colonies, w, h, 256, 256, 4, new Color(0, 255, 0), neighborhood);
+        World.AddCyclicColony(Colonies, w, h, 512, 0, 4, new Color(0, 0, 255), neighborhood);
+        World.AddCyclicColony(Colonies, w, h, 256, 0, 4, new Color(255, 0, 255), neighborhood);
+        World.AddCyclicColony(Colonies, w, w, 0, 256, 4, new Color(255, 255, 0), neighborhood);
+        World.AddCyclicColony(Colonies, w, h, 512, 256, 4, new Color(0, 255, 255), neighborhood);
 
         AddSelection(w, h);
     }

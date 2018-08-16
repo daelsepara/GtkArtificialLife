@@ -247,6 +247,11 @@ public partial class MainWindow : Gtk.Window
                     {
                         ColonyTypeList.Active = i;
                     }
+
+                    if (Colonies[colony].ArtificialLife is Cyclic && ColoniesType[i] == ColonyTypes.Type.Cyclic)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
                 }
 
                 CopyParameterValues(ParameterList, ColonyParameters);
@@ -418,6 +423,13 @@ public partial class MainWindow : Gtk.Window
                     var Freeze = GetNumeric(ColonyParameters, "Freeze");
 
                     World.AddIceColony(Colonies, w, h, x, y, density, Freeze, ColonyColor.Color, neighborhood);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.Cyclic)
+                {
+                    var maxstates = (int)GetNumeric(ColonyParameters, "MaxStates");
+
+                    World.AddCyclicColony(Colonies, w, h, x, y, maxstates, ColonyColor.Color, neighborhood, Gradient.Active);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -883,6 +895,10 @@ public partial class MainWindow : Gtk.Window
                         ColonyParameters.AddRange(ParameterSets.Ice());
                         CopyNeighborhood(ParameterSets.VonNeumannNeighborhood());
                         break;
+                    case ColonyTypes.Type.Cyclic:
+                        ColonyParameters.AddRange(ParameterSets.Cyclic());
+                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
+                        break;
                 }
 
                 Disable();
@@ -1060,6 +1076,10 @@ public partial class MainWindow : Gtk.Window
                     Tests.IceTest(Colonies);
                 }
 
+                if (ColoniesType[type] == ColonyTypes.Type.Cyclic)
+                {
+                    Tests.CyclicTest(Colonies);
+                }
 
                 RenderColonies(worldPixbuf);
                 RenderWorld(worldPixbuf);

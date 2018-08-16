@@ -167,6 +167,26 @@ public static class ConvertImage
 
                 return colony;
             }
+
+            if (type == ColonyTypes.Type.Cyclic)
+            {
+                var maxstates = (int)GetNumeric(Parameters, "MaxStates");
+
+                var colony = new Cyclic(Width, Height, maxstates, color);
+
+                if (Gradient)
+                {
+                    colony.GradientPalette();
+                }
+
+                colony.SetNeighborhood(Neighborhood);
+
+                Draw(image.Pixbuf, Width, Height, colony, maxstates, ref population);
+
+                colony.ApplyChanges();
+
+                return colony;
+            }
         }
 
         return new EmptyArtificialLife();
@@ -265,6 +285,15 @@ public static class ConvertImage
                     (colony as Snowflake).WriteCell(x, y, value);
 
                     population += val > 0 ? 1 : 0;
+                }
+
+                if (colony is Cyclic)
+                {
+                    var value = (int)(val / delta);
+
+                    (colony as Cyclic).WriteCell(x, y, value);
+
+                    population += value > 0 ? 1 : 0;
                 }
             }
         }

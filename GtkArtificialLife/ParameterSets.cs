@@ -95,6 +95,16 @@ public static class ParameterSets
         return set;
     }
 
+    public static List<Parameter> Cyclic()
+    {
+        var set = new List<Parameter>
+        {
+            new Parameter("MaxStates", 8, 2, 256)
+        };
+
+        return set;
+    }
+
     public static void AddNeighbor(List<Cell> Neighborhood, Cell neighbor)
     {
         if (!Neighborhood.Contains(neighbor))
@@ -125,7 +135,7 @@ public static class ParameterSets
     }
 
     // 6 Neighbor approximation of the hexagonal lattice
-    public static List<Cell>  HexNeighborhood()
+    public static List<Cell> HexNeighborhood()
     {
         var neighborhood = new List<Cell>();
 

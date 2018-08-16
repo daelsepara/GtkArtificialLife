@@ -1,16 +1,15 @@
-using Gdk;
+﻿using Gdk;
 using System;
 using System.Collections.Generic;
 
-public class YinYangFire : ArtificialLife
+public class Cyclic : ArtificialLife
 {
     List<Pixel> PixelWriteBuffer = new List<Pixel>();
     List<Cell> Neighborhood = new List<Cell>();
     List<Change> ChangeList = new List<Change>();
     List<Color> ColorPalette = new List<Color>();
     int[,] Grid;
-    int MaxStates = 256;
-    int Density;
+    int MaxStates = 4;
     int Delta = 1;
 
     public void GenerateRandomColorPalette()
@@ -34,7 +33,7 @@ public class YinYangFire : ArtificialLife
         ColorPalette.AddRange(Utility.GreyPalette());
     }
 
-    public YinYangFire()
+    public Cyclic()
     {
         InitGrid(256, 256);
 
@@ -45,7 +44,7 @@ public class YinYangFire : ArtificialLife
         AddMooreNeighborhood();
     }
 
-    public YinYangFire(int width, int height)
+    public Cyclic(int width, int height)
     {
         InitGrid(width, height);
 
@@ -56,7 +55,7 @@ public class YinYangFire : ArtificialLife
         AddMooreNeighborhood();
     }
 
-    public YinYangFire(int width, int height, Color color)
+    public Cyclic(int width, int height, Color color)
     {
         InitGrid(width, height);
 
@@ -75,7 +74,7 @@ public class YinYangFire : ArtificialLife
         AddMooreNeighborhood();
     }
 
-    public YinYangFire(int width, int height, int maxStates, Color color)
+    public Cyclic(int width, int height, int maxStates, Color color)
     {
         InitGrid(width, height);
 
@@ -181,11 +180,6 @@ public class YinYangFire : ArtificialLife
         return new CountSum(neighbors, sum);
     }
 
-    /*
-     * (i) If the cell is healthy (i.e., in state 0) then its new state is [a/k1] + [b/k2], where a is the number of infected cells among its eight neighbors, b is the number of ill cells among its neighbors, and k1 and k2 are constants. Here "[]" means the integer part of the number enclosed, so that, for example, [7/3] = [2+1/3] = 2.
-     * (ii) If the cell is ill (i.e., in state n) then it miraculously becomes healthy (i.e., its state becomes 0).
-     * (iii) If the cell is infected (i.e., in a state other than 0 and n) then its new state is [s/(a+b+1)] + g, where a and b are as above, s is the sum of the states of the cell and of its neighbors and g is a constant.
-     */
     public override void Update()
     {
         for (int y = 0; y < Height; y++)
@@ -193,24 +187,18 @@ public class YinYangFire : ArtificialLife
             for (int x = 0; x < Width; x++)
             {
                 int state = Grid[x, y];
+                int successor = (state + 1) % MaxStates;
+                var newstate = state;
 
-                var CellSum = CountCellNeighbors(x, y, 0, MaxStates).Sum;
+                var CellCount = CountCellNeighbors(x, y, successor, successor + 1).Count;
 
-                if (state * 9 + 2 >= CellSum)
+                if (CellCount > 0)
                 {
-                    state--;
-
-                    if (state < 0)
-                    {
-                        state = MaxStates - 1;
-                    }
-                }
-                else
-                {
-                    state += CellSum;
+                    newstate = successor;
                 }
 
-                WriteCell(x, y, state > MaxStates - 1 ? MaxStates - 1 : state);
+                if (newstate != state || newstate > 0)
+                    WriteCell(x, y, newstate);
             }
         }
 
@@ -241,37 +229,29 @@ public class YinYangFire : ArtificialLife
         }
     }
 
-    public void Randomize(int maxDensity, int maxStates = 256)
+    public void Randomize(int maxStates = 256)
     {
-        if (maxDensity > 0)
+        MaxStates = maxStates;
+
+        Delta = maxStates > 0 ? (256 / maxStates) : 0;
+
+        var random = new Random(Guid.NewGuid().GetHashCode());
+
+        for (int y = 0; y < Height; y++)
         {
-            Density = maxDensity;
-            MaxStates = maxStates;
-
-            Delta = maxStates > 0 ? (256 / maxStates) : 0;
-
-            var random = new Random(Guid.NewGuid().GetHashCode());
-
-            for (int i = 0; i < maxDensity; i++)
+            for (int x = 0; x < Width; x++)
             {
-                var x = random.Next(0, Width);
-                var y = random.Next(0, Height);
-                var val = random.Next(0, MaxStates);
-
-                WriteCell(x, y, val);
+                WriteCell(x, y, random.Next(0, MaxStates));
             }
-
-            ApplyChanges();
         }
+
+        ApplyChanges();
     }
 
     public override List<Parameter> Parameters()
     {
-        var density = (Width > 0 && Width > 0) ? (double)Density / (Width * Height) : 0.0;
-
         var set = new List<Parameter>
         {
-            new Parameter("Density", density, 0.01, 1.0),
             new Parameter("MaxStates", MaxStates, 2, 256)
         };
 
@@ -284,11 +264,6 @@ public class YinYangFire : ArtificialLife
         {
             WriteCell(x, y, val);
         }
-    }
-
-    public void SetDensity(int density)
-    {
-        Density = density;
     }
 
     public override Color Color()

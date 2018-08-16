@@ -113,4 +113,19 @@ public static class World
 
         Colonies.Add(new Colony(x, y, SnowflakeColony));
     }
+
+    public static void AddCyclicColony(List<Colony> Colonies, int width, int height, int x, int y, int maxStates, Color color, List<Cell> Neighborhood, bool Gradient = false)
+    {
+        var CyclicColony = new Cyclic(width, height, color);
+
+        if (Gradient)
+        {
+            CyclicColony.GradientPalette();
+        }
+
+        CyclicColony.Randomize(maxStates);
+        CyclicColony.SetNeighborhood(Neighborhood);
+
+        Colonies.Add(new Colony(x, y, CyclicColony));
+    }
 }
