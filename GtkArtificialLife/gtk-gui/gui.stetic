@@ -13,6 +13,7 @@
     <property name="WidthRequest">1200</property>
     <property name="HeightRequest">720</property>
     <property name="Title" translatable="yes">MainWindow</property>
+    <property name="Icon">resource:GtkArtificialLife.GtkArtificialLife.png</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Resizable">False</property>
     <property name="AllowGrow">False</property>
@@ -50,7 +51,7 @@
               </widget>
               <packing>
                 <property name="X">20</property>
-                <property name="Y">20</property>
+                <property name="Y">50</property>
               </packing>
             </child>
             <child>
@@ -64,7 +65,7 @@
               </widget>
               <packing>
                 <property name="X">20</property>
-                <property name="Y">640</property>
+                <property name="Y">660</property>
               </packing>
             </child>
             <child>
@@ -78,7 +79,7 @@
               </widget>
               <packing>
                 <property name="X">60</property>
-                <property name="Y">640</property>
+                <property name="Y">660</property>
               </packing>
             </child>
             <child>
@@ -92,7 +93,7 @@
               </widget>
               <packing>
                 <property name="X">105</property>
-                <property name="Y">640</property>
+                <property name="Y">660</property>
               </packing>
             </child>
             <child>
@@ -297,7 +298,7 @@
               </widget>
               <packing>
                 <property name="X">205</property>
-                <property name="Y">640</property>
+                <property name="Y">660</property>
               </packing>
             </child>
             <child>
@@ -312,7 +313,7 @@
               </widget>
               <packing>
                 <property name="X">155</property>
-                <property name="Y">640</property>
+                <property name="Y">660</property>
               </packing>
             </child>
             <child>

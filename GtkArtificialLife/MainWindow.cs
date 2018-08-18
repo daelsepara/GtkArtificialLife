@@ -17,6 +17,7 @@ public partial class MainWindow : Gtk.Window
     Mutex Rendering = new Mutex();
     FileChooserDialog ImageChooser;
     FileChooserDialog ImageLoader;
+    Dialog Confirm;
     Stopwatch timer = new Stopwatch();
     List<Colony> Colonies = new List<Colony>();
     List<ColonyTypes.Type> ColoniesType = new List<ColonyTypes.Type>();
@@ -31,6 +32,8 @@ public partial class MainWindow : Gtk.Window
         Build();
 
         InitControls();
+
+        InitToolbar();
 
         Tic();
 
@@ -59,6 +62,21 @@ public partial class MainWindow : Gtk.Window
             "Load", ResponseType.Accept
         );
 
+        Confirm = new Dialog(
+            "Are you sure?",
+            this,
+            DialogFlags.Modal,
+            "Yes", ResponseType.Accept,
+            "No", ResponseType.Cancel
+        )
+        {
+            Resizable = false,
+            KeepAbove = true,
+            TypeHint = WindowTypeHint.Dialog,
+        };
+
+        Confirm.WindowStateEvent += OnWindowStateEvent;
+
         worldNotebook.CurrentPage = PAGE_WORLD;
 
         Paused = true;
@@ -80,6 +98,49 @@ public partial class MainWindow : Gtk.Window
         }
 
         ColonyColor.Color = new Color(255, 0, 255);
+    }
+
+    protected void InitToolbar()
+    {
+        var bg = worldNotebook.Style.Background(worldNotebook.State);
+
+        var toolbar = new Toolbar
+        {
+            ToolbarStyle = ToolbarStyle.Icons
+        };
+
+        var TBNew = new ToolButton(Stock.New);
+        var TBOpen = new ToolButton(Stock.Open);
+        var TBSave = new ToolButton(Stock.Save);
+        var TBQuit = new ToolButton(Stock.Quit);
+        var TBSeparator = new SeparatorToolItem();
+
+        toolbar.Insert(TBNew, 0);
+        toolbar.Insert(TBOpen, 1);
+        toolbar.Insert(TBSave, 2);
+        toolbar.Insert(TBSeparator, 3);
+        toolbar.Insert(TBQuit, 4);
+        toolbar.ModifyBg(StateType.Normal, bg);
+        toolbar.BorderWidth = 0;
+
+        TBNew.Clicked += OnClearButtonClicked;
+        TBOpen.Clicked += OnLoadImageButtonClicked;
+        TBSave.Clicked += OnSaveButtonClicked;
+        TBQuit.Clicked += OnQuitButtonClicked;
+
+        var vbox = new VBox(false, 2)
+        {
+            WidthRequest = 170,
+            HeightRequest = 20
+        };
+
+        vbox.PackStart(toolbar, false, false, 0);
+        vbox.ModifyBg(StateType.Normal, bg);
+        vbox.BorderWidth = 0;
+
+        worldLayout.Put(vbox, 20, 0);
+
+        ShowAll();
     }
 
     protected Pixbuf InitWorld(int width, int height)
@@ -458,6 +519,15 @@ public partial class MainWindow : Gtk.Window
 
     protected void SaveImageFile()
     {
+        if (GtkSelection.Selected > 0 && Colonies.Count > 0 && (GtkSelection.Selected - 1) < Colonies.Count)
+        {
+            ImageChooser.Title = "Save colony snapshot";
+        }
+        else
+        {
+            ImageChooser.Title = "Save world snapshot";
+        }
+
         // Add most recent directory
         if (!string.IsNullOrEmpty(ImageChooser.Filename))
         {
@@ -592,29 +662,14 @@ public partial class MainWindow : Gtk.Window
 
         foreach (var neighbor in neighborhood)
         {
-            if (neighbor.X == -1 && neighbor.Y == -1)
-                TL.Active = true;
-
-            if (neighbor.X == 0 && neighbor.Y == -1)
-                TM.Active = true;
-
-            if (neighbor.X == 1 && neighbor.Y == -1)
-                TR.Active = true;
-
-            if (neighbor.X == -1 && neighbor.Y == 0)
-                ML.Active = true;
-
-            if (neighbor.X == 1 && neighbor.Y == 0)
-                MR.Active = true;
-
-            if (neighbor.X == -1 && neighbor.Y == 1)
-                BL.Active = true;
-
-            if (neighbor.X == 0 && neighbor.Y == 1)
-                BM.Active = true;
-
-            if (neighbor.X == 1 && neighbor.Y == 1)
-                BR.Active = true;
+            TL.Active |= (neighbor.X == -1 && neighbor.Y == -1);
+            TM.Active |= (neighbor.X == 0 && neighbor.Y == -1);
+            TR.Active |= (neighbor.X == 1 && neighbor.Y == -1);
+            ML.Active |= (neighbor.X == -1 && neighbor.Y == 0);
+            MR.Active |= (neighbor.X == 1 && neighbor.Y == 0);
+            BL.Active |= (neighbor.X == -1 && neighbor.Y == 1);
+            BM.Active |= (neighbor.X == 0 && neighbor.Y == 1);
+            BR.Active |= (neighbor.X == 1 && neighbor.Y == 1);
         }
     }
 
@@ -671,7 +726,7 @@ public partial class MainWindow : Gtk.Window
         ClearButton.Sensitive = true;
     }
 
-    protected void OnDeleteEvent(object sender, DeleteEventArgs a)
+    protected void CleanShutdown()
     {
         if (worldPixbuf != null)
         {
@@ -699,10 +754,49 @@ public partial class MainWindow : Gtk.Window
         }
 
         Colonies.Clear();
+    }
+
+    protected bool GetConfirmation()
+    {
+        var confirm = Confirm.Run() == (int)ResponseType.Accept;
+
+        Confirm.Hide();
+
+        return confirm;
+    }
+
+    protected void Quit()
+    {
+        CleanShutdown();
 
         Application.Quit();
+    }
+
+    protected void OnWindowStateEvent(object sender, WindowStateEventArgs args)
+    {
+        var state = args.Event.NewWindowState;
+
+        if (state == WindowState.Iconified)
+        {
+            Confirm.Hide();
+        }
+
+        args.RetVal = true;
+    }
+
+    protected void OnDeleteEvent(object sender, DeleteEventArgs a)
+    {
+        if (GetConfirmation())
+        {
+            Quit();
+        }
 
         a.RetVal = true;
+    }
+
+    void OnQuitButtonClicked(object sender, EventArgs args)
+    {
+        OnDeleteEvent(sender, new DeleteEventArgs());
     }
 
     bool OnIdle()
@@ -1015,16 +1109,17 @@ public partial class MainWindow : Gtk.Window
 
     protected void OnClearButtonClicked(object sender, EventArgs e)
     {
-        if (Paused)
+        if (Paused && Colonies.Count > 0)
         {
-            Colonies.Clear();
-            GtkSelection.Selection.Clear();
-            GtkSelection.Selected = 0;
+            if (GetConfirmation())
+            {
+                Colonies.Clear();
+                GtkSelection.Selection.Clear();
+                GtkSelection.Selected = 0;
 
-            worldPixbuf.Fill(0);
-            RenderWorld(worldPixbuf);
-
-            Pause();
+                worldPixbuf.Fill(0);
+                RenderWorld(worldPixbuf);
+            }
         }
     }
 
