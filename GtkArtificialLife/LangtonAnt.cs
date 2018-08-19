@@ -1,5 +1,4 @@
 using Gdk;
-using System;
 using System.Collections.Generic;
 
 public class LangtonAnt : ArtificialLife

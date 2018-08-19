@@ -7,8 +7,8 @@ public class Life : ArtificialLife
     List<int> BirthRules = new List<int>();
     List<int> SurvivalRules = new List<int>();
 
-    String Birth = "3";
-    String Survival = "2,3";
+    string Birth = "3";
+    string Survival = "2,3";
 
     int Density;
 
