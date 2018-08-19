@@ -4,26 +4,12 @@ using System.Collections.Generic;
 
 public class Snowflake : ArtificialLife
 {
-    List<Pixel> PixelWriteBuffer = new List<Pixel>();
-    List<Cell> Neighborhood = new List<Cell>();
-    List<Change> ChangeList = new List<Change>();
-    List<Color> ColorPalette = new List<Color>();
     List<int> GrowthRules = new List<int>();
 
     string Growth = "1,3,6";
-    int[,] Grid;
     int MaxStates = 12;
     int Delta = 1;
-    int Current = 0;
-
-    public void GenerateRandomColorPalette()
-    {
-        ColorPalette.Clear();
-
-        ColorPalette.AddRange(Utility.GenerateRandomColorPalette(ColonyColor));
-
-        Delta = MaxStates > 0 ? (256 / MaxStates) : 1;
-    }
+    int Current;
 
     public void GradientPalette()
     {
@@ -32,13 +18,6 @@ public class Snowflake : ArtificialLife
         ColorPalette.AddRange(Utility.Gradient(ColonyColor, MaxStates));
 
         Delta = MaxStates > 0 ? (256 / MaxStates) : 1;
-    }
-
-    public void GreyPalette()
-    {
-        ColorPalette.Clear();
-
-        ColorPalette.AddRange(Utility.GreyPalette());
     }
 
     public Snowflake()
@@ -51,7 +30,9 @@ public class Snowflake : ArtificialLife
 
         AddHexNeighborhood();
 
-        WriteCell(128, 128, Utility.NextRandom(1, MaxStates + 1));
+        WriteCell(128, 128, random.Next(1, MaxStates + 1));
+
+        Delta = MaxStates > 0 ? (256 / MaxStates) : 1;
 
         ApplyChanges();
     }
@@ -66,7 +47,7 @@ public class Snowflake : ArtificialLife
 
         AddHexNeighborhood();
 
-        WriteCell(width / 2, height / 2, Utility.NextRandom(1, MaxStates + 1));
+        WriteCell(width / 2, height / 2, random.Next(1, MaxStates + 1));
 
         ApplyChanges();
     }
@@ -90,33 +71,9 @@ public class Snowflake : ArtificialLife
 
         AddHexNeighborhood();
 
-        WriteCell(width / 2, height / 2, Utility.NextRandom(1, MaxStates + 1));
+        WriteCell(width / 2, height / 2, random.Next(1, MaxStates + 1));
 
         ApplyChanges();
-    }
-
-    protected void InitGrid(int width, int height)
-    {
-        Width = width;
-        Height = height;
-
-        Grid = new int[width, height];
-    }
-
-    public override void ClearPixelWriteBuffer()
-    {
-        PixelWriteBuffer.Clear();
-    }
-
-    public override List<Pixel> GetPixelWriteBuffer()
-    {
-        return new List<Pixel>(PixelWriteBuffer);
-    }
-
-    public void AddHexNeighborhood()
-    {
-        Neighborhood.Clear();
-        Neighborhood.AddRange(ParameterSets.HexNeighborhood());
     }
 
     public void AddRules()
@@ -134,45 +91,15 @@ public class Snowflake : ArtificialLife
         }
     }
 
-    protected void RemovePixel(int index)
-    {
-        if (PixelWriteBuffer.Count > 0 && index < PixelWriteBuffer.Count)
-        {
-            PixelWriteBuffer.RemoveAt(index);
-        }
-    }
-
-    public void PushPixel(Pixel pixel)
-    {
-        if (pixel != null)
-        {
-            PixelWriteBuffer.Add(pixel);
-        }
-    }
-
-    public Pixel PopPixel()
-    {
-        if (PixelWriteBuffer.Count < 1)
-        {
-            return null;
-        }
-
-        var pixel = PixelWriteBuffer[PixelWriteBuffer.Count - 1];
-
-        RemovePixel(PixelWriteBuffer.Count - 1);
-
-        return pixel;
-    }
-
-    protected CountSum CountCellNeighbors(int x, int y, int minVal, int maxVal)
+    CountSum CountCellNeighbors(int x, int y, int minVal, int maxVal)
     {
         int neighbors = 0;
         int sum = 0;
 
-        foreach (var neighbor in GetNeighborhood())
+        foreach (var neighbor in Neighborhood)
         {
-            var nx = Cyclic ? Utility.Cyclic(x, neighbor.X, Width) : x + neighbor.X;
-            var ny = Cyclic ? Utility.Cyclic(y, neighbor.Y, Height) : y + neighbor.Y;
+            var nx = Cyclic ? World.Cyclic(x, neighbor.X, Width) : x + neighbor.X;
+            var ny = Cyclic ? World.Cyclic(y, neighbor.Y, Height) : y + neighbor.Y;
 
             if (nx >= 0 && nx < Width && ny >= 0 && ny < Height && Grid[nx, ny] >= minVal && Grid[nx, ny] < maxVal)
             {
@@ -226,16 +153,6 @@ public class Snowflake : ArtificialLife
         ApplyChanges();
     }
 
-    public void ApplyChanges()
-    {
-        foreach (var change in ChangeList)
-        {
-            Grid[change.X, change.Y] = change.Value;
-        }
-
-        ChangeList.Clear();
-    }
-
     public override void Refresh()
     {
         for (int y = 0; y < Height; y++)
@@ -252,37 +169,11 @@ public class Snowflake : ArtificialLife
 
     public override List<Parameter> Parameters()
     {
-        var set = new List<Parameter>
+        return new List<Parameter>
         {
             new Parameter("Growth", Growth),
             new Parameter("MaxStates", MaxStates, 1, 256)
         };
-
-        return set;
-    }
-
-    public void WriteGrid(int x, int y, int val)
-    {
-        if (x >= 0 && x < Width && y >= 0 && y < Height)
-        {
-            WriteCell(x, y, val);
-        }
-    }
-
-    public override Color Color()
-    {
-        return ColonyColor;
-    }
-
-    public override List<Cell> GetNeighborhood()
-    {
-        return new List<Cell>(Neighborhood);
-    }
-
-    public override void SetNeighborhood(List<Cell> neighborhood)
-    {
-        Neighborhood.Clear();
-        Neighborhood.AddRange(neighborhood);
     }
 
     public void SetParameters(string growth, int maxStates)

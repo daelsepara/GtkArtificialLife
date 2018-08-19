@@ -4,18 +4,13 @@ using System.Collections.Generic;
 
 public class Life : ArtificialLife
 {
-    List<Pixel> PixelWriteBuffer = new List<Pixel>();
     List<int> BirthRules = new List<int>();
     List<int> SurvivalRules = new List<int>();
-    List<Cell> Neighborhood = new List<Cell>();
-    List<Change> ChangeList = new List<Change>();
-    List<Color> ColorPalette = new List<Color>();
 
     String Birth = "3";
     String Survival = "2,3";
 
     int Density;
-    int[,] Grid;
 
     public void GenerateColorPalette()
     {
@@ -68,30 +63,6 @@ public class Life : ArtificialLife
         GenerateColorPalette();
     }
 
-    protected void InitGrid(int width, int height)
-    {
-        Width = width;
-        Height = height;
-
-        Grid = new int[width, height];
-    }
-
-    public override void ClearPixelWriteBuffer()
-    {
-        PixelWriteBuffer.Clear();
-    }
-
-    public override List<Pixel> GetPixelWriteBuffer()
-    {
-        return new List<Pixel>(PixelWriteBuffer);
-    }
-
-    public void AddMooreNeighborhood()
-    {
-        Neighborhood.Clear();
-        Neighborhood.AddRange(ParameterSets.MooreNeighborhood());
-    }
-
     public void AddRules()
     {
         ParseRules(BirthRules, Birth);
@@ -108,49 +79,19 @@ public class Life : ArtificialLife
         }
     }
 
-    protected void RemovePixel(int index)
-    {
-        if (PixelWriteBuffer.Count > 0 && index < PixelWriteBuffer.Count)
-        {
-            PixelWriteBuffer.RemoveAt(index);
-        }
-    }
-
-    public void PushPixel(Pixel pixel)
-    {
-        if (pixel != null)
-        {
-            PixelWriteBuffer.Add(pixel);
-        }
-    }
-
-    public Pixel PopPixel()
-    {
-        if (PixelWriteBuffer.Count < 1)
-        {
-            return null;
-        }
-
-        var pixel = PixelWriteBuffer[PixelWriteBuffer.Count - 1];
-
-        RemovePixel(PixelWriteBuffer.Count - 1);
-
-        return pixel;
-    }
-
-    protected bool IsAlive(int x, int y)
+    bool IsAlive(int x, int y)
     {
         return Grid[x, y] > 0;
     }
 
-    protected int CountCellNeighbors(int x, int y)
+    int CountCellNeighbors(int x, int y)
     {
         int neighbors = 0;
 
         foreach (var neighbor in GetNeighborhood())
         {
-            var nx = Cyclic ? Utility.Cyclic(x, neighbor.X, Width) : x + neighbor.X;
-            var ny = Cyclic ? Utility.Cyclic(y, neighbor.Y, Height) : y + neighbor.Y;
+            var nx = Cyclic ? World.Cyclic(x, neighbor.X, Width) : x + neighbor.X;
+            var ny = Cyclic ? World.Cyclic(y, neighbor.Y, Height) : y + neighbor.Y;
 
             if (nx >= 0 && nx < Width && ny >= 0 && ny < Height)
             {
@@ -195,23 +136,11 @@ public class Life : ArtificialLife
         ApplyChanges();
     }
 
-    public void ApplyChanges()
-    {
-        foreach (var change in ChangeList)
-        {
-            Grid[change.X, change.Y] = change.Value;
-        }
-
-        ChangeList.Clear();
-    }
-
     public void Randomize(int maxDensity)
     {
         if (maxDensity > 0)
         {
             Density = maxDensity;
-
-            var random = new Random(Guid.NewGuid().GetHashCode());
 
             for (int i = 0; i < maxDensity; i++)
             {
@@ -243,35 +172,17 @@ public class Life : ArtificialLife
     {
         var density = (Width > 0 && Width > 0) ? (double)Density / (Width * Height) : 0.0;
 
-        var set = new List<Parameter>
+        return new List<Parameter>
         {
             new Parameter("Density", density, 0.01, 1.0),
             new Parameter("Birth", Birth),
             new Parameter("Survival", Survival)
         };
-
-        return set;
     }
 
     public void SetDensity(int density)
     {
         Density = density;
-    }
-
-    public override Color Color()
-    {
-        return ColonyColor;
-    }
-
-    public override List<Cell> GetNeighborhood()
-    {
-        return new List<Cell>(Neighborhood);
-    }
-
-    public override void SetNeighborhood(List<Cell> neighborhood)
-    {
-        Neighborhood.Clear();
-        Neighborhood.AddRange(neighborhood);
     }
 
     public void SetParameters(string birth, string survival)

@@ -680,28 +680,28 @@ public partial class MainWindow : Gtk.Window
         var neighborhood = new List<Cell>();
 
         if (TL.Active)
-            ParameterSets.AddNeighbor(neighborhood, new Cell(-1, -1));
+            World.AddNeighbor(neighborhood, new Cell(-1, -1));
 
         if (TM.Active)
-            ParameterSets.AddNeighbor(neighborhood, new Cell(0, -1));
+            World.AddNeighbor(neighborhood, new Cell(0, -1));
 
         if (TR.Active)
-            ParameterSets.AddNeighbor(neighborhood, new Cell(1, -1));
+            World.AddNeighbor(neighborhood, new Cell(1, -1));
 
         if (ML.Active)
-            ParameterSets.AddNeighbor(neighborhood, new Cell(-1, 0));
+            World.AddNeighbor(neighborhood, new Cell(-1, 0));
 
         if (MR.Active)
-            ParameterSets.AddNeighbor(neighborhood, new Cell(1, 0));
+            World.AddNeighbor(neighborhood, new Cell(1, 0));
 
         if (BL.Active)
-            ParameterSets.AddNeighbor(neighborhood, new Cell(-1, 1));
+            World.AddNeighbor(neighborhood, new Cell(-1, 1));
 
         if (BM.Active)
-            ParameterSets.AddNeighbor(neighborhood, new Cell(0, 1));
+            World.AddNeighbor(neighborhood, new Cell(0, 1));
 
         if (BR.Active)
-            ParameterSets.AddNeighbor(neighborhood, new Cell(1, 1));
+            World.AddNeighbor(neighborhood, new Cell(1, 1));
 
         return neighborhood;
     }
@@ -961,39 +961,39 @@ public partial class MainWindow : Gtk.Window
                 {
                     case ColonyTypes.Type.Life:
                         ColonyParameters.AddRange(ParameterSets.Life());
-                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
+                        CopyNeighborhood(World.MooreNeighborhood());
                         break;
                     case ColonyTypes.Type.LangtonAnt:
                         ColonyParameters.AddRange(ParameterSets.LangtonAnt());
-                        CopyNeighborhood(ParameterSets.EmptyNeighborhood());
+                        CopyNeighborhood(World.EmptyNeighborhood());
                         break;
                     case ColonyTypes.Type.Zhabotinsky:
                         ColonyParameters.AddRange(ParameterSets.Zhabotinsky());
-                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
+                        CopyNeighborhood(World.MooreNeighborhood());
                         break;
                     case ColonyTypes.Type.YinYangFire:
                         ColonyParameters.AddRange(ParameterSets.YinYangFire());
-                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
+                        CopyNeighborhood(World.MooreNeighborhood());
                         break;
                     case ColonyTypes.Type.ForestFire:
                         ColonyParameters.AddRange(ParameterSets.ForestFire());
-                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
+                        CopyNeighborhood(World.MooreNeighborhood());
                         break;
                     case ColonyTypes.Type.ElementaryCA:
                         ColonyParameters.AddRange(ParameterSets.ElementaryCA());
-                        CopyNeighborhood(ParameterSets.EmptyNeighborhood());
+                        CopyNeighborhood(World.EmptyNeighborhood());
                         break;
                     case ColonyTypes.Type.Snowflake:
                         ColonyParameters.AddRange(ParameterSets.Snowflake());
-                        CopyNeighborhood(ParameterSets.HexNeighborhood());
+                        CopyNeighborhood(World.HexNeighborhood());
                         break;
                     case ColonyTypes.Type.Ice:
                         ColonyParameters.AddRange(ParameterSets.Ice());
-                        CopyNeighborhood(ParameterSets.VonNeumannNeighborhood());
+                        CopyNeighborhood(World.VonNeumannNeighborhood());
                         break;
                     case ColonyTypes.Type.Cyclic:
                         ColonyParameters.AddRange(ParameterSets.Cyclic());
-                        CopyNeighborhood(ParameterSets.MooreNeighborhood());
+                        CopyNeighborhood(World.VonNeumannNeighborhood());
                         break;
                 }
 

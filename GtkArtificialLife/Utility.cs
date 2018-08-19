@@ -4,21 +4,11 @@ using System.Collections.Generic;
 
 public static class Utility
 {
-    static Random random;
-
-    public static void InitializeSeed()
-    {
-        if (random == null)
-        {
-            random = new Random(Guid.NewGuid().GetHashCode());
-        }
-    }
+    static Random random = new Random(Guid.NewGuid().GetHashCode());
 
     public static List<Color> GenerateRandomColorPalette(Color color)
     {
         var ColorPalette = new List<Color>();
-
-        InitializeSeed();
 
         for (int i = 0; i < 256; i++)
         {
@@ -74,17 +64,5 @@ public static class Utility
         }
 
         return ColorPalette;
-    }
-
-    public static int NextRandom(int a, int b)
-    {
-        InitializeSeed();
-
-        return random.Next(a, b);
-    }
-
-    public static int Cyclic(int location, int direction, int limit)
-    {
-        return direction >= 0 ? (location + direction) % limit : (location + limit + direction) % limit;
     }
 }

@@ -3,12 +3,8 @@ using System.Collections.Generic;
 
 public class ElementaryCA : ArtificialLife
 {
-    List<Pixel> PixelWriteBuffer = new List<Pixel>();
-    List<Change> ChangeList = new List<Change>();
-
     int Rule;
     int Current;
-    int[,] Grid;
 
     public ElementaryCA()
     {
@@ -58,66 +54,19 @@ public class ElementaryCA : ArtificialLife
         ApplyChanges();
     }
 
-    protected void InitGrid(int width, int height)
-    {
-        Width = width;
-        Height = height;
-
-        Grid = new int[width, height];
-    }
-
-    public override void ClearPixelWriteBuffer()
-    {
-        PixelWriteBuffer.Clear();
-    }
-
-    public override List<Pixel> GetPixelWriteBuffer()
-    {
-        return new List<Pixel>(PixelWriteBuffer);
-    }
-
     public void WriteCell(int x, int y, int val)
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
         {
             PushPixel(new Pixel(x, y, val > 0 ? ColonyColor : EmptyColor));
+
             ChangeList.Add(new Change(x, y, val > 0 ? 1 : 0));
         }
     }
 
-    protected void RemovePixel(int index)
+    bool IsAlive(int x, int y)
     {
-        if (PixelWriteBuffer.Count > 0 && index < PixelWriteBuffer.Count)
-        {
-            PixelWriteBuffer.RemoveAt(index);
-        }
-    }
-
-    public void PushPixel(Pixel pixel)
-    {
-        if (pixel != null)
-        {
-            PixelWriteBuffer.Add(pixel);
-        }
-    }
-
-    public Pixel PopPixel()
-    {
-        if (PixelWriteBuffer.Count < 1)
-        {
-            return null;
-        }
-
-        var pixel = PixelWriteBuffer[PixelWriteBuffer.Count - 1];
-
-        RemovePixel(PixelWriteBuffer.Count - 1);
-
-        return pixel;
-    }
-
-    protected bool IsAlive(int x, int y)
-    {
-        return (x >= 0 && x < Width && y >= 0 && y < Height) ? Grid[x, y] != 0 : false;
+        return (x >= 0 && x < Width && y >= 0 && y < Height) && Grid[x, y] != 0;
     }
 
     public override void Update()
@@ -128,15 +77,11 @@ public class ElementaryCA : ArtificialLife
         {
             for (int x = 0; x < Width; x++)
             {
-                int count = 0;
+                var count = IsAlive(x, Current) ? 2 : 0;
+                count += IsAlive(Cyclic ? World.Cyclic(x, -1, Width) : x - 1, Current) ? 4 : 0;
+                count += IsAlive(Cyclic ? World.Cyclic(x, 1, Width) : x + 1, Current) ? 1 : 0;
 
-                count += IsAlive(x, Current) ? 2 : 0;
-                count += IsAlive(Cyclic ? Utility.Cyclic(x, -1, Width) : x - 1, Current) ? 4 : 0;
-                count += IsAlive(Cyclic ? Utility.Cyclic(x, 1, Width) : x + 1, Current) ? 1 : 0;
-
-                // Peform 1D Elementary Cellular Automata Update
-
-                // Brilliant piece of code
+                // Peform 1D Elementary Cellular Automata Update - Brilliant piece of code
                 int Value = (1 << count) & Rule;
 
                 WriteCell(x, Current + 1, Value > 0 ? 1 : 0);
@@ -146,16 +91,6 @@ public class ElementaryCA : ArtificialLife
 
             Current++;
         }
-    }
-
-    public void ApplyChanges()
-    {
-        foreach (var change in ChangeList)
-        {
-            Grid[change.X, change.Y] = change.Value;
-        }
-
-        ChangeList.Clear();
     }
 
     public override void Refresh()
@@ -174,31 +109,14 @@ public class ElementaryCA : ArtificialLife
 
     public override List<Parameter> Parameters()
     {
-        var set = new List<Parameter>
+        return new List<Parameter>
         {
             new Parameter("Rule", Rule, 0, 255)
         };
-
-        return set;
     }
 
     public void SetRule(int rule)
     {
         Rule = rule & 0xff;
-    }
-
-    public override Color Color()
-    {
-        return ColonyColor;
-    }
-
-    public override List<Cell> GetNeighborhood()
-    {
-        return new List<Cell>();
-    }
-
-    public override void SetNeighborhood(List<Cell> neighborhood)
-    {
-        
     }
 }

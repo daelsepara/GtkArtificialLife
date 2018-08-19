@@ -4,12 +4,6 @@ using System.Collections.Generic;
 
 public class Ice : ArtificialLife
 {
-    List<Pixel> PixelWriteBuffer = new List<Pixel>();
-    readonly List<Cell> Neighborhood = new List<Cell>();
-    List<Change> ChangeList = new List<Change>();
-    List<Color> ColorPalette = new List<Color>();
-
-    int[,] Grid;
     const int MaxStates = 3;
     double Density = 1;
     double Freeze = 30;
@@ -17,8 +11,6 @@ public class Ice : ArtificialLife
     const int Empty = 0;
     const int Normal = 1;
     const int Freezing = 2;
-
-    Random random = new Random(Guid.NewGuid().GetHashCode());
 
     public void GenerateColorPalette()
     {
@@ -81,30 +73,6 @@ public class Ice : ArtificialLife
         Freeze = freeze;
     }
 
-    protected void InitGrid(int width, int height)
-    {
-        Width = width;
-        Height = height;
-
-        Grid = new int[width, height];
-    }
-
-    public override void ClearPixelWriteBuffer()
-    {
-        PixelWriteBuffer.Clear();
-    }
-
-    public override List<Pixel> GetPixelWriteBuffer()
-    {
-        return new List<Pixel>(PixelWriteBuffer);
-    }
-
-    public void AddVonNeumannNeighborhood()
-    {
-        Neighborhood.Clear();
-        Neighborhood.AddRange(ParameterSets.VonNeumannNeighborhood());
-    }
-
     public void WriteCell(int x, int y, int val)
     {
         if (x >= 0 && x < Width && y >= 0 && y < Height)
@@ -115,45 +83,15 @@ public class Ice : ArtificialLife
         }
     }
 
-    protected void RemovePixel(int index)
-    {
-        if (PixelWriteBuffer.Count > 0 && index < PixelWriteBuffer.Count)
-        {
-            PixelWriteBuffer.RemoveAt(index);
-        }
-    }
-
-    public void PushPixel(Pixel pixel)
-    {
-        if (pixel != null)
-        {
-            PixelWriteBuffer.Add(pixel);
-        }
-    }
-
-    public Pixel PopPixel()
-    {
-        if (PixelWriteBuffer.Count < 1)
-        {
-            return null;
-        }
-
-        var pixel = PixelWriteBuffer[PixelWriteBuffer.Count - 1];
-
-        RemovePixel(PixelWriteBuffer.Count - 1);
-
-        return pixel;
-    }
-
-    protected CountSum CountNeighbors(int x, int y, int state)
+    CountSum CountNeighbors(int x, int y, int state)
     {
         var neighbors = 0;
         var sum = 0;
 
         foreach (var neighbor in GetNeighborhood())
         {
-            var nx = Cyclic ? Utility.Cyclic(x, neighbor.X, Width) : x + neighbor.X;
-            var ny = Cyclic ? Utility.Cyclic(y, neighbor.Y, Height) : y + neighbor.Y;
+            var nx = Cyclic ? World.Cyclic(x, neighbor.X, Width) : x + neighbor.X;
+            var ny = Cyclic ? World.Cyclic(y, neighbor.Y, Height) : y + neighbor.Y;
 
             if (nx >= 0 && nx < Width && ny >= 0 && ny < Height && Grid[nx, ny] == state)
             {
@@ -205,16 +143,6 @@ public class Ice : ArtificialLife
         ApplyChanges();
     }
 
-    public void ApplyChanges()
-    {
-        foreach (var change in ChangeList)
-        {
-            Grid[change.X, change.Y] = change.Value;
-        }
-
-        ChangeList.Clear();
-    }
-
     public void Randomize(int maxDensity)
     {
         Density = maxDensity;
@@ -251,34 +179,15 @@ public class Ice : ArtificialLife
     {
         var density = (Width > 0 && Width > 0) ? Density / (Width * Height) : 0.0;
 
-        var set = new List<Parameter>
+        return new List<Parameter>
         {
             new Parameter("Density", density, 0.01, 1.0),
             new Parameter("Freeze", Freeze, 1, 1000)
         };
-
-        return set;
     }
 
     public void SetDensity(int density)
     {
         Density = density;
-    }
-
-    public override Color Color()
-    {
-        return ColonyColor;
-    }
-
-    public override List<Cell> GetNeighborhood()
-    {
-        return new List<Cell>(Neighborhood);
-    }
-
-    public override void SetNeighborhood(List<Cell> neighborhood)
-    {
-        Neighborhood.Clear();
-
-        Neighborhood.AddRange(neighborhood);
     }
 }

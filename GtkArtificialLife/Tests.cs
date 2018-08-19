@@ -11,7 +11,7 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = ParameterSets.MooreNeighborhood();
+        var neighborhood = World.MooreNeighborhood();
 
         var Birth = "3";
         var Survival = "2,3";
@@ -33,7 +33,7 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = ParameterSets.MooreNeighborhood();
+        var neighborhood = World.MooreNeighborhood();
 
         World.AddZhabotinskyColony(Colonies, w, h, 0, 0, 0.40, 1, 1, 10, new Color(255, 0, 0), neighborhood);
         World.AddZhabotinskyColony(Colonies, w, h, 256, 256, 0.40, 1, 1, 10, new Color(0, 255, 0), neighborhood);
@@ -52,7 +52,7 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = ParameterSets.EmptyNeighborhood();
+        var neighborhood = World.EmptyNeighborhood();
 
         World.AddLangtonAntColony(Colonies, w, h, 0, 0, 40, "LR", new Color(255, 0, 0));
         World.AddLangtonAntColony(Colonies, w, h, 256, 256, 40, "LRL", new Color(0, 255, 0));
@@ -71,7 +71,7 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = ParameterSets.MooreNeighborhood();
+        var neighborhood = World.MooreNeighborhood();
 
         World.AddYinYangFireColony(Colonies, w, h, 0, 0, 0.40, 64, new Color(255, 0, 0), neighborhood);
         World.AddYinYangFireColony(Colonies, w, h, 256, 256, 0.40, 128, new Color(0, 255, 0), neighborhood);
@@ -90,7 +90,7 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = ParameterSets.HexNeighborhood();
+        var neighborhood = World.HexNeighborhood();
 
         var Growth = "1,3,6";
         var MaxStates = 12;
@@ -112,7 +112,7 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = ParameterSets.MooreNeighborhood();
+        var neighborhood = World.MooreNeighborhood();
 
         World.AddForestFireColony(Colonies, w, h, 0, 0, 0.4, 100, 1000, new Color(255, 0, 0), neighborhood);
         World.AddForestFireColony(Colonies, w, h, 256, 256, 0.4, 100, 1000, new Color(0, 255, 0), neighborhood);
@@ -159,7 +159,7 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = ParameterSets.MooreNeighborhood();
+        var neighborhood = World.MooreNeighborhood();
 
         World.AddIceColony(Colonies, w, h, 0, 0, 0.4, 30, new Color(255, 0, 0), neighborhood);
         World.AddIceColony(Colonies, w, h, 256, 256, 0.4, 30, new Color(0, 255, 0), neighborhood);
@@ -178,7 +178,7 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = ParameterSets.MooreNeighborhood();
+        var neighborhood = World.MooreNeighborhood();
 
         World.AddCyclicColony(Colonies, w, h, 0, 0, 4, new Color(255, 0, 0), neighborhood);
         World.AddCyclicColony(Colonies, w, h, 256, 256, 4, new Color(0, 255, 0), neighborhood);
