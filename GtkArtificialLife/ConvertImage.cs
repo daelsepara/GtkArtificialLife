@@ -7,7 +7,7 @@ public static class ConvertImage
 {
     static Random random = new Random(Guid.NewGuid().GetHashCode());
 
-    public static ArtificialLife Convert(ColonyTypes.Type type, Gtk.Image image, int Width, int Height, List<Parameter> Parameters, Color color, List<Cell> Neighborhood, bool Gradient = false)
+    public static ArtificialLife Convert(ColonyTypes.Type type, Gtk.Image image, int Width, int Height, List<Parameter> Parameters, Color color, List<Cell> Neighborhood, bool Cyclic = false, bool Gradient = false)
     {
         int population = 0;
 
@@ -25,6 +25,7 @@ public static class ConvertImage
                 }
 
                 colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, maxstates, ref population);
 
@@ -51,6 +52,7 @@ public static class ConvertImage
                 }
 
                 colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, 256, ref population);
 
@@ -72,6 +74,7 @@ public static class ConvertImage
                 colony.AddRules();
 
                 colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, 2, ref population);
 
@@ -92,6 +95,7 @@ public static class ConvertImage
                 colony.SetParameters(F, P);
 
                 colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, 3, ref population);
 
@@ -117,6 +121,7 @@ public static class ConvertImage
                 }
 
                 colony.Randomize(ants, rules, !Gradient);
+                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, rules.Length, ref population);
 
@@ -141,6 +146,7 @@ public static class ConvertImage
                 }
 
                 colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, MaxStates, ref population);
 
@@ -158,6 +164,7 @@ public static class ConvertImage
                 colony.SetParameters(Freeze);
 
                 colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, 3, ref population);
 
@@ -180,6 +187,7 @@ public static class ConvertImage
                 }
 
                 colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, maxstates, ref population);
 

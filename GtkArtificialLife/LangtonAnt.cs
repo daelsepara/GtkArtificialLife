@@ -231,8 +231,8 @@ public class LangtonAnt : ArtificialLife
                 }
 
                 // Move ant in specified direction
-                ant.X += ant.Moves[ant.MoveDirection].DX;
-                ant.Y += ant.Moves[ant.MoveDirection].DY;
+                ant.X = Cyclic ? Utility.Cyclic(ant.X, ant.Moves[ant.MoveDirection].DX, Width) : ant.X + ant.Moves[ant.MoveDirection].DX;
+                ant.Y = Cyclic ? Utility.Cyclic(ant.Y, ant.Moves[ant.MoveDirection].DY, Height) : ant.Y + ant.Moves[ant.MoveDirection].DY;
             }
         }
 

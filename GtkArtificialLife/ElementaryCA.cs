@@ -117,7 +117,7 @@ public class ElementaryCA : ArtificialLife
 
     protected bool IsAlive(int x, int y)
     {
-        return Grid[x, y] != 0;
+        return (x >= 0 && x < Width && y >= 0 && y < Height) ? Grid[x, y] != 0 : false;
     }
 
     public override void Update()
@@ -126,13 +126,13 @@ public class ElementaryCA : ArtificialLife
 
         if (Current < Height - 1)
         {
-            for (int x = 1; x < Width - 1; x++)
+            for (int x = 0; x < Width; x++)
             {
                 int count = 0;
 
                 count += IsAlive(x, Current) ? 2 : 0;
-                count += IsAlive(x - 1, Current) ? 4 : 0;
-                count += IsAlive(x + 1, Current) ? 1 : 0;
+                count += IsAlive(Cyclic ? Utility.Cyclic(x, -1, Width) : x - 1, Current) ? 4 : 0;
+                count += IsAlive(Cyclic ? Utility.Cyclic(x, 1, Width) : x + 1, Current) ? 1 : 0;
 
                 // Peform 1D Elementary Cellular Automata Update
 

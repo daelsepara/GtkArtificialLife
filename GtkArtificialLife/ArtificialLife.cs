@@ -23,9 +23,10 @@ public abstract class ArtificialLife
     public int Width;
     public int Height;
     public Color ColonyColor;
+    public bool Cyclic;
 
-    protected Color DefaultColor = new Color(0x00ff, 0x00ff, 0x00ff);
-    protected Color EmptyColor = new Color(0x0000, 0x0000, 0x0000);
+    protected Color DefaultColor = new Color(255, 255, 255);
+    protected Color EmptyColor = new Color(0, 0, 0);
 
     // Rendering
     public abstract List<Pixel> GetPixelWriteBuffer();
@@ -43,4 +44,9 @@ public abstract class ArtificialLife
     public abstract List<Cell> GetNeighborhood();
 
     public abstract void SetNeighborhood(List<Cell> neighborhood);
+
+    public void SetCyclic(bool cyclic)
+    {
+        Cyclic = cyclic;
+    }
 }

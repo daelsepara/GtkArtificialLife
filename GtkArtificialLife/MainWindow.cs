@@ -265,6 +265,8 @@ public partial class MainWindow : Gtk.Window
 
                 CopyNeighborhood(Colonies[colony].ArtificialLife.GetNeighborhood());
 
+                Cyclic.Active = Colonies[colony].ArtificialLife.Cyclic;
+
                 ColonyColor.Color = Colonies[colony].ArtificialLife.Color();
 
                 for (int i = 0; i < ColoniesType.Count; i++)
@@ -421,7 +423,7 @@ public partial class MainWindow : Gtk.Window
                     var Birth = GetString(ColonyParameters, "Birth");
                     var Survival = GetString(ColonyParameters, "Survival");
 
-                    World.AddLifeColony(Colonies, w, h, x, y, density, Birth, Survival, ColonyColor.Color, neighborhood);
+                    World.AddLifeColony(Colonies, w, h, x, y, density, Birth, Survival, ColonyColor.Color, neighborhood, Cyclic.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.LangtonAnt)
@@ -429,7 +431,7 @@ public partial class MainWindow : Gtk.Window
                     var ants = (int)GetNumeric(ColonyParameters, "Ants");
                     var rule = GetString(ColonyParameters, "Rule");
 
-                    World.AddLangtonAntColony(Colonies, w, h, x, y, ants, rule, ColonyColor.Color, Gradient.Active);
+                    World.AddLangtonAntColony(Colonies, w, h, x, y, ants, rule, ColonyColor.Color, Cyclic.Active, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.Zhabotinsky)
@@ -439,7 +441,7 @@ public partial class MainWindow : Gtk.Window
                     var k1 = GetNumeric(ColonyParameters, "k1");
                     var k2 = GetNumeric(ColonyParameters, "k2");
 
-                    World.AddZhabotinskyColony(Colonies, w, h, x, y, density, k1, k2, g, ColonyColor.Color, neighborhood, Gradient.Active);
+                    World.AddZhabotinskyColony(Colonies, w, h, x, y, density, k1, k2, g, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.YinYangFire)
@@ -447,7 +449,7 @@ public partial class MainWindow : Gtk.Window
                     var density = GetNumeric(ColonyParameters, "Density");
                     var maxstates = (int)GetNumeric(ColonyParameters, "MaxStates");
 
-                    World.AddYinYangFireColony(Colonies, w, h, x, y, density, maxstates, ColonyColor.Color, neighborhood, Gradient.Active);
+                    World.AddYinYangFireColony(Colonies, w, h, x, y, density, maxstates, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.ForestFire)
@@ -456,7 +458,7 @@ public partial class MainWindow : Gtk.Window
                     var F = GetNumeric(ColonyParameters, "F");
                     var P = GetNumeric(ColonyParameters, "P");
 
-                    World.AddForestFireColony(Colonies, w, h, x, y, density, F, P, ColonyColor.Color, neighborhood);
+                    World.AddForestFireColony(Colonies, w, h, x, y, density, F, P, ColonyColor.Color, neighborhood, Cyclic.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.ElementaryCA)
@@ -475,7 +477,7 @@ public partial class MainWindow : Gtk.Window
                     var MaxStates = (int)GetNumeric(ColonyParameters, "MaxStates");
                     var Growth = GetString(ColonyParameters, "Growth");
 
-                    World.AddSnowflakeColony(Colonies, w, h, x, y, MaxStates, Growth, ColonyColor.Color, neighborhood, Gradient.Active);
+                    World.AddSnowflakeColony(Colonies, w, h, x, y, MaxStates, Growth, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.Ice)
@@ -483,14 +485,14 @@ public partial class MainWindow : Gtk.Window
                     var density = GetNumeric(ColonyParameters, "Density");
                     var Freeze = GetNumeric(ColonyParameters, "Freeze");
 
-                    World.AddIceColony(Colonies, w, h, x, y, density, Freeze, ColonyColor.Color, neighborhood);
+                    World.AddIceColony(Colonies, w, h, x, y, density, Freeze, ColonyColor.Color, neighborhood, Cyclic.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.Cyclic)
                 {
                     var maxstates = (int)GetNumeric(ColonyParameters, "MaxStates");
 
-                    World.AddCyclicColony(Colonies, w, h, x, y, maxstates, ColonyColor.Color, neighborhood, Gradient.Active);
+                    World.AddCyclicColony(Colonies, w, h, x, y, maxstates, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -1079,7 +1081,7 @@ public partial class MainWindow : Gtk.Window
                 var Height = Math.Min(worldImage.HeightRequest, LoadedImage.Pixbuf.Height);
 
                 var neighborhood = SetNeighborhood();
-                var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, Width, Height, ColonyParameters, ColonyColor.Color, neighborhood, Gradient.Active);
+                var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, Width, Height, ColonyParameters, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
 
                 // Cannot handle Add Image for Elementary CA (1D)
                 if (!(colony is EmptyArtificialLife || colony is ElementaryCA))

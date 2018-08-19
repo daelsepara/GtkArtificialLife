@@ -464,6 +464,21 @@
                 <property name="Y">40</property>
               </packing>
             </child>
+            <child>
+              <widget class="Gtk.CheckButton" id="Cyclic">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Label" translatable="yes">Cyclic boundary</property>
+                <property name="DrawIndicator">True</property>
+                <property name="HasLabel">True</property>
+                <property name="UseUnderline">True</property>
+                <property name="FocusOnClick">False</property>
+              </widget>
+              <packing>
+                <property name="X">1060</property>
+                <property name="Y">250</property>
+              </packing>
+            </child>
           </widget>
         </child>
         <child>

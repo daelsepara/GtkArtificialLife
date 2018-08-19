@@ -59,12 +59,12 @@ public static class Utility
 
         for (int i = 0; i < 256; i++)
         {
-            int block = (int)(i/delta);
+            int block = (int)(i / delta);
             var factor = (double)block * delta / 255;
 
-            var r = (double) color.Red / max * factor * 255.0;
-            var g = (double) color.Green / max * factor * 255.0;
-            var b = (double) color.Blue / max * factor * 255.0;
+            var r = (double)color.Red / max * factor * 255.0;
+            var g = (double)color.Green / max * factor * 255.0;
+            var b = (double)color.Blue / max * factor * 255.0;
 
             var red = (byte)r & 0xff;
             var green = (byte)g & 0xff;
@@ -79,7 +79,12 @@ public static class Utility
     public static int NextRandom(int a, int b)
     {
         InitializeSeed();
-        
-        return random.Next(a, b);    
+
+        return random.Next(a, b);
+    }
+
+    public static int Cyclic(int location, int direction, int limit)
+    {
+        return direction >= 0 ? (location + direction) % limit : (location + limit + direction) % limit;
     }
 }

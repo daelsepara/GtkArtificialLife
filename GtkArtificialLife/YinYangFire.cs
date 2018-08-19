@@ -168,8 +168,8 @@ public class YinYangFire : ArtificialLife
 
         foreach (var neighbor in GetNeighborhood())
         {
-            var nx = x + neighbor.X;
-            var ny = y + neighbor.Y;
+            var nx = Cyclic ? Utility.Cyclic(x, neighbor.X, Width) : x + neighbor.X;
+            var ny = Cyclic ? Utility.Cyclic(y, neighbor.Y, Height) : y + neighbor.Y;
 
             if (nx >= 0 && nx < Width && ny >= 0 && ny < Height && Grid[nx, ny] >= minVal && Grid[nx, ny] < maxVal)
             {

@@ -73,6 +73,8 @@ public partial class MainWindow
 
 	private global::Gtk.Button TestButton;
 
+	private global::Gtk.CheckButton Cyclic;
+
 	private global::Gtk.Label worldLabel;
 
 	protected virtual void Build()
@@ -430,6 +432,18 @@ public partial class MainWindow
 		global::Gtk.Fixed.FixedChild w33 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.TestButton]));
 		w33.X = 1060;
 		w33.Y = 40;
+		// Container child worldLayout.Gtk.Fixed+FixedChild
+		this.Cyclic = new global::Gtk.CheckButton();
+		this.Cyclic.CanFocus = true;
+		this.Cyclic.Name = "Cyclic";
+		this.Cyclic.Label = global::Mono.Unix.Catalog.GetString("Cyclic boundary");
+		this.Cyclic.DrawIndicator = true;
+		this.Cyclic.UseUnderline = true;
+		this.Cyclic.FocusOnClick = false;
+		this.worldLayout.Add(this.Cyclic);
+		global::Gtk.Fixed.FixedChild w34 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.Cyclic]));
+		w34.X = 1060;
+		w34.Y = 250;
 		this.worldNotebook.Add(this.worldLayout);
 		// Notebook tab
 		this.worldLabel = new global::Gtk.Label();
