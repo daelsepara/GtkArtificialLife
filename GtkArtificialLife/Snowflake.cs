@@ -204,7 +204,7 @@ public class Snowflake : ArtificialLife
     {
         MaxStates = (int)Utility.GetNumeric(parameters, "MaxStates");
         Growth = Utility.GetString(parameters, "Growth");
-        
+
         Delta = MaxStates > 0 ? (256 / MaxStates) : 0;
 
         ParseRules(GrowthRules, Growth);
