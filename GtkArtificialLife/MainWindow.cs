@@ -73,8 +73,10 @@ public partial class MainWindow : Gtk.Window
             Resizable = false,
             KeepAbove = true,
             TypeHint = WindowTypeHint.Dialog,
+            WidthRequest = 250
         };
 
+		Confirm.ActionArea.LayoutStyle = ButtonBoxStyle.Center;
         Confirm.WindowStateEvent += OnWindowStateEvent;
 
         worldNotebook.CurrentPage = PAGE_WORLD;
@@ -90,6 +92,9 @@ public partial class MainWindow : Gtk.Window
         worldPixbuf = InitWorld(worldImage.WidthRequest, worldImage.HeightRequest);
         worldImage.Pixbuf = InitWorld(worldImage.WidthRequest, worldImage.HeightRequest);
         LoadedImage.Pixbuf = InitWorld(LoadedImage.WidthRequest, LoadedImage.HeightRequest);
+
+		StringValue.Sensitive = false;
+		NumericValue.Sensitive = false;
 
         foreach (ColonyTypes.Type type in Enum.GetValues(typeof(ColonyTypes.Type)))
         {
@@ -109,28 +114,37 @@ public partial class MainWindow : Gtk.Window
             ToolbarStyle = ToolbarStyle.Icons
         };
 
+		var TBRun = new ToolButton(Stock.MediaPlay);
+		var TBStop = new ToolButton(Stock.MediaStop);
         var TBNew = new ToolButton(Stock.New);
+		var TBShow = new ToolButton(Stock.Find);
         var TBOpen = new ToolButton(Stock.Open);
         var TBSave = new ToolButton(Stock.Save);
         var TBQuit = new ToolButton(Stock.Quit);
         var TBSeparator = new SeparatorToolItem();
 
-        toolbar.Insert(TBNew, 0);
-        toolbar.Insert(TBOpen, 1);
-        toolbar.Insert(TBSave, 2);
-        toolbar.Insert(TBSeparator, 3);
-        toolbar.Insert(TBQuit, 4);
+		toolbar.Insert(TBRun, 0);
+		toolbar.Insert(TBStop, 1);
+		toolbar.Insert(TBSave, 2);
+        toolbar.Insert(TBNew, 3);
+		toolbar.Insert(TBShow, 4);
+        toolbar.Insert(TBOpen, 5);
+        toolbar.Insert(TBSeparator, 6);
+        toolbar.Insert(TBQuit, 7);
         toolbar.ModifyBg(StateType.Normal, bg);
         toolbar.BorderWidth = 0;
 
+		TBRun.Clicked += OnRunButtonClicked;
+		TBStop.Clicked += OnStopButtonClicked;
         TBNew.Clicked += OnClearButtonClicked;
+		TBShow.Clicked += OnShowColoniesButtonClicked;
         TBOpen.Clicked += OnLoadImageButtonClicked;
         TBSave.Clicked += OnSaveButtonClicked;
         TBQuit.Clicked += OnQuitButtonClicked;
 
         var vbox = new VBox(false, 2)
         {
-            WidthRequest = 170,
+            WidthRequest = 290,
             HeightRequest = 20
         };
 
@@ -852,6 +866,11 @@ public partial class MainWindow : Gtk.Window
         {
             SaveImageFile();
         }
+    }
+
+	protected void OnShowColoniesButtonClicked(object sender, EventArgs e)
+    {
+		ShowColonies.Active = !ShowColonies.Active;
     }
 
     protected void OnWorldImageEventBoxButtonPressEvent(object o, ButtonPressEventArgs args)

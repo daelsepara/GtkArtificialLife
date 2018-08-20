@@ -51,7 +51,7 @@
               </widget>
               <packing>
                 <property name="X">20</property>
-                <property name="Y">50</property>
+                <property name="Y">40</property>
               </packing>
             </child>
             <child>
@@ -65,7 +65,7 @@
               </widget>
               <packing>
                 <property name="X">20</property>
-                <property name="Y">660</property>
+                <property name="Y">650</property>
               </packing>
             </child>
             <child>
@@ -79,7 +79,7 @@
               </widget>
               <packing>
                 <property name="X">60</property>
-                <property name="Y">660</property>
+                <property name="Y">650</property>
               </packing>
             </child>
             <child>
@@ -93,7 +93,7 @@
               </widget>
               <packing>
                 <property name="X">105</property>
-                <property name="Y">660</property>
+                <property name="Y">650</property>
               </packing>
             </child>
             <child>
@@ -298,7 +298,7 @@
               </widget>
               <packing>
                 <property name="X">205</property>
-                <property name="Y">660</property>
+                <property name="Y">650</property>
               </packing>
             </child>
             <child>
@@ -313,7 +313,7 @@
               </widget>
               <packing>
                 <property name="X">155</property>
-                <property name="Y">660</property>
+                <property name="Y">650</property>
               </packing>
             </child>
             <child>
@@ -468,7 +468,7 @@
               <widget class="Gtk.CheckButton" id="Cyclic">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
-                <property name="Label" translatable="yes">Cyclic boundary</property>
+                <property name="Label" translatable="yes">Cyclic</property>
                 <property name="DrawIndicator">True</property>
                 <property name="HasLabel">True</property>
                 <property name="UseUnderline">True</property>

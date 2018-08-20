@@ -118,7 +118,7 @@ public partial class MainWindow
 		this.worldLayout.Add(this.worldImageEventBox);
 		global::Gtk.Fixed.FixedChild w2 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.worldImageEventBox]));
 		w2.X = 20;
-		w2.Y = 50;
+		w2.Y = 40;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.RunButton = new global::Gtk.Button();
 		this.RunButton.Name = "RunButton";
@@ -128,7 +128,7 @@ public partial class MainWindow
 		this.worldLayout.Add(this.RunButton);
 		global::Gtk.Fixed.FixedChild w3 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.RunButton]));
 		w3.X = 20;
-		w3.Y = 660;
+		w3.Y = 650;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.StopButton = new global::Gtk.Button();
 		this.StopButton.Name = "StopButton";
@@ -138,7 +138,7 @@ public partial class MainWindow
 		this.worldLayout.Add(this.StopButton);
 		global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.StopButton]));
 		w4.X = 60;
-		w4.Y = 660;
+		w4.Y = 650;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.SaveButton = new global::Gtk.Button();
 		this.SaveButton.Name = "SaveButton";
@@ -148,7 +148,7 @@ public partial class MainWindow
 		this.worldLayout.Add(this.SaveButton);
 		global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.SaveButton]));
 		w5.X = 105;
-		w5.Y = 660;
+		w5.Y = 650;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.ColonyTypeList = global::Gtk.ComboBox.NewText();
 		this.ColonyTypeList.WidthRequest = 200;
@@ -304,7 +304,7 @@ public partial class MainWindow
 		this.worldLayout.Add(this.ShowColonies);
 		global::Gtk.Fixed.FixedChild w21 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ShowColonies]));
 		w21.X = 205;
-		w21.Y = 660;
+		w21.Y = 650;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.ClearButton = new global::Gtk.Button();
 		this.ClearButton.CanFocus = true;
@@ -315,7 +315,7 @@ public partial class MainWindow
 		this.worldLayout.Add(this.ClearButton);
 		global::Gtk.Fixed.FixedChild w22 = ((global::Gtk.Fixed.FixedChild)(this.worldLayout[this.ClearButton]));
 		w22.X = 155;
-		w22.Y = 660;
+		w22.Y = 650;
 		// Container child worldLayout.Gtk.Fixed+FixedChild
 		this.NeighborhoodLabel = new global::Gtk.Label();
 		this.NeighborhoodLabel.Name = "NeighborhoodLabel";
@@ -436,7 +436,7 @@ public partial class MainWindow
 		this.Cyclic = new global::Gtk.CheckButton();
 		this.Cyclic.CanFocus = true;
 		this.Cyclic.Name = "Cyclic";
-		this.Cyclic.Label = global::Mono.Unix.Catalog.GetString("Cyclic boundary");
+		this.Cyclic.Label = global::Mono.Unix.Catalog.GetString("Cyclic");
 		this.Cyclic.DrawIndicator = true;
 		this.Cyclic.UseUnderline = true;
 		this.Cyclic.FocusOnClick = false;
