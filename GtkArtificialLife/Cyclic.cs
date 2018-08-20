@@ -48,28 +48,6 @@ public class Cyclic : ArtificialLife
         AddVonNeumannNeighborhood();
     }
 
-    public Cyclic(int width, int height, int maxStates, Color color)
-    {
-        InitGrid(width, height);
-
-        if (!color.Equal(EmptyColor))
-        {
-            ColonyColor = color;
-        }
-        else
-        {
-            ColonyColor = DefaultColor;
-        }
-
-        MaxStates = maxStates;
-
-        Delta = maxStates > 0 ? (256 / maxStates) : 0;
-
-        GenerateRandomColorPalette();
-
-        AddVonNeumannNeighborhood();
-    }
-
     public void GradientPalette()
     {
         ColorPalette.Clear();
@@ -87,7 +65,7 @@ public class Cyclic : ArtificialLife
         }
     }
 
-    protected CountSum CountCellNeighbors(int x, int y, int minVal, int maxVal)
+    CountSum CountCellNeighbors(int x, int y, int minVal, int maxVal)
     {
         int neighbors = 0;
         int sum = 0;
@@ -147,12 +125,8 @@ public class Cyclic : ArtificialLife
         }
     }
 
-    public void Randomize(int maxStates = 256)
+    public void Randomize()
     {
-        MaxStates = maxStates;
-
-        Delta = maxStates > 0 ? (256 / maxStates) : 0;
-
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)
@@ -170,5 +144,12 @@ public class Cyclic : ArtificialLife
         {
             new Parameter("MaxStates", MaxStates, 2, 256)
         };
+    }
+
+    public override void SetParameters(List<Parameter> parameters)
+    {
+        MaxStates = (int)Utility.GetNumeric(parameters, "MaxStates");
+
+        Delta = MaxStates > 0 ? (256 / MaxStates) : 0;
     }
 }

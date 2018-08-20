@@ -67,7 +67,7 @@ public static class ParameterSets
     {
         var set = new List<Parameter>
         {
-            new Parameter("Rule", 22, 0, 255),
+            new Parameter("Rule", "30")
         };
 
         return set;

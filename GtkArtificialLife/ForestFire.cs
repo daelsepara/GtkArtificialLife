@@ -13,20 +13,6 @@ public class ForestFire : ArtificialLife
     const int Normal = 1;
     const int Burning = 2;
 
-    public void GenerateColorPalette()
-    {
-        ColorPalette.Clear();
-
-        // Generate Gradient
-        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
-
-        // Preserve colors for tree states
-        var max = Math.Max(ColonyColor.Red, Math.Max(ColonyColor.Green, ColonyColor.Blue));
-        ColorPalette[Empty] = EmptyColor;
-        ColorPalette[Normal] = new Color((byte)(ColonyColor.Red / max * 128), (byte)(ColonyColor.Green / max * 128), (byte)(ColonyColor.Blue / max * 128));
-        ColorPalette[Burning] = ColonyColor;
-    }
-
     public ForestFire()
     {
         InitGrid(256, 256);
@@ -69,10 +55,18 @@ public class ForestFire : ArtificialLife
         AddMooreNeighborhood();
     }
 
-    public void SetParameters(double f, double p)
+    public void GenerateColorPalette()
     {
-        F = f;
-        P = p;
+        ColorPalette.Clear();
+
+        // Generate Gradient
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
+
+        // Preserve colors for tree states
+        var max = Math.Max(ColonyColor.Red, Math.Max(ColonyColor.Green, ColonyColor.Blue));
+        ColorPalette[Empty] = EmptyColor;
+        ColorPalette[Normal] = new Color((byte)(ColonyColor.Red / max * 128), (byte)(ColonyColor.Green / max * 128), (byte)(ColonyColor.Blue / max * 128));
+        ColorPalette[Burning] = ColonyColor;
     }
 
     public void WriteCell(int x, int y, int val)
@@ -195,24 +189,6 @@ public class ForestFire : ArtificialLife
         ApplyChanges();
     }
 
-    public void Randomize(int maxDensity)
-    {
-        Density = maxDensity;
-
-        if (maxDensity > 0)
-        {
-            for (int i = 0; i < maxDensity; i++)
-            {
-                var x = random.Next(0, Width);
-                var y = random.Next(0, Height);
-
-                WriteCell(x, y, Normal);
-            }
-
-            ApplyChanges();
-        }
-    }
-
     public override void Refresh()
     {
         for (int y = 0; y < Height; y++)
@@ -224,6 +200,22 @@ public class ForestFire : ArtificialLife
                     WriteCell(x, y, Grid[x, y]);
                 }
             }
+        }
+    }
+
+    public void Randomize()
+    {
+        if (Density > 0)
+        {
+            for (int i = 0; i < Density; i++)
+            {
+                var x = random.Next(0, Width);
+                var y = random.Next(0, Height);
+
+                WriteCell(x, y, Normal);
+            }
+
+            ApplyChanges();
         }
     }
 
@@ -239,8 +231,10 @@ public class ForestFire : ArtificialLife
         };
     }
 
-    public void SetDensity(int density)
+    public override void SetParameters(List<Parameter> parameters)
     {
-        Density = density;
+        Density = (int)(Utility.GetNumeric(parameters, "Density") * Width * Height);
+        P = Utility.GetNumeric(parameters, "P");
+        F = Utility.GetNumeric(parameters, "F");
     }
 }

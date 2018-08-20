@@ -11,15 +11,6 @@ public class Snowflake : ArtificialLife
     int Delta = 1;
     int Current;
 
-    public void GradientPalette()
-    {
-        ColorPalette.Clear();
-
-        ColorPalette.AddRange(Utility.Gradient(ColonyColor, MaxStates));
-
-        Delta = MaxStates > 0 ? (256 / MaxStates) : 1;
-    }
-
     public Snowflake()
     {
         InitGrid(256, 256);
@@ -76,9 +67,13 @@ public class Snowflake : ArtificialLife
         ApplyChanges();
     }
 
-    public void AddRules()
+    public void GradientPalette()
     {
-        ParseRules(GrowthRules, Growth);
+        ColorPalette.Clear();
+
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor, MaxStates));
+
+        Delta = MaxStates > 0 ? (256 / MaxStates) : 1;
     }
 
     public void WriteCell(int x, int y, int val)
@@ -167,27 +162,6 @@ public class Snowflake : ArtificialLife
         }
     }
 
-    public override List<Parameter> Parameters()
-    {
-        return new List<Parameter>
-        {
-            new Parameter("Growth", Growth),
-            new Parameter("MaxStates", MaxStates, 1, 256)
-        };
-    }
-
-    public void SetParameters(string growth, int maxStates)
-    {
-        if (!String.IsNullOrEmpty(growth))
-            Growth = growth;
-
-        if (maxStates > 0)
-        {
-            MaxStates = maxStates;
-            Delta = maxStates > 0 ? (256 / maxStates) : 0;
-        }
-    }
-
     public void ParseRules(List<int> Set, string rules)
     {
         if (!String.IsNullOrEmpty(rules))
@@ -214,5 +188,25 @@ public class Snowflake : ArtificialLife
                 }
             }
         }
+    }
+
+
+    public override List<Parameter> Parameters()
+    {
+        return new List<Parameter>
+        {
+            new Parameter("Growth", Growth),
+            new Parameter("MaxStates", MaxStates, 1, 256)
+        };
+    }
+
+    public override void SetParameters(List<Parameter> parameters)
+    {
+        MaxStates = (int)Utility.GetNumeric(parameters, "MaxStates");
+        Growth = Utility.GetString(parameters, "Growth");
+        
+        Delta = MaxStates > 0 ? (256 / MaxStates) : 0;
+
+        ParseRules(GrowthRules, Growth);
     }
 }

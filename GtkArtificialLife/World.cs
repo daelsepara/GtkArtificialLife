@@ -68,13 +68,17 @@ public static class World
     public static void AddLifeColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, string Birth, string Survival, Color color, List<Cell> Neighborhood, bool Cyclic = false)
     {
         var LifeColony = new Life(width, height, color);
-        var maxDensity = (int)(width * height * Density);
 
-        LifeColony.Randomize(maxDensity);
+        LifeColony.SetParameters(new List<Parameter>
+        {
+            new Parameter("Birth", Birth),
+            new Parameter("Survival", Survival),
+            new Parameter("Density", Density, 0.01, 1.0)
+        });
+
+        LifeColony.Randomize();
         LifeColony.SetNeighborhood(Neighborhood);
         LifeColony.SetCyclic(Cyclic);
-        LifeColony.SetParameters(Birth, Survival);
-        LifeColony.AddRules();
 
         Colonies.Add(new Colony(x, y, LifeColony));
     }
@@ -84,13 +88,19 @@ public static class World
         var ZhabotinskyColony = new Zhabotinsky(width, height, color);
         var maxDensity = (int)(width * height * Density);
 
+        ZhabotinskyColony.SetParameters(new List<Parameter>{
+            new Parameter("g", g, 1, 100),
+            new Parameter("k1", k1, 1, 100),
+            new Parameter("k2", k2, 1, 100),
+            new Parameter("Density", Density, 0.01, 1.0)
+        });
+
         if (Gradient)
         {
             ZhabotinskyColony.GradientPalette();
         }
 
-        ZhabotinskyColony.SetParameters(k1, k2, g);
-        ZhabotinskyColony.Randomize(maxDensity);
+        ZhabotinskyColony.Randomize();
         ZhabotinskyColony.SetNeighborhood(Neighborhood);
         ZhabotinskyColony.SetCyclic(Cyclic);
 
@@ -101,14 +111,14 @@ public static class World
     {
         var LangtonAntColony = new LangtonAnt(width, height, color);
 
-        LangtonAntColony.SetRules(rules);
+        LangtonAntColony.Random(!Gradient);
 
-        if (Gradient)
+        LangtonAntColony.SetParameters(new List<Parameter>
         {
-            LangtonAntColony.GradientPalette();
-        }
+            new Parameter("Ants", ants, 1, 1000),
+            new Parameter("Rule", rules)
+        });
 
-        LangtonAntColony.Randomize(ants, rules, !Gradient);
         LangtonAntColony.SetCyclic(Cyclic);
 
         Colonies.Add(new Colony(x, y, LangtonAntColony));
@@ -117,14 +127,18 @@ public static class World
     public static void AddYinYangFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, int maxStates, Color color, List<Cell> Neighborhood, bool Cyclic = false, bool Gradient = false)
     {
         var YinYangFireColony = new YinYangFire(width, height, color);
-        var maxDensity = (int)(width * height * Density);
+
+        YinYangFireColony.SetParameters(new List<Parameter>{
+            new Parameter("MaxStates", maxStates, 2, 256),
+            new Parameter("Density", Density, 0.01, 1.0)
+        });
 
         if (Gradient)
         {
             YinYangFireColony.GradientPalette();
         }
 
-        YinYangFireColony.Randomize(maxDensity, maxStates);
+        YinYangFireColony.Randomize();
         YinYangFireColony.SetNeighborhood(Neighborhood);
         YinYangFireColony.SetCyclic(Cyclic);
 
@@ -134,10 +148,15 @@ public static class World
     public static void AddForestFireColony(List<Colony> Colonies, int width, int height, int x, int y, double Density, double F, double P, Color color, List<Cell> Neighborhood, bool Cyclic = false)
     {
         var ForestFireColony = new ForestFire(width, height, color);
-        var maxDensity = (int)(width * height * Density);
 
-        ForestFireColony.SetParameters(F, P);
-        ForestFireColony.Randomize(maxDensity);
+        ForestFireColony.SetParameters(new List<Parameter>
+        {
+            new Parameter("P", P, 1, 1000),
+            new Parameter("F", F, 1, 1000),
+            new Parameter("Density", Density, 0.01, 1.0)
+        });
+
+        ForestFireColony.Randomize();
         ForestFireColony.SetNeighborhood(Neighborhood);
         ForestFireColony.SetCyclic(Cyclic);
 
@@ -149,20 +168,29 @@ public static class World
         var IceColony = new Ice(width, height, color);
         var maxDensity = (int)(width * height * Density);
 
-        IceColony.SetParameters(Freeze);
-        IceColony.Randomize(maxDensity);
+        IceColony.SetParameters(new List<Parameter>
+        {
+            new Parameter("Freeze", Freeze, 1, 1000),
+            new Parameter("Density", Density, 0.01, 1.0)
+        });
+
+        IceColony.Randomize();
         IceColony.SetNeighborhood(Neighborhood);
         IceColony.SetCyclic(Cyclic);
 
         Colonies.Add(new Colony(x, y, IceColony));
     }
 
-    public static void AddElementaryCA(List<Colony> Colonies, int width, int height, int x, int y, int rule, Color color, bool Cyclic = false)
+    public static void AddElementaryCA(List<Colony> Colonies, int width, int height, int x, int y, string rule, Color color, bool Cyclic = false)
     {
         var ElementaryCAColony = new ElementaryCA(width, height, color);
 
         ElementaryCAColony.SetCyclic(Cyclic);
-        ElementaryCAColony.SetRule(rule);
+
+        ElementaryCAColony.SetParameters(new List<Parameter>
+        {
+            new Parameter("Rule", rule)
+        });
 
         Colonies.Add(new Colony(x, y, ElementaryCAColony));
     }
@@ -171,15 +199,19 @@ public static class World
     {
         var SnowflakeColony = new Snowflake(width, height, color);
 
+        SnowflakeColony.SetParameters(new List<Parameter>
+        {
+            new Parameter("Growth", Growth),
+            new Parameter("MaxStates", MaxStates, 1, 256)
+        });
+
+        SnowflakeColony.SetNeighborhood(Neighborhood);
+        SnowflakeColony.SetCyclic(Cyclic);
+
         if (Gradient)
         {
             SnowflakeColony.GradientPalette();
         }
-
-        SnowflakeColony.SetNeighborhood(Neighborhood);
-        SnowflakeColony.SetCyclic(Cyclic);
-        SnowflakeColony.SetParameters(Growth, MaxStates);
-        SnowflakeColony.AddRules();
 
         Colonies.Add(new Colony(x, y, SnowflakeColony));
     }
@@ -188,12 +220,16 @@ public static class World
     {
         var CyclicColony = new Cyclic(width, height, color);
 
+        CyclicColony.SetParameters(new List<Parameter>{
+            new Parameter("MaxStates", maxStates, 2, 256)
+        });
+
         if (Gradient)
         {
             CyclicColony.GradientPalette();
         }
 
-        CyclicColony.Randomize(maxStates);
+        CyclicColony.Randomize();
         CyclicColony.SetNeighborhood(Neighborhood);
         CyclicColony.SetCyclic(Cyclic);
 

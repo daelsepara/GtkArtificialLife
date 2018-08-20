@@ -131,12 +131,12 @@ public static class Tests
         var w = 256;
         var h = 128;
 
-        World.AddElementaryCA(Colonies, w, h, 0, 0, 30, new Color(255, 0, 0));
-        World.AddElementaryCA(Colonies, w, h, 256, 256, 110, new Color(0, 255, 0));
-        World.AddElementaryCA(Colonies, w, h, 512, 0, 75, new Color(0, 0, 255));
-        World.AddElementaryCA(Colonies, w, h, 256, 0, 45, new Color(255, 0, 255));
-        World.AddElementaryCA(Colonies, w, h, 0, 256, 18, new Color(255, 255, 0));
-        World.AddElementaryCA(Colonies, w, h, 512, 256, 118, new Color(0, 255, 255));
+        World.AddElementaryCA(Colonies, w, h, 0, 0, "30", new Color(255, 0, 0));
+        World.AddElementaryCA(Colonies, w, h, 256, 256, "110", new Color(0, 255, 0));
+        World.AddElementaryCA(Colonies, w, h, 512, 0, "75", new Color(0, 0, 255));
+        World.AddElementaryCA(Colonies, w, h, 256, 0, "45", new Color(255, 0, 255));
+        World.AddElementaryCA(Colonies, w, h, 0, 256, "18", new Color(255, 255, 0));
+        World.AddElementaryCA(Colonies, w, h, 512, 256, "118", new Color(0, 255, 255));
 
         AddSelection(w, h);
     }

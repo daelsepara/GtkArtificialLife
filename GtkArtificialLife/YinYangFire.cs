@@ -7,13 +7,6 @@ public class YinYangFire : ArtificialLife
     int Density;
     int Delta = 1;
 
-    public void GradientPalette()
-    {
-        ColorPalette.Clear();
-
-        ColorPalette.AddRange(Utility.Gradient(ColonyColor, MaxStates));
-    }
-
     public YinYangFire()
     {
         InitGrid(256, 256);
@@ -56,26 +49,11 @@ public class YinYangFire : ArtificialLife
         AddMooreNeighborhood();
     }
 
-    public YinYangFire(int width, int height, int maxStates, Color color)
+    public void GradientPalette()
     {
-        InitGrid(width, height);
+        ColorPalette.Clear();
 
-        if (!color.Equal(EmptyColor))
-        {
-            ColonyColor = color;
-        }
-        else
-        {
-            ColonyColor = DefaultColor;
-        }
-
-        MaxStates = maxStates;
-
-        Delta = maxStates > 0 ? (256 / maxStates) : 0;
-
-        GenerateRandomColorPalette();
-
-        AddMooreNeighborhood();
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor, MaxStates));
     }
 
     public void WriteCell(int x, int y, int val)
@@ -159,16 +137,11 @@ public class YinYangFire : ArtificialLife
         }
     }
 
-    public void Randomize(int maxDensity, int maxStates = 256)
+    public void Randomize()
     {
-        if (maxDensity > 0)
+        if (Density > 0)
         {
-            Density = maxDensity;
-            MaxStates = maxStates;
-
-            Delta = maxStates > 0 ? (256 / maxStates) : 0;
-
-            for (int i = 0; i < maxDensity; i++)
+            for (int i = 0; i < Density; i++)
             {
                 var x = random.Next(0, Width);
                 var y = random.Next(0, Height);
@@ -192,8 +165,11 @@ public class YinYangFire : ArtificialLife
         };
     }
 
-    public void SetDensity(int density)
+    public override void SetParameters(List<Parameter> parameters)
     {
-        Density = density;
+        MaxStates = (int)Utility.GetNumeric(parameters, "MaxStates");
+        Density = (int)(Utility.GetNumeric(parameters, "Density") * Width * Height);
+
+        Delta = MaxStates > 0 ? (256 / MaxStates) : 0;
     }
 }

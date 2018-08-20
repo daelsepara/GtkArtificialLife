@@ -9,13 +9,6 @@ public class Zhabotinsky : ArtificialLife
     double K2 = 1;
     double G = 10;
 
-    public void GradientPalette()
-    {
-        ColorPalette.Clear();
-
-        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
-    }
-
     public Zhabotinsky()
     {
         InitGrid(256, 256);
@@ -58,11 +51,11 @@ public class Zhabotinsky : ArtificialLife
         AddMooreNeighborhood();
     }
 
-    public void SetParameters(double k1, double k2, double g)
+    public void GradientPalette()
     {
-        K1 = k1;
-        K2 = k2;
-        G = g;
+        ColorPalette.Clear();
+
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
     }
 
     public void WriteCell(int x, int y, int val)
@@ -136,25 +129,6 @@ public class Zhabotinsky : ArtificialLife
         ApplyChanges();
     }
 
-    public void Randomize(int maxDensity)
-    {
-        Density = maxDensity;
-
-        if (maxDensity > 0)
-        {
-            for (int i = 0; i < maxDensity; i++)
-            {
-                var x = random.Next(0, Width);
-                var y = random.Next(0, Height);
-                var val = random.Next(0, MaxStates);
-
-                WriteCell(x, y, val);
-            }
-
-            ApplyChanges();
-        }
-    }
-
     public override void Refresh()
     {
         for (int y = 0; y < Height; y++)
@@ -166,6 +140,23 @@ public class Zhabotinsky : ArtificialLife
                     WriteCell(x, y, Grid[x, y]);
                 }
             }
+        }
+    }
+
+    public void Randomize()
+    {
+        if (Density > 0)
+        {
+            for (int i = 0; i < Density; i++)
+            {
+                var x = random.Next(0, Width);
+                var y = random.Next(0, Height);
+                var val = random.Next(0, MaxStates);
+
+                WriteCell(x, y, val);
+            }
+
+            ApplyChanges();
         }
     }
 
@@ -182,8 +173,11 @@ public class Zhabotinsky : ArtificialLife
         };
     }
 
-    public void SetDensity(int density)
+    public override void SetParameters(List<Parameter> parameters)
     {
-        Density = density;
+        Density = (int)(Utility.GetNumeric(parameters, "Density") * Width * Height);
+        G = Utility.GetNumeric(parameters, "g");
+        K1 = Utility.GetNumeric(parameters, "k1");
+        K2 = Utility.GetNumeric(parameters, "k2");
     }
 }

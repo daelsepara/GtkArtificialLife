@@ -4,24 +4,13 @@ using System.Collections.Generic;
 
 public class Life : ArtificialLife
 {
-    List<int> BirthRules = new List<int>();
-    List<int> SurvivalRules = new List<int>();
+    readonly List<int> BirthRules = new List<int>();
+    readonly List<int> SurvivalRules = new List<int>();
 
     string Birth = "3";
     string Survival = "2,3";
 
     int Density;
-
-    public void GenerateColorPalette()
-    {
-        ColorPalette.Clear();
-
-        // Generate Gradient
-        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
-
-        ColorPalette[0] = EmptyColor;
-        ColorPalette[1] = ColonyColor;
-    }
 
     public Life()
     {
@@ -30,6 +19,8 @@ public class Life : ArtificialLife
         ColonyColor = DefaultColor;
 
         AddMooreNeighborhood();
+
+        GenerateColorPalette();
     }
 
     public Life(int width, int height)
@@ -63,10 +54,15 @@ public class Life : ArtificialLife
         GenerateColorPalette();
     }
 
-    public void AddRules()
+    public void GenerateColorPalette()
     {
-        ParseRules(BirthRules, Birth);
-        ParseRules(SurvivalRules, Survival);
+        ColorPalette.Clear();
+
+        // Generate Gradient
+        ColorPalette.AddRange(Utility.Gradient(ColonyColor));
+
+        ColorPalette[0] = EmptyColor;
+        ColorPalette[1] = ColonyColor;
     }
 
     public void WriteCell(int x, int y, int val)
@@ -136,24 +132,6 @@ public class Life : ArtificialLife
         ApplyChanges();
     }
 
-    public void Randomize(int maxDensity)
-    {
-        if (maxDensity > 0)
-        {
-            Density = maxDensity;
-
-            for (int i = 0; i < maxDensity; i++)
-            {
-                var x = random.Next(0, Width);
-                var y = random.Next(0, Height);
-
-                WriteCell(x, y, 1);
-            }
-
-            ApplyChanges();
-        }
-    }
-
     public override void Refresh()
     {
         for (int y = 0; y < Height; y++)
@@ -168,30 +146,20 @@ public class Life : ArtificialLife
         }
     }
 
-    public override List<Parameter> Parameters()
+    public void Randomize()
     {
-        var density = (Width > 0 && Width > 0) ? (double)Density / (Width * Height) : 0.0;
-
-        return new List<Parameter>
+        if (Density > 0)
         {
-            new Parameter("Density", density, 0.01, 1.0),
-            new Parameter("Birth", Birth),
-            new Parameter("Survival", Survival)
-        };
-    }
+            for (int i = 0; i < Density; i++)
+            {
+                var x = random.Next(0, Width);
+                var y = random.Next(0, Height);
 
-    public void SetDensity(int density)
-    {
-        Density = density;
-    }
+                WriteCell(x, y, 1);
+            }
 
-    public void SetParameters(string birth, string survival)
-    {
-        if (!String.IsNullOrEmpty(birth))
-            Birth = birth;
-
-        if (!String.IsNullOrEmpty(survival))
-            Survival = survival;
+            ApplyChanges();
+        }
     }
 
     public void ParseRules(List<int> Set, string rules)
@@ -220,5 +188,27 @@ public class Life : ArtificialLife
                 }
             }
         }
+    }
+
+    public override List<Parameter> Parameters()
+    {
+        var density = (Width > 0 && Height > 0) ? (double)Density / (Width * Height) : 0.0;
+
+        return new List<Parameter>
+        {
+            new Parameter("Density", density, 0.01, 1.0),
+            new Parameter("Birth", Birth),
+            new Parameter("Survival", Survival)
+        };
+    }
+
+    public override void SetParameters(List<Parameter> parameters)
+    {
+        Density = (int)(Utility.GetNumeric(parameters, "Density") * Width * Height);
+        Birth = Utility.GetString(parameters, "Birth");
+        Survival = Utility.GetString(parameters, "Survival");
+
+        ParseRules(BirthRules, Birth);
+        ParseRules(SurvivalRules, Survival);
     }
 }

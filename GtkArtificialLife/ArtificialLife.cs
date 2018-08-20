@@ -38,8 +38,9 @@ public abstract class ArtificialLife
 
     // A-Life-Type specific updates
     public abstract void Update();
-    public abstract List<Parameter> Parameters();
     public abstract void Refresh();
+    public abstract List<Parameter> Parameters();
+    public abstract void SetParameters(List<Parameter> parameters);
 
     protected Random random = new Random(Guid.NewGuid().GetHashCode());
 

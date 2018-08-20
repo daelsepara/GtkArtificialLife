@@ -463,7 +463,7 @@ public partial class MainWindow : Gtk.Window
 
                 if (ColoniesType[type] == ColonyTypes.Type.ElementaryCA)
                 {
-                    var rule = (int)GetNumeric(ColonyParameters, "Rule");
+                    var rule = GetString(ColonyParameters, "Rule");
                     var height = w / 2;
 
                     GtkSelection.Selection.BoundingBoxes()[colony].Y0 = y;

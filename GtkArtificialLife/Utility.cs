@@ -65,4 +65,18 @@ public static class Utility
 
         return ColorPalette;
     }
+
+    public static double GetNumeric(List<Parameter> parameters, String name)
+    {
+        var item = parameters.Find(parameter => parameter.Name == name);
+
+        return item.NumericValue;
+    }
+
+    public static string GetString(List<Parameter> parameters, String name)
+    {
+        var item = parameters.Find(parameter => parameter.Name == name);
+
+        return item.Value;
+    }
 }

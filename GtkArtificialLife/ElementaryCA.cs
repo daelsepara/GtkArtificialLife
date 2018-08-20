@@ -1,4 +1,5 @@
 using Gdk;
+using System;
 using System.Collections.Generic;
 
 public class ElementaryCA : ArtificialLife
@@ -111,12 +112,12 @@ public class ElementaryCA : ArtificialLife
     {
         return new List<Parameter>
         {
-            new Parameter("Rule", Rule, 0, 255)
+            new Parameter("Rule", Convert.ToString(Rule))
         };
     }
 
-    public void SetRule(int rule)
+    public override void SetParameters(List<Parameter> parameters)
     {
-        Rule = rule & 0xff;
+        Rule = Convert.ToInt32(Utility.GetString(parameters, "Rule")) & 0xff;
     }
 }

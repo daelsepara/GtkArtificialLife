@@ -15,21 +15,24 @@ public static class ConvertImage
         {
             if (type == ColonyTypes.Type.YinYangFire)
             {
-                var maxstates = (int)GetNumeric(Parameters, "MaxStates");
+                var maxStates = (int)Utility.GetNumeric(Parameters, "MaxStates");
 
-                var colony = new YinYangFire(Width, Height, maxstates, color);
+                var colony = new YinYangFire(Width, Height, color);
+
+                colony.SetParameters(new List<Parameter>{
+                    new Parameter("MaxStates", maxStates, 2, 256),
+                    new Parameter("Density", 1.0, 0.01, 1.0)
+                });
 
                 if (Gradient)
                 {
                     colony.GradientPalette();
                 }
 
+                Draw(image.Pixbuf, Width, Height, colony, maxStates, ref population);
+
                 colony.SetNeighborhood(Neighborhood);
                 colony.SetCyclic(Cyclic);
-
-                Draw(image.Pixbuf, Width, Height, colony, maxstates, ref population);
-
-                colony.SetDensity(population);
 
                 colony.ApplyChanges();
 
@@ -38,13 +41,16 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.Zhabotinsky)
             {
-                var g = GetNumeric(Parameters, "g");
-                var k1 = GetNumeric(Parameters, "k1");
-                var k2 = GetNumeric(Parameters, "k2");
-
                 var colony = new Zhabotinsky(Width, Height, color);
 
-                colony.SetParameters(k1, k2, g);
+                Draw(image.Pixbuf, Width, Height, colony, 256, ref population);
+
+                colony.SetParameters(new List<Parameter>{
+                    new Parameter("g", Utility.GetNumeric(Parameters, "g"), 1, 100),
+                    new Parameter("k1", Utility.GetNumeric(Parameters, "k1"), 1, 100),
+                    new Parameter("k2", Utility.GetNumeric(Parameters, "k2"), 1, 100),
+                    new Parameter("Density", (double)population / (Width * Height), 0.01, 1.0)
+                });
 
                 if (Gradient)
                 {
@@ -53,10 +59,6 @@ public static class ConvertImage
 
                 colony.SetNeighborhood(Neighborhood);
                 colony.SetCyclic(Cyclic);
-
-                Draw(image.Pixbuf, Width, Height, colony, 256, ref population);
-
-                colony.SetDensity(population);
 
                 colony.ApplyChanges();
 
@@ -65,20 +67,19 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.Life)
             {
-                var Birth = GetString(Parameters, "Birth");
-                var Survival = GetString(Parameters, "Survival");
-
                 var colony = new Life(Width, Height, color);
-
-                colony.SetParameters(Birth, Survival);
-                colony.AddRules();
-
-                colony.SetNeighborhood(Neighborhood);
-                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, 2, ref population);
 
-                colony.SetDensity(population);
+                colony.SetParameters(new List<Parameter>
+                {
+                    new Parameter("Birth", Utility.GetString(Parameters, "Birth")),
+                    new Parameter("Survival", Utility.GetString(Parameters, "Survival")),
+                    new Parameter("Density", (double)population / (Width * Height), 0.01, 1.0)
+                });
+
+                colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 colony.ApplyChanges();
 
@@ -87,19 +88,19 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.ForestFire)
             {
-                var F = GetNumeric(Parameters, "F");
-                var P = GetNumeric(Parameters, "P");
-
                 var colony = new ForestFire(Width, Height, color);
-
-                colony.SetParameters(F, P);
-
-                colony.SetNeighborhood(Neighborhood);
-                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, 3, ref population);
 
-                colony.SetDensity(population);
+                colony.SetParameters(new List<Parameter>
+                {
+                    new Parameter("P", Utility.GetNumeric(Parameters, "P"), 1, 1000),
+                    new Parameter("F", Utility.GetNumeric(Parameters, "F"), 1, 1000),
+                    new Parameter("Density", (double)population / (Width * Height), 0.01, 1.0)
+                });
+
+                colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 colony.ApplyChanges();
 
@@ -108,19 +109,19 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.LangtonAnt)
             {
-                var rules = GetString(Parameters, "Rule");
-                var ants = (int)GetNumeric(Parameters, "Ants");
+                var rules = Utility.GetString(Parameters, "Rule");
+                var ants = (int)Utility.GetNumeric(Parameters, "Ants");
 
                 var colony = new LangtonAnt(Width, Height, color);
 
-                colony.SetRules(rules);
+                colony.Random(!Gradient);
 
-                if (Gradient)
+                colony.SetParameters(new List<Parameter>
                 {
-                    colony.GradientPalette();
-                }
+                    new Parameter("Ants", ants, 1, 1000),
+                    new Parameter("Rule", rules)
+                });
 
-                colony.Randomize(ants, rules, !Gradient);
                 colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, rules.Length, ref population);
@@ -132,23 +133,25 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.Snowflake)
             {
-                var MaxStates = (int)GetNumeric(Parameters, "MaxStates");
-                var Growth = GetString(Parameters, "Growth");
+                var maxStates = (int)Utility.GetNumeric(Parameters, "MaxStates");
 
                 var colony = new Snowflake(Width, Height, color);
 
-                colony.SetParameters(Growth, MaxStates);
-                colony.AddRules();
+                colony.SetParameters(new List<Parameter>
+                {
+                    new Parameter("Growth", Utility.GetString(Parameters, "Growth")),
+                    new Parameter("MaxStates", maxStates, 1, 256)
+                });
 
                 if (Gradient)
                 {
                     colony.GradientPalette();
                 }
 
+                Draw(image.Pixbuf, Width, Height, colony, maxStates, ref population);
+
                 colony.SetNeighborhood(Neighborhood);
                 colony.SetCyclic(Cyclic);
-
-                Draw(image.Pixbuf, Width, Height, colony, MaxStates, ref population);
 
                 colony.ApplyChanges();
 
@@ -157,18 +160,18 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.Ice)
             {
-                var Freeze = (int)GetNumeric(Parameters, "Freeze");
-
                 var colony = new Ice(Width, Height, color);
-
-                colony.SetParameters(Freeze);
-
-                colony.SetNeighborhood(Neighborhood);
-                colony.SetCyclic(Cyclic);
 
                 Draw(image.Pixbuf, Width, Height, colony, 3, ref population);
 
-                colony.SetDensity(population);
+                colony.SetParameters(new List<Parameter>
+                {
+                    new Parameter("Freeze", Utility.GetNumeric(Parameters, "Freeze"), 1, 1000),
+                    new Parameter("Density", (double)population / (Width * Height), 0.01, 1.0)
+                });
+
+                colony.SetNeighborhood(Neighborhood);
+                colony.SetCyclic(Cyclic);
 
                 colony.ApplyChanges();
 
@@ -177,9 +180,13 @@ public static class ConvertImage
 
             if (type == ColonyTypes.Type.Cyclic)
             {
-                var maxstates = (int)GetNumeric(Parameters, "MaxStates");
+                var maxstates = (int)Utility.GetNumeric(Parameters, "MaxStates");
 
-                var colony = new Cyclic(Width, Height, maxstates, color);
+                var colony = new Cyclic(Width, Height, color);
+
+                colony.SetParameters(new List<Parameter>{
+                    new Parameter("MaxStates", maxstates, 2, 256)
+                });
 
                 if (Gradient)
                 {
@@ -198,20 +205,6 @@ public static class ConvertImage
         }
 
         return new EmptyArtificialLife();
-    }
-
-    static double GetNumeric(List<Parameter> parameters, String name)
-    {
-        var item = parameters.Find(parameter => parameter.Name == name);
-
-        return item.NumericValue;
-    }
-
-    static string GetString(List<Parameter> parameters, String name)
-    {
-        var item = parameters.Find(parameter => parameter.Name == name);
-
-        return item.Value;
     }
 
     public static void Draw(Pixbuf pixbuf, int Width, int Height, ArtificialLife colony, int MaxStates, ref int population)
@@ -246,7 +239,7 @@ public static class ConvertImage
                 {
                     (colony as Life).WriteCell(x, y, val);
 
-                    population += val & 1;
+                    population += val > 0 ? 1 : 0;
                 }
 
                 if (colony is YinYangFire)
