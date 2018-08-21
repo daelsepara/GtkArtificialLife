@@ -51,14 +51,14 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = World.EmptyNeighborhood();
+        var neighborhood = World.VonNeumannNeighborhood();
 
-        World.AddLangtonAntColony(Colonies, w, h, 0, 0, 40, "LR", new Color(255, 0, 0));
-        World.AddLangtonAntColony(Colonies, w, h, 256, 256, 40, "LRL", new Color(0, 255, 0));
-        World.AddLangtonAntColony(Colonies, w, h, 512, 0, 40, "RRLLLLRRRLLL", new Color(0, 0, 255));
-        World.AddLangtonAntColony(Colonies, w, h, 256, 0, 40, "RRLRLRLLRL", new Color(255, 0, 255));
-        World.AddLangtonAntColony(Colonies, w, h, 0, 256, 40, "RRRLLLRLLLRR", new Color(255, 255, 0));
-        World.AddLangtonAntColony(Colonies, w, h, 512, 256, 40, "RRRLR", new Color(0, 255, 255));
+        World.AddLangtonAntColony(Colonies, w, h, 0, 0, 40, "LR", new Color(255, 0, 0), neighborhood);
+        World.AddLangtonAntColony(Colonies, w, h, 256, 256, 40, "LRL", new Color(0, 255, 0), neighborhood);
+        World.AddLangtonAntColony(Colonies, w, h, 512, 0, 40, "RRLLLLRRRLLL", new Color(0, 0, 255), neighborhood);
+        World.AddLangtonAntColony(Colonies, w, h, 256, 0, 40, "RRLRLRLLRL", new Color(255, 0, 255), neighborhood);
+        World.AddLangtonAntColony(Colonies, w, h, 0, 256, 40, "RRRLLLRLLLRR", new Color(255, 255, 0), neighborhood);
+        World.AddLangtonAntColony(Colonies, w, h, 512, 256, 40, "RRRLR", new Color(0, 255, 255), neighborhood);
 
         AddSelection(w, h);
     }

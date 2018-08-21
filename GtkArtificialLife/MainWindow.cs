@@ -450,7 +450,7 @@ public partial class MainWindow : Gtk.Window
                     var ants = (int)GetNumeric(ColonyParameters, "Ants");
                     var rule = GetString(ColonyParameters, "Rule");
 
-                    World.AddLangtonAntColony(Colonies, w, h, x, y, ants, rule, ColonyColor.Color, Cyclic.Active, Gradient.Active);
+                    World.AddLangtonAntColony(Colonies, w, h, x, y, ants, rule, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
                 }
 
                 if (ColoniesType[type] == ColonyTypes.Type.Zhabotinsky)
@@ -998,7 +998,7 @@ public partial class MainWindow : Gtk.Window
                         break;
                     case ColonyTypes.Type.LangtonAnt:
                         ColonyParameters.AddRange(ParameterSets.LangtonAnt());
-                        CopyNeighborhood(World.EmptyNeighborhood());
+                        CopyNeighborhood(World.VonNeumannNeighborhood());
                         break;
                     case ColonyTypes.Type.Zhabotinsky:
                         ColonyParameters.AddRange(ParameterSets.Zhabotinsky());

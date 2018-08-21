@@ -115,6 +115,7 @@ public static class ConvertImage
                 var colony = new LangtonAnt(Width, Height, color);
 
                 colony.Random(!Gradient);
+                colony.SetNeighborhood(Neighborhood);
 
                 colony.SetParameters(new List<Parameter>
                 {

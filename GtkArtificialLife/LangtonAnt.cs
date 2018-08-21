@@ -195,10 +195,10 @@ public class LangtonAnt : ArtificialLife
 
     public void AddMoves(Ant ant)
     {
-        ant.Moves.Add(new Ant.Movement(0, -1));
-        ant.Moves.Add(new Ant.Movement(1, 0));
-        ant.Moves.Add(new Ant.Movement(0, 1));
-        ant.Moves.Add(new Ant.Movement(-1, 0));
+        foreach (var cell in Neighborhood)
+        {
+            ant.Moves.Add(new Ant.Movement(cell.X, cell.Y));
+        }
     }
 
     void GenerateAnts(int ants)

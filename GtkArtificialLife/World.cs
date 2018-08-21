@@ -107,11 +107,13 @@ public static class World
         Colonies.Add(new Colony(x, y, ZhabotinskyColony));
     }
 
-    public static void AddLangtonAntColony(List<Colony> Colonies, int width, int height, int x, int y, int ants, string rules, Color color, bool Cyclic = false, bool Gradient = false)
+    public static void AddLangtonAntColony(List<Colony> Colonies, int width, int height, int x, int y, int ants, string rules, Color color, List<Cell> Neighborhood, bool Cyclic = false, bool Gradient = false)
     {
         var LangtonAntColony = new LangtonAnt(width, height, color);
 
         LangtonAntColony.Random(!Gradient);
+
+        LangtonAntColony.SetNeighborhood(Neighborhood);
 
         LangtonAntColony.SetParameters(new List<Parameter>
         {
