@@ -23,11 +23,11 @@ public static class World
         AddNeighbor(neighborhood, new Cell(-1, -1));
         AddNeighbor(neighborhood, new Cell(0, -1));
         AddNeighbor(neighborhood, new Cell(1, -1));
-        AddNeighbor(neighborhood, new Cell(-1, 0));
         AddNeighbor(neighborhood, new Cell(1, 0));
-        AddNeighbor(neighborhood, new Cell(-1, 1));
-        AddNeighbor(neighborhood, new Cell(0, 1));
         AddNeighbor(neighborhood, new Cell(1, 1));
+        AddNeighbor(neighborhood, new Cell(0, 1));
+        AddNeighbor(neighborhood, new Cell(-1, 1));
+        AddNeighbor(neighborhood, new Cell(-1, 0));
 
         return neighborhood;
     }
@@ -39,10 +39,10 @@ public static class World
 
         AddNeighbor(neighborhood, new Cell(-1, -1));
         AddNeighbor(neighborhood, new Cell(0, -1));
-        AddNeighbor(neighborhood, new Cell(-1, 0));
         AddNeighbor(neighborhood, new Cell(1, 0));
-        AddNeighbor(neighborhood, new Cell(0, 1));
         AddNeighbor(neighborhood, new Cell(1, 1));
+        AddNeighbor(neighborhood, new Cell(0, 1));
+        AddNeighbor(neighborhood, new Cell(-1, 0));
 
         return neighborhood;
     }
@@ -53,9 +53,9 @@ public static class World
         var neighborhood = new List<Cell>();
 
         AddNeighbor(neighborhood, new Cell(0, -1));
-        AddNeighbor(neighborhood, new Cell(-1, 0));
         AddNeighbor(neighborhood, new Cell(1, 0));
         AddNeighbor(neighborhood, new Cell(0, 1));
+        AddNeighbor(neighborhood, new Cell(-1, 0));
 
         return neighborhood;
     }
@@ -234,5 +234,26 @@ public static class World
         CyclicColony.SetCyclic(Cyclic);
 
         Colonies.Add(new Colony(x, y, CyclicColony));
+    }
+
+    public static void AddTuringMachineColony(List<Colony> Colonies, int width, int height, int x, int y, int Machines, string Source, int CellStates, Color color, List<Cell> Neighborhood, bool Cyclic = false, bool Gradient = false)
+    {
+        var TuringMachineColony = new TuringMachine(width, height, color);
+
+        TuringMachineColony.SetNeighborhood(Neighborhood);
+        TuringMachineColony.SetCyclic(Cyclic);
+
+        TuringMachineColony.SetParameters(new List<Parameter>{
+            new Parameter("Machines", Machines, 1, 1000),
+            new Parameter("CellStates", CellStates, 2, 8),
+            new Parameter("Source", Source)
+        });
+
+        if (Gradient)
+        {
+            TuringMachineColony.GradientPalette();
+        }
+
+        Colonies.Add(new Colony(x, y, TuringMachineColony));
     }
 }

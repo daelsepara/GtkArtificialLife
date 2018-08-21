@@ -329,6 +329,11 @@ public partial class MainWindow : Gtk.Window
                     {
                         ColonyTypeList.Active = i;
                     }
+
+                    if (Colonies[colony].ArtificialLife is TuringMachine && ColoniesType[i] == ColonyTypes.Type.TuringMachine)
+                    {
+                        ColonyTypeList.Active = i;
+                    }
                 }
 
                 CopyParameterValues(ParameterList, ColonyParameters);
@@ -507,6 +512,15 @@ public partial class MainWindow : Gtk.Window
                     var maxstates = (int)GetNumeric(ColonyParameters, "MaxStates");
 
                     World.AddCyclicColony(Colonies, w, h, x, y, maxstates, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
+                }
+
+                if (ColoniesType[type] == ColonyTypes.Type.TuringMachine)
+                {
+                    var cellstates = (int)GetNumeric(ColonyParameters, "CellStates");
+                    var machines = (int)GetNumeric(ColonyParameters, "Machines");
+                    var source = GetString(ColonyParameters, "Source");
+
+                    World.AddTuringMachineColony(Colonies, w, h, x, y, machines, source, cellstates, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
                 }
 
                 RenderColonies(worldPixbuf);
@@ -702,20 +716,20 @@ public partial class MainWindow : Gtk.Window
         if (TR.Active)
             World.AddNeighbor(neighborhood, new Cell(1, -1));
 
-        if (ML.Active)
-            World.AddNeighbor(neighborhood, new Cell(-1, 0));
-
         if (MR.Active)
             World.AddNeighbor(neighborhood, new Cell(1, 0));
 
-        if (BL.Active)
-            World.AddNeighbor(neighborhood, new Cell(-1, 1));
+        if (BR.Active)
+            World.AddNeighbor(neighborhood, new Cell(1, 1));
 
         if (BM.Active)
             World.AddNeighbor(neighborhood, new Cell(0, 1));
 
-        if (BR.Active)
-            World.AddNeighbor(neighborhood, new Cell(1, 1));
+        if (BL.Active)
+            World.AddNeighbor(neighborhood, new Cell(-1, 1));
+
+        if (ML.Active)
+            World.AddNeighbor(neighborhood, new Cell(-1, 0));
 
         return neighborhood;
     }
@@ -1014,6 +1028,10 @@ public partial class MainWindow : Gtk.Window
                         ColonyParameters.AddRange(ParameterSets.Cyclic());
                         CopyNeighborhood(World.VonNeumannNeighborhood());
                         break;
+                    case ColonyTypes.Type.TuringMachine:
+                        ColonyParameters.AddRange(ParameterSets.TuringMachine());
+                        CopyNeighborhood(World.VonNeumannNeighborhood());
+                        break;
                 }
 
                 Disable();
@@ -1100,6 +1118,7 @@ public partial class MainWindow : Gtk.Window
                 var Height = Math.Min(worldImage.HeightRequest, LoadedImage.Pixbuf.Height);
 
                 var neighborhood = SetNeighborhood();
+
                 var colony = ConvertImage.Convert(ColoniesType[type], LoadedImage, Width, Height, ColonyParameters, ColonyColor.Color, neighborhood, Cyclic.Active, Gradient.Active);
 
                 // Cannot handle Add Image for Elementary CA (1D)
