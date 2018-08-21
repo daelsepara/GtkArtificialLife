@@ -71,15 +71,11 @@ public class TuringMachine : ArtificialLife
 
                 var current = "";
 
-                while (offset < code.Length)
+                while (offset < code.Length && !char.IsDigit(code[offset]))
                 {
                     current += code[offset];
 
-                    if (!codebook.Contains(current))
-                    {
-                        break;
-                    }
-                    else
+                    if (codebook.Contains(current))
                     {
                         pattern = current;
                     }
