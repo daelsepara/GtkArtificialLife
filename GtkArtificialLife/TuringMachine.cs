@@ -73,7 +73,7 @@ public class TuringMachine : ArtificialLife
 
                 while (offset < code.Length && !char.IsDigit(code[offset]))
                 {
-                    current += code[offset];
+                    current += char.IsLetter(code[offset]) ? code[offset].ToString() : "";
 
                     if (codebook.Contains(current))
                     {
