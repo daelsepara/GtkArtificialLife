@@ -1216,6 +1216,11 @@ public partial class MainWindow : Gtk.Window
                     Tests.CyclicTest(Colonies);
                 }
 
+                if (ColoniesType[type] == ColonyTypes.Type.TuringMachine)
+                {
+                    Tests.TuringMachineTest(Colonies);
+                }
+
                 RenderColonies(worldPixbuf);
                 RenderWorld(worldPixbuf);
             }

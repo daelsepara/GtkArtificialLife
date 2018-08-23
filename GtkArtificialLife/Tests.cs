@@ -140,17 +140,6 @@ public static class Tests
         AddSelection(w, h);
     }
 
-    public static void ClearSelection()
-    {
-        GtkSelection.Selection.Clear();
-        GtkSelection.Selected = 0;
-    }
-
-    public static void AddBox(int x, int y, int w, int h)
-    {
-        GtkSelection.Selection.Add(x, y, x + w - 1, y + h - 1);
-    }
-
     public static void IceTest(List<Colony> Colonies)
     {
         Colonies.Clear();
@@ -188,6 +177,40 @@ public static class Tests
 
         AddSelection(w, h);
     }
+
+    public static void TuringMachineTest(List<Colony> Colonies)
+    {
+        Colonies.Clear();
+
+        var w = 256;
+        var h = 256;
+
+        var neighborhood = World.VonNeumannNeighborhood();
+
+        // see: https://github.com/rm-hull/turmites/blob/master/src/turmites/client/core.cljs#L33
+        // see: http://mathworld.wolfram.com/Turmite.html
+        // see: https://en.wikipedia.org/wiki/Turmite
+        World.AddTuringMachineColony(Colonies, w, h, 0, 0, 100, "1BX2R,1XB2R,2BX1S,2XX2S", 2, new Color(255, 0, 0), neighborhood, true);
+        World.AddTuringMachineColony(Colonies, w, h, 256, 256, 100, "1BX1R,1XX2R,2BB1S,2XB2S", 2, new Color(0, 255, 0), neighborhood, true);
+        World.AddTuringMachineColony(Colonies, w, h, 512, 0, 100, "1BX2L,1XX2L,2BX2R,2XB1S", 2, new Color(0, 0, 255), neighborhood, true);
+        World.AddTuringMachineColony(Colonies, w, h, 256, 0, 100, "1BX2R,1XB2L,2BX1S,2XB1S", 2, new Color(255, 0, 255), neighborhood, true);
+        World.AddTuringMachineColony(Colonies, w, h, 0, 256, 100, "1BX2L,1XB2L,2BX2R,2XB1L", 2, new Color(255, 255, 0), neighborhood, true);
+        World.AddTuringMachineColony(Colonies, w, h, 512, 256, 100, "1BX2S,1XB2R,2BX1L,2XX1R", 2, new Color(0, 255, 255), neighborhood, true);
+
+        AddSelection(w, h);
+    }
+
+    public static void ClearSelection()
+    {
+        GtkSelection.Selection.Clear();
+        GtkSelection.Selected = 0;
+    }
+
+    public static void AddBox(int x, int y, int w, int h)
+    {
+        GtkSelection.Selection.Add(x, y, x + w - 1, y + h - 1);
+    }
+
 
     public static void AddSelection(int w, int h)
     {
