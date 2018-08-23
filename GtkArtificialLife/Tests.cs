@@ -166,14 +166,14 @@ public static class Tests
         var w = 256;
         var h = 256;
 
-        var neighborhood = World.MooreNeighborhood();
+        var neighborhood = World.VonNeumannNeighborhood();
 
-        World.AddCyclicColony(Colonies, w, h, 0, 0, 4, new Color(255, 0, 0), neighborhood);
-        World.AddCyclicColony(Colonies, w, h, 256, 256, 4, new Color(0, 255, 0), neighborhood);
-        World.AddCyclicColony(Colonies, w, h, 512, 0, 4, new Color(0, 0, 255), neighborhood);
-        World.AddCyclicColony(Colonies, w, h, 256, 0, 4, new Color(255, 0, 255), neighborhood);
-        World.AddCyclicColony(Colonies, w, w, 0, 256, 4, new Color(255, 255, 0), neighborhood);
-        World.AddCyclicColony(Colonies, w, h, 512, 256, 4, new Color(0, 255, 255), neighborhood);
+        World.AddCyclicColony(Colonies, w, h, 0, 0, 8, new Color(255, 0, 0), neighborhood, false, true);
+        World.AddCyclicColony(Colonies, w, h, 256, 256, 8, new Color(0, 255, 0), neighborhood, false, true);
+        World.AddCyclicColony(Colonies, w, h, 512, 0, 8, new Color(0, 0, 255), neighborhood, false, true);
+        World.AddCyclicColony(Colonies, w, h, 256, 0, 8, new Color(255, 0, 255), neighborhood, false, true);
+        World.AddCyclicColony(Colonies, w, w, 0, 256, 8, new Color(255, 255, 0), neighborhood, false, true);
+        World.AddCyclicColony(Colonies, w, h, 512, 256, 8, new Color(0, 255, 255), neighborhood, false, true);
 
         AddSelection(w, h);
     }
