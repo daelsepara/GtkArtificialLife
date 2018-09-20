@@ -45,7 +45,7 @@ Stephen Wolfram's Rule 30
 
 ## Forest Fire
 
-![Forest Fire](/Screenshots/ForesetFire.png)
+![Forest Fire](/Screenshots/ForestFire.png)
 
 ## Langton Ant
 
