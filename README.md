@@ -74,3 +74,7 @@ Snowflake generated on a simulated hex-neighborhood
 ## Zhabotinsky Reaction
 
 ![Zhabotinsky Reaction](/Screenshots/Zhabotinsky.png)
+
+# Platform
+
+Gtk Artificial Life software has been tested on Linux, OSX, and Windows platforms
