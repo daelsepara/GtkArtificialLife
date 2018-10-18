@@ -8,7 +8,7 @@ public class ForestFire : ArtificialLife
     double Density = 1;
     double F = 100;
     double P = 1000;
-    double scale = 1.0 / 1000.0;
+    double scale = (double)1 / 1000;
     const int Empty = 0;
     const int Normal = 1;
     const int Burning = 2;
@@ -221,11 +221,11 @@ public class ForestFire : ArtificialLife
 
     public override List<Parameter> Parameters()
     {
-        var density = (Width > 0 && Width > 0) ? Density / (Width * Height) : 0.0;
+        double density = (Width > 0 && Width > 0) ? Density / (Width * Height) : 0;
 
         return new List<Parameter>
         {
-            new Parameter("Density", density, 0.01, 1.0),
+            new Parameter("Density", density, (double)1 / 100, 1),
             new Parameter("P", P, 1, 1000),
             new Parameter("F", F, 1, 1000)
         };

@@ -21,7 +21,7 @@ public static class ConvertImage
 
                 colony.SetParameters(new List<Parameter>{
                     new Parameter("MaxStates", maxStates, 2, 256),
-                    new Parameter("Density", 1.0, 0.01, 1.0)
+                    new Parameter("Density", 1, (double)1 / 100, 1)
                 });
 
                 if (Gradient)
@@ -49,7 +49,7 @@ public static class ConvertImage
                     new Parameter("g", Utility.GetNumeric(Parameters, "g"), 1, 100),
                     new Parameter("k1", Utility.GetNumeric(Parameters, "k1"), 1, 100),
                     new Parameter("k2", Utility.GetNumeric(Parameters, "k2"), 1, 100),
-                    new Parameter("Density", (double)population / (Width * Height), 0.01, 1.0)
+                    new Parameter("Density", (double)population / (Width * Height), (double)1 / 100, 1)
                 });
 
                 if (Gradient)
@@ -75,7 +75,7 @@ public static class ConvertImage
                 {
                     new Parameter("Birth", Utility.GetString(Parameters, "Birth")),
                     new Parameter("Survival", Utility.GetString(Parameters, "Survival")),
-                    new Parameter("Density", (double)population / (Width * Height), 0.01, 1.0)
+                    new Parameter("Density", (double)population / (Width * Height), (double)1 / 100, 1)
                 });
 
                 colony.SetNeighborhood(Neighborhood);
@@ -96,7 +96,7 @@ public static class ConvertImage
                 {
                     new Parameter("P", Utility.GetNumeric(Parameters, "P"), 1, 1000),
                     new Parameter("F", Utility.GetNumeric(Parameters, "F"), 1, 1000),
-                    new Parameter("Density", (double)population / (Width * Height), 0.01, 1.0)
+                    new Parameter("Density", (double)population / (Width * Height), (double)1 / 100, 1)
                 });
 
                 colony.SetNeighborhood(Neighborhood);
@@ -168,7 +168,7 @@ public static class ConvertImage
                 colony.SetParameters(new List<Parameter>
                 {
                     new Parameter("Freeze", Utility.GetNumeric(Parameters, "Freeze"), 1, 1000),
-                    new Parameter("Density", (double)population / (Width * Height), 0.01, 1.0)
+                    new Parameter("Density", (double)population / (Width * Height), (double)1 / 100, 1)
                 });
 
                 colony.SetNeighborhood(Neighborhood);
@@ -212,7 +212,7 @@ public static class ConvertImage
     {
         population = 0;
 
-        double delta = Math.Ceiling(256.0 / MaxStates);
+        double delta = Math.Ceiling((double)256 / MaxStates);
 
         for (int y = 0; y < Height; y++)
         {
@@ -234,7 +234,7 @@ public static class ConvertImage
                     b = Marshal.ReadByte(offset + 2);
                 }
 
-                var val = (int)(r * 0.299 + g * 0.587 + b * 0.114);
+				var val = (int)((double)(r * 299 + g * 587 + b * 114)/1000);
 
                 if (colony is Life)
                 {

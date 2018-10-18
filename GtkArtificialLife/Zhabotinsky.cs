@@ -162,11 +162,11 @@ public class Zhabotinsky : ArtificialLife
 
     public override List<Parameter> Parameters()
     {
-        var density = (Width > 0 && Width > 0) ? Density / (Width * Height) : 0.0;
+        var density = (Width > 0 && Width > 0) ? Density / (Width * Height) : 0;
 
         return new List<Parameter>
         {
-            new Parameter("Density", density, 0.01, 1.0),
+            new Parameter("Density", density, (double)1 / 100, 1),
             new Parameter("g", G, 1, 100),
             new Parameter("k1", K1, 1, 100),
             new Parameter("k2", K2, 1, 100)

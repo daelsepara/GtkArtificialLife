@@ -17,9 +17,9 @@ public class Parameter
         Name = name;
         Value = value;
         IsNumeric = false;
-        NumericValue = 0.0;
-        Min = 0.0;
-        Max = 0.0;
+        NumericValue = 0;
+        Min = 0;
+        Max = 0;
     }
 
     public Parameter(string name, double numericValue, double min, double max)

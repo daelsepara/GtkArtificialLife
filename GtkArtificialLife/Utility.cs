@@ -52,9 +52,9 @@ public static class Utility
             int block = (int)(i / delta);
             var factor = (double)block * delta / 255;
 
-            var r = (double)color.Red / max * factor * 255.0;
-            var g = (double)color.Green / max * factor * 255.0;
-            var b = (double)color.Blue / max * factor * 255.0;
+            var r = (double)color.Red / max * factor * 255;
+            var g = (double)color.Green / max * factor * 255;
+            var b = (double)color.Blue / max * factor * 255;
 
             var red = (byte)r & 0xff;
             var green = (byte)g & 0xff;

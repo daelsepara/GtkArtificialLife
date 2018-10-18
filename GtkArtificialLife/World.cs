@@ -73,7 +73,7 @@ public static class World
         {
             new Parameter("Birth", Birth),
             new Parameter("Survival", Survival),
-            new Parameter("Density", Density, 0.01, 1.0)
+            new Parameter("Density", Density, (double)1 / 100, 1)
         });
 
         LifeColony.Randomize();
@@ -92,7 +92,7 @@ public static class World
             new Parameter("g", g, 1, 100),
             new Parameter("k1", k1, 1, 100),
             new Parameter("k2", k2, 1, 100),
-            new Parameter("Density", Density, 0.01, 1.0)
+            new Parameter("Density", Density, (double)1 / 100, 1)
         });
 
         if (Gradient)
@@ -132,7 +132,7 @@ public static class World
 
         YinYangFireColony.SetParameters(new List<Parameter>{
             new Parameter("MaxStates", maxStates, 2, 256),
-            new Parameter("Density", Density, 0.01, 1.0)
+            new Parameter("Density", Density, (double)1 / 100, 1)
         });
 
         if (Gradient)
@@ -155,7 +155,7 @@ public static class World
         {
             new Parameter("P", P, 1, 1000),
             new Parameter("F", F, 1, 1000),
-            new Parameter("Density", Density, 0.01, 1.0)
+            new Parameter("Density", Density, (double)1 / 100, 1)
         });
 
         ForestFireColony.Randomize();
@@ -173,7 +173,7 @@ public static class World
         IceColony.SetParameters(new List<Parameter>
         {
             new Parameter("Freeze", Freeze, 1, 1000),
-            new Parameter("Density", Density, 0.01, 1.0)
+            new Parameter("Density", Density, (double)1 / 100, 1)
         });
 
         IceColony.Randomize();

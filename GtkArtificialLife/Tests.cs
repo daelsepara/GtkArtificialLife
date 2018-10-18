@@ -15,12 +15,12 @@ public static class Tests
         var Birth = "3";
         var Survival = "2,3";
 
-        World.AddLifeColony(Colonies, w, h, 0, 0, 0.40, Birth, Survival, new Color(255, 0, 0), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 256, 256, 0.40, Birth, Survival, new Color(0, 255, 0), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 512, 0, 0.40, Birth, Survival, new Color(0, 0, 255), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 256, 0, 0.40, Birth, Survival, new Color(255, 0, 255), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 0, 256, 0.40, Birth, Survival, new Color(255, 255, 0), neighborhood);
-        World.AddLifeColony(Colonies, w, h, 512, 256, 0.40, Birth, Survival, new Color(0, 255, 255), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 0, 0, (double)4 / 10, Birth, Survival, new Color(255, 0, 0), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 256, 256, (double)4 / 10, Birth, Survival, new Color(0, 255, 0), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 512, 0, (double)4 / 10, Birth, Survival, new Color(0, 0, 255), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 256, 0, (double)4 / 10, Birth, Survival, new Color(255, 0, 255), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 0, 256, (double)4 / 10, Birth, Survival, new Color(255, 255, 0), neighborhood);
+        World.AddLifeColony(Colonies, w, h, 512, 256, (double)4 / 10, Birth, Survival, new Color(0, 255, 255), neighborhood);
 
         AddSelection(w, h);
     }
@@ -34,12 +34,12 @@ public static class Tests
 
         var neighborhood = World.MooreNeighborhood();
 
-        World.AddZhabotinskyColony(Colonies, w, h, 0, 0, 0.40, 1, 1, 10, new Color(255, 0, 0), neighborhood);
-        World.AddZhabotinskyColony(Colonies, w, h, 256, 256, 0.40, 1, 1, 10, new Color(0, 255, 0), neighborhood);
-        World.AddZhabotinskyColony(Colonies, w, h, 512, 0, 0.40, 1, 1, 10, new Color(0, 0, 255), neighborhood);
-        World.AddZhabotinskyColony(Colonies, w, h, 256, 0, 0.40, 1, 1, 10, new Color(255, 0, 255), neighborhood);
-        World.AddZhabotinskyColony(Colonies, w, h, 0, 256, 0.40, 1, 1, 10, new Color(255, 255, 0), neighborhood);
-        World.AddZhabotinskyColony(Colonies, w, h, 512, 256, 0.40, 1, 1, 10, new Color(0, 255, 255), neighborhood);
+        World.AddZhabotinskyColony(Colonies, w, h, 0, 0, (double)4 / 10, 1, 1, 10, new Color(255, 0, 0), neighborhood);
+        World.AddZhabotinskyColony(Colonies, w, h, 256, 256, (double)4 / 10, 1, 1, 10, new Color(0, 255, 0), neighborhood);
+        World.AddZhabotinskyColony(Colonies, w, h, 512, 0, (double)4 / 10, 1, 1, 10, new Color(0, 0, 255), neighborhood);
+        World.AddZhabotinskyColony(Colonies, w, h, 256, 0, (double)4 / 10, 1, 1, 10, new Color(255, 0, 255), neighborhood);
+        World.AddZhabotinskyColony(Colonies, w, h, 0, 256, (double)4 / 10, 1, 1, 10, new Color(255, 255, 0), neighborhood);
+        World.AddZhabotinskyColony(Colonies, w, h, 512, 256, (double)4 / 10, 1, 1, 10, new Color(0, 255, 255), neighborhood);
 
         AddSelection(w, h);
     }
@@ -72,12 +72,12 @@ public static class Tests
 
         var neighborhood = World.MooreNeighborhood();
 
-        World.AddYinYangFireColony(Colonies, w, h, 0, 0, 0.40, 64, new Color(255, 0, 0), neighborhood);
-        World.AddYinYangFireColony(Colonies, w, h, 256, 256, 0.40, 128, new Color(0, 255, 0), neighborhood);
-        World.AddYinYangFireColony(Colonies, w, h, 512, 0, 0.40, 256, new Color(0, 0, 255), neighborhood);
-        World.AddYinYangFireColony(Colonies, w, h, 256, 0, 0.40, 256, new Color(255, 0, 255), neighborhood);
-        World.AddYinYangFireColony(Colonies, w, w, 0, 256, 0.40, 128, new Color(255, 255, 0), neighborhood);
-        World.AddYinYangFireColony(Colonies, w, h, 512, 256, 0.40, 64, new Color(0, 255, 255), neighborhood);
+        World.AddYinYangFireColony(Colonies, w, h, 0, 0, (double)4 / 10, 64, new Color(255, 0, 0), neighborhood);
+        World.AddYinYangFireColony(Colonies, w, h, 256, 256, (double)4 / 10, 128, new Color(0, 255, 0), neighborhood);
+        World.AddYinYangFireColony(Colonies, w, h, 512, 0, (double)4 / 10, 256, new Color(0, 0, 255), neighborhood);
+        World.AddYinYangFireColony(Colonies, w, h, 256, 0, (double)4 / 10, 256, new Color(255, 0, 255), neighborhood);
+        World.AddYinYangFireColony(Colonies, w, w, 0, 256, (double)4 / 10, 128, new Color(255, 255, 0), neighborhood);
+        World.AddYinYangFireColony(Colonies, w, h, 512, 256, (double)4 / 10, 64, new Color(0, 255, 255), neighborhood);
 
         AddSelection(w, h);
     }
@@ -113,12 +113,12 @@ public static class Tests
 
         var neighborhood = World.MooreNeighborhood();
 
-        World.AddForestFireColony(Colonies, w, h, 0, 0, 0.4, 100, 1000, new Color(255, 0, 0), neighborhood);
-        World.AddForestFireColony(Colonies, w, h, 256, 256, 0.4, 100, 1000, new Color(0, 255, 0), neighborhood);
-        World.AddForestFireColony(Colonies, w, h, 512, 0, 0.4, 100, 1000, new Color(0, 0, 255), neighborhood);
-        World.AddForestFireColony(Colonies, w, h, 256, 0, 0.4, 100, 1000, new Color(255, 0, 255), neighborhood);
-        World.AddForestFireColony(Colonies, w, w, 0, 256, 0.4, 100, 1000, new Color(255, 255, 0), neighborhood);
-        World.AddForestFireColony(Colonies, w, h, 512, 256, 0.4, 100, 1000, new Color(0, 255, 255), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 0, 0, (double)4 / 10, 100, 1000, new Color(255, 0, 0), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 256, 256, (double)4 / 10, 100, 1000, new Color(0, 255, 0), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 512, 0, (double)4 / 10, 100, 1000, new Color(0, 0, 255), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 256, 0, (double)4 / 10, 100, 1000, new Color(255, 0, 255), neighborhood);
+        World.AddForestFireColony(Colonies, w, w, 0, 256, (double)4 / 10, 100, 1000, new Color(255, 255, 0), neighborhood);
+        World.AddForestFireColony(Colonies, w, h, 512, 256, (double)4 / 10, 100, 1000, new Color(0, 255, 255), neighborhood);
 
         AddSelection(w, h);
     }
@@ -149,12 +149,12 @@ public static class Tests
 
         var neighborhood = World.MooreNeighborhood();
 
-        World.AddIceColony(Colonies, w, h, 0, 0, 0.4, 30, new Color(255, 0, 0), neighborhood);
-        World.AddIceColony(Colonies, w, h, 256, 256, 0.4, 30, new Color(0, 255, 0), neighborhood);
-        World.AddIceColony(Colonies, w, h, 512, 0, 0.4, 30, new Color(0, 0, 255), neighborhood);
-        World.AddIceColony(Colonies, w, h, 256, 0, 0.4, 30, new Color(255, 0, 255), neighborhood);
-        World.AddIceColony(Colonies, w, w, 0, 256, 0.4, 30, new Color(255, 255, 0), neighborhood);
-        World.AddIceColony(Colonies, w, h, 512, 256, 0.4, 30, new Color(0, 255, 255), neighborhood);
+        World.AddIceColony(Colonies, w, h, 0, 0, (double)4 / 10, 30, new Color(255, 0, 0), neighborhood);
+        World.AddIceColony(Colonies, w, h, 256, 256, (double)4 / 10, 30, new Color(0, 255, 0), neighborhood);
+        World.AddIceColony(Colonies, w, h, 512, 0, (double)4 / 10, 30, new Color(0, 0, 255), neighborhood);
+        World.AddIceColony(Colonies, w, h, 256, 0, (double)4 / 10, 30, new Color(255, 0, 255), neighborhood);
+        World.AddIceColony(Colonies, w, w, 0, 256, (double)4 / 10, 30, new Color(255, 255, 0), neighborhood);
+        World.AddIceColony(Colonies, w, h, 512, 256, (double)4 / 10, 30, new Color(0, 255, 255), neighborhood);
 
         AddSelection(w, h);
     }

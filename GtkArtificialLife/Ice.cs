@@ -7,7 +7,7 @@ public class Ice : ArtificialLife
     const int MaxStates = 3;
     double Density = 1;
     double Freeze = 30;
-    double scale = 1.0 / 1000.0;
+    double scale = (double)1 / 1000;
     const int Empty = 0;
     const int Normal = 1;
     const int Freezing = 2;
@@ -170,11 +170,11 @@ public class Ice : ArtificialLife
 
     public override List<Parameter> Parameters()
     {
-        var density = (Width > 0 && Width > 0) ? Density / (Width * Height) : 0.0;
+        var density = (Width > 0 && Width > 0) ? Density / (Width * Height) : 0;
 
         return new List<Parameter>
         {
-            new Parameter("Density", density, 0.01, 1.0),
+            new Parameter("Density", density, (double)1 / 100, 1),
             new Parameter("Freeze", Freeze, 1, 1000)
         };
     }
