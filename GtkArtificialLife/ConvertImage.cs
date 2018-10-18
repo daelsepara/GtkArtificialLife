@@ -234,7 +234,7 @@ public static class ConvertImage
                     b = Marshal.ReadByte(offset + 2);
                 }
 
-				var val = (int)((double)(r * 299 + g * 587 + b * 114)/1000);
+                var val = (int)((double)(r * 299 + g * 587 + b * 114) / 1000);
 
                 if (colony is Life)
                 {

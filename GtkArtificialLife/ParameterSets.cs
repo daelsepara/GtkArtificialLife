@@ -18,7 +18,7 @@ public static class ParameterSets
     {
         return new List<Parameter>
         {
-			new Parameter("Density", (double)4 / 10, (double)1 / 100, 1),
+            new Parameter("Density", (double)4 / 10, (double)1 / 100, 1),
             new Parameter("g", 10, 1, 100),
             new Parameter("k1", 1, 1, 100),
             new Parameter("k2", 1, 1, 100)
@@ -38,7 +38,7 @@ public static class ParameterSets
     {
         return new List<Parameter>
         {
-			new Parameter("Density", (double)4 / 10, (double)1 / 100, 1),
+            new Parameter("Density", (double)4 / 10, (double)1 / 100, 1),
             new Parameter("MaxStates", 64, 2, 256)
         };
     }
@@ -47,7 +47,7 @@ public static class ParameterSets
     {
         return new List<Parameter>
         {
-			new Parameter("Density", (double)4 / 10, (double)1 / 100, 1),
+            new Parameter("Density", (double)4 / 10, (double)1 / 100, 1),
             new Parameter("P", 1000, 1, 1000),
             new Parameter("F", 100, 1, 1000)
         };
@@ -74,7 +74,7 @@ public static class ParameterSets
     {
         return new List<Parameter>
         {
-			new Parameter("Density", (double)1 / 100, (double)1 / 100, 1),
+            new Parameter("Density", (double)1 / 100, (double)1 / 100, 1),
             new Parameter("Freeze", 30, 1, 1000)
         };
     }
